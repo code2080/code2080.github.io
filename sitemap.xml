@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://code2080.github.io/12-factor-introduce/</loc>
+    <lastmod>2018-09-18T21:46:35+07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://code2080.github.io/introduce/</loc>
+    <lastmod>2018-09-18T21:46:35+07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://code2080.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://code2080.github.io/</loc>
+    <lastmod>2018-09-18T21:46:35+07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://code2080.github.io/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
