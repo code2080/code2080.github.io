@@ -75,7 +75,7 @@
 <p>Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là <em>web apps</em> (những ứng dụng web), hay là <em>software-as-a-service</em> (phần mềm như một dịch vụ). App (ứng dụng) xây dựng theo twelve-factor là một phương pháp học để xây dựng app như vậy, bao gồm:</p>
 
 <ul>
-<li>Sử dụng <strong>declarative formats</strong> cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án;</li>
+<li>Sử dụng định dạng <strong>declarative</strong> cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án;</li>
 <li>Có <strong>giao kèo sạch</strong> (clean contract) với hệ thống vận hành ở bên dưới, đưa ra <strong>tối đa tính khả chuyển</strong> (maximum portability) giữa các môi trường thực thi;</li>
 <li>Tiện dụng cho <strong>phát triển</strong> trên <strong>nền tảng điện toán đám mây</strong> hiện đại, loại bỏ sự cấp thiết cho các máy chủ và những người quản trị hệ thống;</li>
 <li><strong>Giảm thiểu tối đa sự khác nhau</strong> giữa development (phát triển) và production (sản phẩm), kích hoạt tính năng <strong>phát triển liên tục</strong> (CD, continuous deployment) để tối đa tốc độ phát triển app;</li>
@@ -112,7 +112,7 @@
 <ul>
 <li><p>Nếu có nhiều codebase, thì nó không phải một app, mà là một hệ thống phân tán. Mỗi thành phần trong một hệ thống phân tán là một app, và mỗi thành phần đó có thể tuân theo một cách cá nhân với twelve-factor.</p></li>
 
-<li><p>Nhiều app chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (dependency manager).</p></li>
+<li><p>Nhiều app chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (<a href="#2-dependencies-c%C3%A1c-ph%E1%BB%A5-thu%E1%BB%99c">dependency manager</a>).</p></li>
 </ul>
 
 <p>Chỉ có duy nhất một codebase với mỗi app, nhưng sẽ có nhiều deploy (triển khai) của một app. Một <em>deploy</em> là một instance (thực thể) của app, điển hình nó có thể là một production site, và là một hoặc nhiều staging sites. Thêm nữa, mọi developer đều có một bản sao chép của app chạy ở môi trường phát triển local của họ, mỗi trong số đó cũng đều được coi là một bản deploy.</p>
@@ -123,15 +123,15 @@
 
 <p><em>Khai báo rõ ràng và cô lập các dependency (phụ thuộc)</em></p>
 
-<p>Hầu hết các ngôn ngữ lập trình đều đưa ra hệ thống quản lý gói (packaging system) cho việc phân phối các thư viện hỗ trợ, ví dụ như CPAN cho Perl, Rubygems for Ruby, NPM cho NodeJS, Pip cho Python. Thư viện được cài đặt thông qua một hệ thống quản lý gói có thể được cài đặt trong phạm vi toàn máy (system-wide) (được biết như là &ldquo;site packages&rdquo;) hoặc giới hạn phạm vi trong thư mục chưa app (được biết như là &ldquo;vendoring&rdquo; hay &ldquo;bundling&rdquo;)</p>
+<p>Hầu hết các ngôn ngữ lập trình đều đưa ra hệ thống quản lý gói (packaging system) cho việc phân phối các thư viện hỗ trợ, ví dụ như CPAN cho Perl, Rubygems for Ruby, NPM cho NodeJS, Pip cho Python. Thư viện được cài đặt thông qua một hệ thống quản lý gói có thể được cài đặt trong phạm vi toàn hệ thống (system-wide) (được biết như là &ldquo;site packages&rdquo;) hoặc giới hạn phạm vi trong thư mục chứa app (được biết như là &ldquo;vendoring&rdquo; hay &ldquo;bundling&rdquo;).</p>
 
-<p><strong>Một twelve-factor app không bao giờ tin vào sự tồn tại ngầm của các gói trên toàn hệ thống (system-wide packages)</strong>. Nó khai báo tất cả các dependency, trọn vẹn và chính xác, thông qua một bản kê <em>khai báo dependency</em>. Hơn nữa nó sử dụng một công cụ cô lập dependency trong quá trình thực thi, để chắc rằng không có dependency ngầm nào &ldquo;bị rò rỉ&rdquo; (&ldquo;leak in&rdquo;) từ hệ thống xung quanh. Bản đặc tả dependency đầy đủ và rõ ràng được áp dụng đồng nhất với cả production và development.</p>
+<p><strong>Một twelve-factor app không bao giờ tin vào sự tồn tại ngầm của các gói trên toàn hệ thống (system-wide packages)</strong>. Nó khai báo tất cả các dependency, trọn vẹn và chính xác, thông qua một bản kê <em>khai báo dependency (dependency declaration)</em>. Hơn nữa nó sử dụng một công cụ <em>cô lập dependency (dependency isolation)</em> trong quá trình thực thi, để chắc rằng không có dependency ngầm nào &ldquo;bị rò rỉ vào trong&rdquo; (&ldquo;leak in&rdquo;) từ hệ thống xung quanh. Bản đặc tả dependency đầy đủ và rõ ràng được áp dụng đồng nhất với cả production và development.</p>
 
-<p>Ví dụ, Trình đóng gói Bundler cho Ruby đưa ra mẫu bản kê <code>Gemfile</code> cho khai báo dependency và <code>bundle exec</code> cho các dependency cô lập. Trong Python, có 2 công cụ riêng biệt cho các bước này - Pip sử dụng cho khai báo, Virtualenv cho cô lập. Thậm chí C có Autoconf cho khai báo dependency, và liên kết tĩnh có thể cung cấp denpendency cô lập. Bất kể toolchain nào (tập công cụ lập trình), khai báo và cô lập dependency phải luôn luôn được sử dụng cùng nhau - chỉ một trong hai là không đủ thoả mãn twelve-factor.</p>
+<p>Ví dụ, Bundler (Trình đóng gói) cho Ruby đưa ra định dạng bản kê <code>Gemfile</code> cho khai báo dependency và <code>bundle exec</code> cho các cô lập dependency. Trong Python, có 2 công cụ riêng biệt cho các bước này - Pip sử dụng cho khai báo, Virtualenv cho cô lập. Thậm chí C có Autoconf cho khai báo dependency, và liên kết tĩnh (static linking) có thể cung cấp cô lập denpendency. Bất kể toolchain nào (tập công cụ lập trình), khai báo và cô lập dependency phải luôn luôn được sử dụng cùng nhau - chỉ cái này hoặc cái kia là không đủ thoả mãn twelve-factor.</p>
 
-<p>Một lợi ích của khai báo dependency rõ ràng là nó làm đơn giản việc thiết lập mới cho ứng dụng của developer. Một developer mới có thể check out codebase của app sang máy phát triển của họ, chỉ yêu cầu có trình chạy của ngôn ngữ (language runtime) và trình quản lý dependency được cài đặt như điều kiện trước hết. Chúng sẽ có thể thiết lập mọi thứ cần thiết để chạy mã nguồn app với câu lệnh build xác định. Ví dụ, câu lệnh build cho Ruby/Bundler là <code>bundle install</code>, trong khi đó Clojure/leiningen là <code>lein deps</code>.</p>
+<p>Một lợi ích của khai báo dependency rõ ràng là nó làm đơn giản việc thiết lập cho những developer mới tham gia vào app. Developer mới có thể check out codebase của app sang máy phát triển của họ, chỉ yêu cầu có trình chạy của ngôn ngữ (language runtime) và trình quản lý dependency được cài đặt như điều kiện trước hết. Họ sẽ có thể thiết lập mọi thứ cần thiết để chạy mã nguồn app với <em>câu lệnh build</em> xác định. Ví dụ, câu lệnh build cho Ruby/Bundler là <code>bundle install</code>, còn cho Clojure/leiningen là <code>lein deps</code>.</p>
 
-<p>Twelve-factor app cũng không dựa vào tồn tại ngầm của bất kỳ công cụ hệ thống nào. Ví dụ bao gầm shelling out cho ImageMagick hoặc curl. Trong khi những công cụ này cót hể tổn tại trên nhiều hoặc thậm chí hầu hết hệ thông, tuy nhiên không có gì đảm bảo rằng chung sẽ tồn tại trên tất cả hệ thống nơi mà ứng dụng của bạn có thể chạy trong tương lai, hoặc liệu phiên bản được tìm thấy trên một hệ thống trong tương lai sẽ tương thích với app. Nếu app cần shell out đến một công cụ hệ thống, thì công cụ này nên được cung cấp trong ứng dụng.</p>
+<p>Twelve-factor app cũng không dựa vào tồn tại ngầm của bất kỳ công cụ hệ thống nào. Ví dụ bao gồm shelling out đến ImageMagick hoặc <code>curl</code>. Trong khi những công cụ này có thể tổn tại trên nhiều hoặc thậm chí hầu hết hệ thông, tuy nhiên không có gì đảm bảo rằng chúng sẽ tồn tại trên tất cả hệ thống nơi mà app của bạn có thể chạy trong tương lai, hoặc liệu phiên bản được tìm thấy trên một hệ thống trong tương lai sẽ tương thích với app. Nếu app cần shell out đến một công cụ hệ thống, thì công cụ này nên được cung cấp trong app.</p>
 
 <h1 id="3-config-cấu-hình">3. Config (Cấu hình)</h1>
 
@@ -156,7 +156,7 @@ Apps sometimes store config as constants in the code. This is a violation of twe
 
 <p>In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars. They are never grouped together as “environments”, but instead are independently managed for each deploy. This is a model that scales up smoothly as the app naturally expands into more deploys over its lifetime.</p>
 
-<p>Dịch bởi code2080</p>
+<p>Dịch bởi: <code>code2080</code></p>
 
         </div>
 
