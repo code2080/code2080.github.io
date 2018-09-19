@@ -72,59 +72,60 @@
 
 <h2 id="giới-thiệu">Giới thiệu</h2>
 
-<p>Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là <em>web apps</em> (những ứng dụng web), hay là <em>software-as-a-service</em> (phần mềm như một dịch vụ). Ứng dụng xây dựng theo twelve-factor là một phương pháp học để xây dựng ứng dụng như vậy, bao gồm:</p>
+<p>Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là <em>web apps</em> (những ứng dụng web), hay là <em>software-as-a-service</em> (phần mềm như một dịch vụ). App (ứng dụng) xây dựng theo twelve-factor là một phương pháp học để xây dựng app như vậy, bao gồm:</p>
 
 <ul>
 <li>Sử dụng <strong>declarative formats</strong> cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án;</li>
 <li>Có <strong>giao kèo sạch</strong> (clean contract) với hệ thống vận hành ở bên dưới, đưa ra <strong>tối đa tính khả chuyển</strong> (maximum portability) giữa các môi trường thực thi;</li>
-<li>Tiện dụng cho <strong>phát triển</strong> trên <strong>nền tảng đám mây</strong> hiện đại, loại bỏ sự cấp thiết cho các máy chủ và những người quản trị hệ thống;</li>
-<li><strong>Giảm thiểu tối đa sự khác nhau</strong> giữa development (phát triển) và production (sản phẩm), kích hoạt tính năng <strong>phát triển liên tục</strong> (CD, continuous deployment) để tối đa tốc độ phát triển ứng dụng;</li>
+<li>Tiện dụng cho <strong>phát triển</strong> trên <strong>nền tảng điện toán đám mây</strong> hiện đại, loại bỏ sự cấp thiết cho các máy chủ và những người quản trị hệ thống;</li>
+<li><strong>Giảm thiểu tối đa sự khác nhau</strong> giữa development (phát triển) và production (sản phẩm), kích hoạt tính năng <strong>phát triển liên tục</strong> (CD, continuous deployment) để tối đa tốc độ phát triển app;</li>
 <li>Và có thể <strong>mở rộng</strong> mà không cần thay đổi đáng kể nào về công cụ, kiến trúc, hay các phương pháp phát triển (development practices).</li>
 </ul>
 
-<p>Phương pháp twelve-factor có thể áp dụng cho ứng dụng viết bằng bất cứ ngôn ngữ nào, và sử dụng bất kì sự kết hợp nào của các dịch vụ ở backend (như cơ sở dữ liệu, queue, memory cache,&hellip;).</p>
+<p>Phương pháp twelve-factor có thể áp dụng cho app viết bằng bất cứ ngôn ngữ nào, và sử dụng bất kì sự kết hợp nào của các dịch vụ ở backend (như cơ sở dữ liệu, queue, memory cache,&hellip;).</p>
 
 <h2 id="khởi-nguồn">Khởi nguồn</h2>
 
-<p>Những người đóng góp cho tài liệu này đều đã trực tiếp gặp phải những rắc rối trong sự phát triển một cũng như hàng trăm ứng dụng, và gián tiếp chứng kiến sự phát triển, vận hành, và mở rộng của hàng trăm triệu ứng dụng thông qua công việc của chúng tôi ở nền tảng Heroku.</p>
+<p>Những người đóng góp cho tài liệu này đều đã trực tiếp gặp phải những rắc rối trong sự phát triển một cũng như hàng trăm app, và gián tiếp chứng kiến sự phát triển, vận hành, và mở rộng của hàng trăm triệu app thông qua công việc của chúng tôi ở nền tảng Heroku.</p>
 
-<p>Tài liệu này tổng hợp tất cả kinh nghiệm và sự quan sát của chúng tôi trong thế giới rộng lớn của ứng dụng software-as-a-service. Nó là một tam phân của những thực hành ý tưởng trong phát triển ứng dụng, đặc biệt chú ý đến sự năng động của việc phát triển cơ bản của một ứng dụng qua thời gian, sự năng động của cộng tác giữa các nhà phát triển làm việc trên cùng mã nguồn ứng dụng, và <a href="http://blog.heroku.com/archives/2011/6/28/the_new_heroku_4_erosion_resistance_explicit_contracts/">tránh chi phí của việc sói mòn phần mềm</a>.</p>
+<p>Tài liệu này tổng hợp tất cả kinh nghiệm và sự quan sát của chúng tôi trong thế giới rộng lớn của software-as-a-service app. Nó là một tam phân của những thực hành ý tưởng trong phát triển app, đặc biệt chú ý đến sự dynamic (năng động) của việc phát triển cơ bản của một app qua thời gian, sự dynamic của cộng tác giữa các developer (nhà phát triển) làm việc trên cùng mã nguồn app, và <a href="http://blog.heroku.com/archives/2011/6/28/the_new_heroku_4_erosion_resistance_explicit_contracts/">tránh chi phí của việc sói mòn phần mềm</a>.</p>
 
-<p>Động lực của chúng tôi là để nâng cao nhận thức về một số lỗi truyền thống mà chúng ta thấy trong phát triển ứng dụng hiện đại, để cung cấp những ngôn từ chung để thảo luận về những vấn đề đó, và để đưa ra một tập rộng các giải pháp mang tính khái niệm cho những vấn đề đó với những thuật ngữ kèm theo. Định dạng này được lấy cảm hứng bởi cuốn sách <a href="https://books.google.com/books/about/Patterns_of_enterprise_application_archi.html?id=FyWZt5DdvFkC">Patterns of Enterprise Application Architecture and Refactoring</a> của Martin Fowler.</p>
+<p>Động lực của chúng tôi là để nâng cao nhận thức về một số lỗi truyền thống mà chúng ta thấy trong phát triển app hiện đại, để cung cấp những ngôn từ chung để thảo luận về những vấn đề đó, và để đưa ra một tập rộng các giải pháp mang tính khái niệm cho những vấn đề đó với những thuật ngữ kèm theo. Định dạng này được lấy cảm hứng bởi cuốn sách <a href="https://books.google.com/books/about/Patterns_of_enterprise_application_archi.html?id=FyWZt5DdvFkC">Patterns of Enterprise Application Architecture and Refactoring</a> của Martin Fowler.</p>
 
 <h2 id="ai-nên-đọc-tài-liệu-này">Ai nên đọc tài liệu này?</h2>
 
-<p>Bất kỳ nhà phát triển nào, mà xây dựng ứng dụng chạy như là một dịch vụ. Kỹ sư hệ thống, người triển khai và quản lý các ứng dụng như vậy.</p>
+<p>Bất kỳ developer nào, mà xây dựng app chạy như là một dịch vụ. Kỹ sư hệ thống, người triển khai và quản lý các app như vậy.</p>
 
 <h1 id="1-codebase">1. Codebase</h1>
 
 <p><strong>Một codebase thì được theo dõi trong kiểm soát sửa đổi, và có nhiều bản triển khai</strong></p>
 
-<p>Một ứng dụng twelve-factor thì luôn luôn được theo dõi trong hệ thống quản lý phiên bản, ví dụ như Git, Mercurial, hoặc Subversion. Một bản sao chép của cơ sở dữ liệu theo dõi sửa đổi thì được biết như là một <em>code repository</em>, hay thường gọi tắt là <em>code repo</em> hoặc chỉ là <em>repo</em>.</p>
+<p>Một twelve-factor app thì luôn luôn được theo dõi trong hệ thống quản lý phiên bản, ví dụ như Git, Mercurial, hoặc Subversion. Một bản sao chép của cơ sở dữ liệu theo dõi sửa đổi (revision tracking database) thì được biết như là một <em>code repository</em>, hay thường gọi tắt là <em>code repo</em> hoặc chỉ là <em>repo</em>.</p>
 
 <p>Một <em>codebase</em> có thể là bất kì một repo đơn nào (trong một hệ thống kiểm soát sửa đổi tập trung như Subversion), hoặc bất kì một tập repo nào được chia sẻ root commit (trong một hệ thống kiểm soát sửa đổi phi tập trung như Git).</p>
 
-<p>Luôn luôn có sự tương quan một-một giữa codebase và ứng dụng:</p>
+<p>Luôn luôn có sự tương quan một-một giữa codebase và app:</p>
 
-<p><em>One codebase maps to many deploys:</em>
+<p><em>Mỗi codebase có nhiều deploy:</em>
 <img src="https://12factor.net/images/codebase-deploys.png" alt="alt text" title="One codebase maps to many deploys" /></p>
 
 <ul>
-<li><p>Nếu có nhiều codebase, thì nó không phải một ứng dụng, mà là một hệ thống phân tán. Mỗi thành phần trong một hệ thống phân tán là một ứng dụng, và mỗi thành phần đó có thể tuân theo một cách cá nhân với twelve-factor.</p></li>
+<li><p>Nếu có nhiều codebase, thì nó không phải một app, mà là một hệ thống phân tán. Mỗi thành phần trong một hệ thống phân tán là một app, và mỗi thành phần đó có thể tuân theo một cách cá nhân với twelve-factor.</p></li>
 
-<li><p>Nhiều ứng dụng chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (dependency manager).</p></li>
+<li><p>Nhiều app chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (dependency manager).</p></li>
 </ul>
 
-<p>Chỉ có duy nhất một codebase với mỗi ứng dụng, nhưng sẽ có nhiều deploy (triển khai) của một ứng dụng. Một <em>deploy (triển khai)</em> là một instance (thực thể) của ứng dụng, điển hình nó có thể là một production site, và là một hoặc nhiều staging sites. Thêm nữa, mọi nhà phát triển đều có một bản sao chép của ứng dụng chạy ở môi trường phát triển local của họ, mỗi trong số đó cũng đều được coi là một bản deploy.</p>
+<p>Chỉ có duy nhất một codebase với mỗi app, nhưng sẽ có nhiều deploy (triển khai) của một app. Một <em>deploy</em> là một instance (thực thể) của app, điển hình nó có thể là một production site, và là một hoặc nhiều staging sites. Thêm nữa, mọi developer đều có một bản sao chép của app chạy ở môi trường phát triển local của họ, mỗi trong số đó cũng đều được coi là một bản deploy.</p>
 
-<p>Codebase thì giống nhau ở tất cả các deploy, mặc dù các phiên bản khác nhau có thể được active ở mỗi deploy. Ví dụ, một nhà phát triển có một số commit chưa được deploy đến staging; staging thì cũng có một số commit chưa được deploy đến production. Nhưng chúng đều chia sẻ codebase giống nhau, ví vậy để chúng có thể nhận biết được như là các deploy khác nhau của cùng một ứng dụng.</p>
+<p>Codebase thì giống nhau ở tất cả các deploy, mặc dù các phiên bản khác nhau có thể được active ở mỗi deploy. Ví dụ, một developer có một số commit chưa được deploy đến staging; staging thì cũng có một số commit chưa được deploy đến production. Nhưng chúng đều chia sẻ codebase giống nhau, ví vậy để chúng có thể nhận biết được như là các deploy khác nhau của cùng một app.</p>
 
 <h1 id="2-dependencies-các-phụ-thuộc">2. Dependencies (Các phụ thuộc)</h1>
 
-<p>Explicitly declare and isolate dependencies
-Most programming languages offer a packaging system for distributing support libraries, such as CPAN for Perl or Rubygems for Ruby. Libraries installed through a packaging system can be installed system-wide (known as “site packages”) or scoped into the directory containing the app (known as “vendoring” or “bundling”).</p>
+<p><em>Khai báo rõ ràng và cô lập các dependency (phụ thuộc)</em></p>
 
-<p>A twelve-factor app never relies on implicit existence of system-wide packages. It declares all dependencies, completely and exactly, via a dependency declaration manifest. Furthermore, it uses a dependency isolation tool during execution to ensure that no implicit dependencies “leak in” from the surrounding system. The full and explicit dependency specification is applied uniformly to both production and development.</p>
+<p>Hầu hết các ngôn ngữ lập trình đều đưa ra hệ thống quản lý gói (packaing system) cho việc phân phối các thư viện hỗ trợ, ví dụ như CPAN cho Perl, Rubygems for Ruby, NPM cho NodeJS, Pip cho Python. Thư viện được cài đặt thông qua một hệ thống quản lý gói có thể được cài đặt trong phạm vi toàn máy (system-wide) (được biết như là &ldquo;site packages&rdquo;) hoặc giới hạn phạm vi trong thư mục chưa app (được biết như là &ldquo;vendoring&rdquo; hay &ldquo;bundling&rdquo;)</p>
+
+<p><em>Một twelve-factor app không bao giờ tin vào sự tồn tại ngầm của các gói trên toàn hệ thống (system-wide packages)</em>. Nó khai báo tất cả các dependency, hoàn thành và chính xác, thông qua một bản kê khai báo dependency. Furthermore, it uses a dependency isolation tool during execution to ensure that no implicit dependencies “leak in” from the surrounding system. The full and explicit dependency specification is applied uniformly to both production and development.</p>
 
 <p>For example, Bundler for Ruby offers the Gemfile manifest format for dependency declaration and bundle exec for dependency isolation. In Python there are two separate tools for these steps – Pip is used for declaration and Virtualenv for isolation. Even C has Autoconf for dependency declaration, and static linking can provide dependency isolation. No matter what the toolchain, dependency declaration and isolation must always be used together – only one or the other is not sufficient to satisfy twelve-factor.</p>
 
