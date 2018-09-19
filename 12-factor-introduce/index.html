@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Giới thiệu ứng dụng 12 yếu tố (Twelve-Factor App) // Just a random person who want to code everyday of his life</title>
+    <title>Giới thiệu xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) // Just a random person who want to code everyday of his life</title>
 
         <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="">
-        <meta property="og:title" content="Giới thiệu ứng dụng 12 yếu tố (Twelve-Factor App)" />
+        <meta property="og:title" content="Giới thiệu xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App)" />
     <meta property="og:description" content="" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
@@ -52,7 +52,7 @@
     <div class="article-inner">
         
         <header class="article-header">
-            <h1 class="article-title" itemprop="name">Giới thiệu ứng dụng 12 yếu tố (Twelve-Factor App)</h1>
+            <h1 class="article-title" itemprop="name">Giới thiệu xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App)</h1>
         </header>
         
         <div class="article-meta">
@@ -64,34 +64,52 @@
             
         </div>
         <div class="article-entry" itemprop="articleBody">
-            <p>Nguồn: <a href="https://12factor.net/">https://12factor.net/</a></p>
+            
 
-<p><strong>GIỚI THIỆU</strong></p>
+<p>Nguồn: <a href="https://12factor.net/">https://12factor.net/</a></p>
 
-<p>Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là <em>những ứng dụng web</em>, hay là <em>saas, software-as-a-service</em> (phần mềm như là dịch vụ). Twelve-factor app là một phương pháp học để xây dựng ứng dụng saas mà:</p>
+<h2 id="giới-thiệu">GIỚI THIỆU</h2>
+
+<p>Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là <em>web apps</em> (những ứng dụng web), hay là <em>software-as-a-service</em> (phần mềm như một dịch vụ). Twelve-factor app là một phương pháp học để xây dựng ứng dụng saas mà:</p>
 
 <ul>
-<li>Use declarative formats for setup automation, to minimize time and cost for new developers joining the project;</li>
-<li>Have a clean contract with the underlying operating system, offering maximum portability between execution environments;</li>
-<li>Are suitable for deployment on modern cloud platforms, obviating the need for servers and systems administration;</li>
-<li>Minimize divergence between development and production, enabling continuous deployment for maximum agility;</li>
+<li>Sử dụng <strong>declarative</strong> formats cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án;</li>
+<li>Có <strong>giao kèo sạch</strong> (clean contract) với hệ thống vận hành ở bên dưới, đưa ra <strong>tối đa tính khả chuyển</strong> (maximum portability) giữa các môi trường thực thi;</li>
+<li>Tiện dụng cho <strong>phát triển</strong> trên <strong>nền tảng đám mây</strong> hiện đại, ngăn ngừa sự cần thiết của các máy chủ và những người quản trị hệ thống;</li>
+<li><strong>Giảm thiểu tối đa sự khác nhau</strong> của phát triển (development) và sản phẩm (production), cho phép sự <strong>phát triển liên tục</strong> (CD, continuous deployment) để tối đa sự nhanh nhẹn;</li>
 <li>And can scale up without significant changes to tooling, architecture, or development practices.</li>
-<li>The twelve-factor methodology can be applied to apps written in any programming language, and which use any combination of backing services (database, queue, memory cache, etc).</li>
 </ul>
 
-<p>Background
-The contributors to this document have been directly involved in the development and deployment of hundreds of apps, and indirectly witnessed the development, operation, and scaling of hundreds of thousands of apps via our work on the Heroku platform.</p>
+<p>The twelve-factor methodology can be applied to apps written in any programming language, and which use any combination of backing services (database, queue, memory cache, etc).</p>
+
+<h2 id="nền-tảng">NỀN TẢNG</h2>
+
+<p>The contributors to this document have been directly involved in the development and deployment of hundreds of apps, and indirectly witnessed the development, operation, and scaling of hundreds of thousands of apps via our work on the Heroku platform.</p>
 
 <p>This document synthesizes all of our experience and observations on a wide variety of software-as-a-service apps in the wild. It is a triangulation on ideal practices for app development, paying particular attention to the dynamics of the organic growth of an app over time, the dynamics of collaboration between developers working on the app’s codebase, and avoiding the cost of software erosion.</p>
 
 <p>Our motivation is to raise awareness of some systemic problems we’ve seen in modern application development, to provide a shared vocabulary for discussing those problems, and to offer a set of broad conceptual solutions to those problems with accompanying terminology. The format is inspired by Martin Fowler’s books Patterns of Enterprise Application Architecture and Refactoring.</p>
 
-<p>Who should read this document?
-Any developer building applications which run as a service. Ops engineers who deploy or manage such applications.</p>
+<h2 id="ai-nên-đọc-tài-liệu-này">AI NÊN ĐỌC TÀI LIỆU NÀY?</h2>
+
+<p>Any developer building applications which run as a service. Ops engineers who deploy or manage such applications.</p>
 
         </div>
 
         
+        
+        <div class="article-toc" >
+            <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#giới-thiệu">GIỚI THIỆU</a></li>
+<li><a href="#nền-tảng">NỀN TẢNG</a></li>
+<li><a href="#ai-nên-đọc-tài-liệu-này">AI NÊN ĐỌC TÀI LIỆU NÀY?</a></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
         
         
 
@@ -104,7 +122,7 @@ Any developer building applications which run as a service. Ops engineers who de
     
     
     <a href="/about/" id="article-nav-older" class="article-nav-link-wrap">
-        <div class="article-nav-title">About&nbsp;<span>&gt;</span></div>
+        <div class="article-nav-title">About me&nbsp;<span>&gt;</span></div>
     </a>
     
 </nav>

@@ -12,19 +12,18 @@
     
     
     <item>
-      <title>Giới thiệu ứng dụng 12 yếu tố (Twelve-Factor App)</title>
+      <title>Giới thiệu xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App)</title>
       <link>https://code2080.github.io/12-factor-introduce/</link>
       <pubDate>Wed, 19 Sep 2018 00:46:35 +0700</pubDate>
       
       <guid>https://code2080.github.io/12-factor-introduce/</guid>
       <description>Nguồn: https://12factor.net/
-GIỚI THIỆU
-Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là những ứng dụng web, hay là saas, software-as-a-service (phần mềm như là dịch vụ). Twelve-factor app là một phương pháp học để xây dựng ứng dụng saas mà:
- Use declarative formats for setup automation, to minimize time and cost for new developers joining the project; Have a clean contract with the underlying operating system, offering maximum portability between execution environments; Are suitable for deployment on modern cloud platforms, obviating the need for servers and systems administration; Minimize divergence between development and production, enabling continuous deployment for maximum agility; And can scale up without significant changes to tooling, architecture, or development practices.</description>
+GIỚI THIỆU Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là web apps (những ứng dụng web), hay là software-as-a-service (phần mềm như một dịch vụ). Twelve-factor app là một phương pháp học để xây dựng ứng dụng saas mà:
+ Sử dụng declarative formats cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án; Có giao kèo sạch (clean contract) với hệ thống vận hành ở bên dưới, đưa ra tối đa tính khả chuyển (maximum portability) giữa các môi trường thực thi; Tiện dụng cho phát triển trên nền tảng đám mây hiện đại, ngăn ngừa sự cần thiết của các máy chủ và những người quản trị hệ thống; Giảm thiểu tối đa sự khác nhau của phát triển (development) và sản phẩm (production), cho phép sự phát triển liên tục (CD, continuous deployment) để tối đa sự nhanh nhẹn; And can scale up without significant changes to tooling, architecture, or development practices.</description>
     </item>
     
     <item>
-      <title>About</title>
+      <title>About me</title>
       <link>https://code2080.github.io/about/</link>
       <pubDate>Tue, 18 Sep 2018 21:46:35 +0700</pubDate>
       
