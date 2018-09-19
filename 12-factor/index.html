@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) // Code Twenty Eighty</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App)" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://code2080.github.io/12-factor/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="Code Twenty Eighty" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="https://code2080.github.io/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://code2080.github.io/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://code2080.github.io/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.48" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://code2080.github.io/">Code Twenty Eighty</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App)</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/12-factor/" class="article-date">
+                <time datetime='2018-09-19T00:46:35.000&#43;07:00' itemprop="datePublished">2018-09-19</time>
+            </a>
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<p>Nguồn: <a href="https://12factor.net/">https://12factor.net/</a></p>
+
+<h1 id="mở-đầu">MỞ ĐẦU</h1>
+
+<h2 id="giới-thiệu">Giới thiệu</h2>
+
+<p>Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là <em>web apps</em> (những ứng dụng web), hay là <em>software-as-a-service</em> (phần mềm như một dịch vụ). Ứng dụng xây dựng theo twelve-factor là một phương pháp học để xây dựng ứng dụng như vậy, bao gồm:</p>
+
+<ul>
+<li>Sử dụng <strong>declarative formats</strong> cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án;</li>
+<li>Có <strong>giao kèo sạch</strong> (clean contract) với hệ thống vận hành ở bên dưới, đưa ra <strong>tối đa tính khả chuyển</strong> (maximum portability) giữa các môi trường thực thi;</li>
+<li>Tiện dụng cho <strong>phát triển</strong> trên <strong>nền tảng đám mây</strong> hiện đại, loại bỏ sự cấp thiết cho các máy chủ và những người quản trị hệ thống;</li>
+<li><strong>Giảm thiểu tối đa sự khác nhau</strong> giữa development (phát triển) và production (sản phẩm), kích hoạt tính năng <strong>phát triển liên tục</strong> (CD, continuous deployment) để tối đa tốc độ phát triển ứng dụng;</li>
+<li>Và có thể <strong>mở rộng</strong> mà không cần thay đổi đáng kể nào về công cụ, kiến trúc, hay các phương pháp phát triển (development practices).</li>
+</ul>
+
+<p>Phương pháp twelve-factor có thể áp dụng cho ứng dụng viết bằng bất cứ ngôn ngữ nào, và sử dụng bất kì sự kết hợp nào của các dịch vụ ở backend (như cơ sở dữ liệu, queue, memory cache,&hellip;).</p>
+
+<h2 id="khởi-nguồn">Khởi nguồn</h2>
+
+<p>Những người đóng góp cho tài liệu này đều đã trực tiếp gặp phải những rắc rối trong sự phát triển một cũng như hàng trăm ứng dụng, và gián tiếp chứng kiến sự phát triển, vận hành, và mở rộng của hàng trăm triệu ứng dụng thông qua công việc của chúng tôi ở nền tảng Heroku.</p>
+
+<p>Tài liệu này tổng hợp tất cả kinh nghiệm và sự quan sát của chúng tôi trong thế giới rộng lớn của ứng dụng software-as-a-service. Nó là một tam phân của những thực hành ý tưởng trong phát triển ứng dụng, đặc biệt chú ý đến sự năng động của việc phát triển cơ bản của một ứng dụng qua thời gian, sự năng động của cộng tác giữa các nhà phát triển làm việc trên cùng mã nguồn ứng dụng, và <a href="http://blog.heroku.com/archives/2011/6/28/the_new_heroku_4_erosion_resistance_explicit_contracts/">tránh chi phí của việc sói mòn phần mềm</a>.</p>
+
+<p>Động lực của chúng tôi là để nâng cao nhận thức về một số lỗi truyền thống mà chúng ta thấy trong phát triển ứng dụng hiện đại, để cung cấp những ngôn từ chung để thảo luận về những vấn đề đó, và để đưa ra một tập rộng các giải pháp mang tính khái niệm cho những vấn đề đó với những thuật ngữ kèm theo. Định dạng này được lấy cảm hứng bởi cuốn sách <a href="https://books.google.com/books/about/Patterns_of_enterprise_application_archi.html?id=FyWZt5DdvFkC">Patterns of Enterprise Application Architecture and Refactoring</a> của Martin Fowler.</p>
+
+<h2 id="ai-nên-đọc-tài-liệu-này">Ai nên đọc tài liệu này?</h2>
+
+<p>Bất kỳ nhà phát triển nào, mà xây dựng ứng dụng chạy như là một dịch vụ. Kỹ sư hệ thống, người triển khai và quản lý các ứng dụng như vậy.</p>
+
+<h1 id="1-codebase">1. Codebase</h1>
+
+<p><strong>Một codebase thì được theo dõi trong kiểm soát sửa đổi, và có nhiều bản triển khai</strong></p>
+
+<p>Một ứng dụng twelve-factor thì luôn luôn được theo dõi trong hệ thống quản lý phiên bản, ví dụ như Git, Mercurial, hoặc Subversion. Một bản sao chép của cơ sở dữ liệu theo dõi sửa đổi thì được biết như là một <em>code repository</em>, hay thường gọi tắt là <em>code repo</em> hoặc chỉ là <em>repo</em>.</p>
+
+<p>Một <em>codebase</em> có thể là bất kì một repo đơn nào (trong một hệ thống kiểm soát sửa đổi tập trung như Subversion), hoặc bất kì một tập repo nào được chia sẻ root commit (trong một hệ thống kiểm soát sửa đổi phi tập trung như Git).</p>
+
+<p>Luôn luôn có sự tương quan một-một giữa codebase và ứng dụng:</p>
+
+<p><em>One codebase maps to many deploys:</em>
+<img src="https://12factor.net/images/codebase-deploys.png" alt="alt text" title="One codebase maps to many deploys" /></p>
+
+<ul>
+<li><p>Nếu có nhiều codebase, thì nó không phải một ứng dụng, mà là một hệ thống phân tán. Mỗi thành phần trong một hệ thống phân tán là một ứng dụng, và mỗi thành phần đó có thể tuân theo một cách cá nhân với twelve-factor.</p></li>
+
+<li><p>Nhiều ứng dụng chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (dependency manager).</p></li>
+</ul>
+
+<p>Chỉ có duy nhất một codebase với mỗi ứng dụng, nhưng sẽ có nhiều deploy (triển khai) của một ứng dụng. Một <em>deploy (triển khai)</em> là một instance (thực thể) của ứng dụng, điển hình nó có thể là một production site, và là một hoặc nhiều staging sites. Thêm nữa, mọi nhà phát triển đều có một bản sao chép của ứng dụng chạy ở môi trường phát triển local của họ, mỗi trong số đó cũng đều được coi là một bản deploy.</p>
+
+<p>Codebase thì giống nhau ở tất cả các deploy, mặc dù các phiên bản khác nhau có thể được active ở mỗi deploy. Ví dụ, một nhà phát triển có một số commit chưa được deploy đến staging; staging thì cũng có một số commit chưa được deploy đến production. Nhưng chúng đều chia sẻ codebase giống nhau, ví vậy để chúng có thể nhận biết được như là các deploy khác nhau của cùng một ứng dụng.</p>
+
+<h1 id="2-dependencies-các-phụ-thuộc">2. Dependencies (Các phụ thuộc)</h1>
+
+<p>Explicitly declare and isolate dependencies
+Most programming languages offer a packaging system for distributing support libraries, such as CPAN for Perl or Rubygems for Ruby. Libraries installed through a packaging system can be installed system-wide (known as “site packages”) or scoped into the directory containing the app (known as “vendoring” or “bundling”).</p>
+
+<p>A twelve-factor app never relies on implicit existence of system-wide packages. It declares all dependencies, completely and exactly, via a dependency declaration manifest. Furthermore, it uses a dependency isolation tool during execution to ensure that no implicit dependencies “leak in” from the surrounding system. The full and explicit dependency specification is applied uniformly to both production and development.</p>
+
+<p>For example, Bundler for Ruby offers the Gemfile manifest format for dependency declaration and bundle exec for dependency isolation. In Python there are two separate tools for these steps – Pip is used for declaration and Virtualenv for isolation. Even C has Autoconf for dependency declaration, and static linking can provide dependency isolation. No matter what the toolchain, dependency declaration and isolation must always be used together – only one or the other is not sufficient to satisfy twelve-factor.</p>
+
+<p>One benefit of explicit dependency declaration is that it simplifies setup for developers new to the app. The new developer can check out the app’s codebase onto their development machine, requiring only the language runtime and dependency manager installed as prerequisites. They will be able to set up everything needed to run the app’s code with a deterministic build command. For example, the build command for Ruby/Bundler is bundle install, while for Clojure/Leiningen it is lein deps.</p>
+
+<p>Twelve-factor apps also do not rely on the implicit existence of any system tools. Examples include shelling out to ImageMagick or curl. While these tools may exist on many or even most systems, there is no guarantee that they will exist on all systems where the app may run in the future, or whether the version found on a future system will be compatible with the app. If the app needs to shell out to a system tool, that tool should be vendored into the app.</p>
+
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#mở-đầu">MỞ ĐẦU</a>
+<ul>
+<li><a href="#giới-thiệu">Giới thiệu</a></li>
+<li><a href="#khởi-nguồn">Khởi nguồn</a></li>
+<li><a href="#ai-nên-đọc-tài-liệu-này">Ai nên đọc tài liệu này?</a></li>
+</ul></li>
+<li><a href="#1-codebase">1. Codebase</a></li>
+<li><a href="#2-dependencies-các-phụ-thuộc">2. Dependencies (Các phụ thuộc)</a></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://code2080.github.io//tags/software-development">software development
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://code2080.github.io//tags/translation">translation
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    
+    <a href="/about/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">About me&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Code Twenty Eighty.
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos">Minos</a>.
+        </div>
+    </div>
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+</div>
+</body>
+</html>
