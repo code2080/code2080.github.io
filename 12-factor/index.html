@@ -100,7 +100,7 @@
 
 <p><strong>Một codebase thì được theo dõi trong kiểm soát sửa đổi, và có nhiều bản triển khai</strong></p>
 
-<p>Một twelve-factor app thì luôn luôn được theo dõi trong hệ thống quản lý phiên bản, ví dụ như Git, Mercurial, hoặc Subversion. Một bản sao chép của cơ sở dữ liệu theo dõi sửa đổi (revision tracking database) thì được biết như là một <em>code repository</em>, hay thường gọi tắt là <em>code repo</em> hoặc chỉ là <em>repo</em>.</p>
+<p>Một twelve-factor app thì luôn luôn được theo dõi trong một hệ thống quản lý phiên bản, ví dụ như Git, Mercurial, hoặc Subversion. Một bản sao chép của cơ sở dữ liệu theo dõi sửa đổi (revision tracking database) thì được biết như là một <em>code repository</em>, hay thường gọi tắt là <em>code repo</em> hoặc chỉ là <em>repo</em>.</p>
 
 <p>Một <em>codebase</em> có thể là bất kì một repo đơn nào (trong một hệ thống kiểm soát sửa đổi tập trung như Subversion), hoặc bất kì một tập repo nào được chia sẻ root commit (trong một hệ thống kiểm soát sửa đổi phi tập trung như Git).</p>
 
@@ -123,15 +123,38 @@
 
 <p><em>Khai báo rõ ràng và cô lập các dependency (phụ thuộc)</em></p>
 
-<p>Hầu hết các ngôn ngữ lập trình đều đưa ra hệ thống quản lý gói (packaing system) cho việc phân phối các thư viện hỗ trợ, ví dụ như CPAN cho Perl, Rubygems for Ruby, NPM cho NodeJS, Pip cho Python. Thư viện được cài đặt thông qua một hệ thống quản lý gói có thể được cài đặt trong phạm vi toàn máy (system-wide) (được biết như là &ldquo;site packages&rdquo;) hoặc giới hạn phạm vi trong thư mục chưa app (được biết như là &ldquo;vendoring&rdquo; hay &ldquo;bundling&rdquo;)</p>
+<p>Hầu hết các ngôn ngữ lập trình đều đưa ra hệ thống quản lý gói (packaging system) cho việc phân phối các thư viện hỗ trợ, ví dụ như CPAN cho Perl, Rubygems for Ruby, NPM cho NodeJS, Pip cho Python. Thư viện được cài đặt thông qua một hệ thống quản lý gói có thể được cài đặt trong phạm vi toàn máy (system-wide) (được biết như là &ldquo;site packages&rdquo;) hoặc giới hạn phạm vi trong thư mục chưa app (được biết như là &ldquo;vendoring&rdquo; hay &ldquo;bundling&rdquo;)</p>
 
-<p><em>Một twelve-factor app không bao giờ tin vào sự tồn tại ngầm của các gói trên toàn hệ thống (system-wide packages)</em>. Nó khai báo tất cả các dependency, hoàn thành và chính xác, thông qua một bản kê khai báo dependency. Furthermore, it uses a dependency isolation tool during execution to ensure that no implicit dependencies “leak in” from the surrounding system. The full and explicit dependency specification is applied uniformly to both production and development.</p>
+<p><strong>Một twelve-factor app không bao giờ tin vào sự tồn tại ngầm của các gói trên toàn hệ thống (system-wide packages)</strong>. Nó khai báo tất cả các dependency, trọn vẹn và chính xác, thông qua một bản kê <em>khai báo dependency</em>. Hơn nữa nó sử dụng một công cụ cô lập dependency trong quá trình thực thi, để chắc rằng không có dependency ngầm nào &ldquo;bị rò rỉ&rdquo; (&ldquo;leak in&rdquo;) từ hệ thống xung quanh. Bản đặc tả dependency đầy đủ và rõ ràng được áp dụng đồng nhất với cả production và development.</p>
 
-<p>For example, Bundler for Ruby offers the Gemfile manifest format for dependency declaration and bundle exec for dependency isolation. In Python there are two separate tools for these steps – Pip is used for declaration and Virtualenv for isolation. Even C has Autoconf for dependency declaration, and static linking can provide dependency isolation. No matter what the toolchain, dependency declaration and isolation must always be used together – only one or the other is not sufficient to satisfy twelve-factor.</p>
+<p>Ví dụ, Trình đóng gói Bundler cho Ruby đưa ra mẫu bản kê <code>Gemfile</code> cho khai báo dependency và <code>bundle exec</code> cho các dependency cô lập. Trong Python, có 2 công cụ riêng biệt cho các bước này - Pip sử dụng cho khai báo, Virtualenv cho cô lập. Thậm chí C có Autoconf cho khai báo dependency, và liên kết tĩnh có thể cung cấp denpendency cô lập. Bất kể toolchain nào (tập công cụ lập trình), khai báo và cô lập dependency phải luôn luôn được sử dụng cùng nhau - chỉ một trong hai là không đủ thoả mãn twelve-factor.</p>
 
-<p>One benefit of explicit dependency declaration is that it simplifies setup for developers new to the app. The new developer can check out the app’s codebase onto their development machine, requiring only the language runtime and dependency manager installed as prerequisites. They will be able to set up everything needed to run the app’s code with a deterministic build command. For example, the build command for Ruby/Bundler is bundle install, while for Clojure/Leiningen it is lein deps.</p>
+<p>Một lợi ích của khai báo dependency rõ ràng là nó làm đơn giản việc thiết lập mới cho ứng dụng của developer. Một developer mới có thể check out codebase của app sang máy phát triển của họ, chỉ yêu cầu có trình chạy của ngôn ngữ (language runtime) và trình quản lý dependency được cài đặt như điều kiện trước hết. Chúng sẽ có thể thiết lập mọi thứ cần thiết để chạy mã nguồn app với câu lệnh build xác định. Ví dụ, câu lệnh build cho Ruby/Bundler là <code>bundle install</code>, trong khi đó Clojure/leiningen là <code>lein deps</code>.</p>
 
-<p>Twelve-factor apps also do not rely on the implicit existence of any system tools. Examples include shelling out to ImageMagick or curl. While these tools may exist on many or even most systems, there is no guarantee that they will exist on all systems where the app may run in the future, or whether the version found on a future system will be compatible with the app. If the app needs to shell out to a system tool, that tool should be vendored into the app.</p>
+<p>Twelve-factor app cũng không dựa vào tồn tại ngầm của bất kỳ công cụ hệ thống nào. Ví dụ bao gầm shelling out cho ImageMagick hoặc curl. Trong khi những công cụ này cót hể tổn tại trên nhiều hoặc thậm chí hầu hết hệ thông, tuy nhiên không có gì đảm bảo rằng chung sẽ tồn tại trên tất cả hệ thống nơi mà ứng dụng của bạn có thể chạy trong tương lai, hoặc liệu phiên bản được tìm thấy trên một hệ thống trong tương lai sẽ tương thích với app. Nếu app cần shell out đến một công cụ hệ thống, thì công cụ này nên được cung cấp trong ứng dụng.</p>
+
+<h1 id="3-config-cấu-hình">3. Config (Cấu hình)</h1>
+
+<p><em>Lưu trữ cấu hình trong môi trường</em></p>
+
+<p>An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc). This includes:</p>
+
+<p>Resource handles to the database, Memcached, and other backing services
+Credentials to external services such as Amazon S3 or Twitter
+Per-deploy values such as the canonical hostname for the deploy
+Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which requires strict separation of config from code. Config varies substantially across deploys, code does not.</p>
+
+<p>A litmus test for whether an app has all config correctly factored out of the code is whether the codebase could be made open source at any moment, without compromising any credentials.</p>
+
+<p>Note that this definition of “config” does not include internal application config, such as config/routes.rb in Rails, or how code modules are connected in Spring. This type of config does not vary between deploys, and so is best done in the code.</p>
+
+<p>Another approach to config is the use of config files which are not checked into revision control, such as config/database.yml in Rails. This is a huge improvement over using constants which are checked into the code repo, but still has weaknesses: it’s easy to mistakenly check in a config file to the repo; there is a tendency for config files to be scattered about in different places and different formats, making it hard to see and manage all the config in one place. Further, these formats tend to be language- or framework-specific.</p>
+
+<p>The twelve-factor app stores config in environment variables (often shortened to env vars or env). Env vars are easy to change between deploys without changing any code; unlike config files, there is little chance of them being checked into the code repo accidentally; and unlike custom config files, or other config mechanisms such as Java System Properties, they are a language- and OS-agnostic standard.</p>
+
+<p>Another aspect of config management is grouping. Sometimes apps batch config into named groups (often called “environments”) named after specific deploys, such as the development, test, and production environments in Rails. This method does not scale cleanly: as more deploys of the app are created, new environment names are necessary, such as staging or qa. As the project grows further, developers may add their own special environments like joes-staging, resulting in a combinatorial explosion of config which makes managing deploys of the app very brittle.</p>
+
+<p>In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars. They are never grouped together as “environments”, but instead are independently managed for each deploy. This is a model that scales up smoothly as the app naturally expands into more deploys over its lifetime.</p>
 
         </div>
 
@@ -148,6 +171,7 @@
 </ul></li>
 <li><a href="#1-codebase">1. Codebase</a></li>
 <li><a href="#2-dependencies-các-phụ-thuộc">2. Dependencies (Các phụ thuộc)</a></li>
+<li><a href="#3-config-cấu-hình">3. Config (Cấu hình)</a></li>
 </ul>
 </nav>
         </div>
