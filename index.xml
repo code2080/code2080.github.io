@@ -6,29 +6,30 @@
     <description>Recent content on Just a random person who want to code everyday of his life</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Sep 2018 21:46:35 +0700</lastBuildDate>
+    <lastBuildDate>Wed, 19 Sep 2018 00:46:35 +0700</lastBuildDate>
     
 	<atom:link href="https://code2080.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Giới thiệu 12-factor</title>
+      <title>Giới thiệu ứng dụng 12 yếu tố (Twelve-Factor App)</title>
       <link>https://code2080.github.io/12-factor-introduce/</link>
-      <pubDate>Tue, 18 Sep 2018 21:46:35 +0700</pubDate>
+      <pubDate>Wed, 19 Sep 2018 00:46:35 +0700</pubDate>
       
       <guid>https://code2080.github.io/12-factor-introduce/</guid>
-      <description>Introduction
-In the modern era, software is commonly delivered as a service: called web apps, or software-as-a-service. The twelve-factor app is a methodology for building software-as-a-service apps that:
-Use declarative formats for setup automation, to minimize time and cost for new developers joining the project; Have a clean contract with the underlying operating system, offering maximum portability between execution environments; Are suitable for deployment on modern cloud platforms, obviating the need for servers and systems administration; Minimize divergence between development and production, enabling continuous deployment for maximum agility; And can scale up without significant changes to tooling, architecture, or development practices.</description>
+      <description>Nguồn: https://12factor.net/
+GIỚI THIỆU
+Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là những ứng dụng web, hay là saas, software-as-a-service (phần mềm như là dịch vụ). Twelve-factor app là một phương pháp học để xây dựng ứng dụng saas mà:
+ Use declarative formats for setup automation, to minimize time and cost for new developers joining the project; Have a clean contract with the underlying operating system, offering maximum portability between execution environments; Are suitable for deployment on modern cloud platforms, obviating the need for servers and systems administration; Minimize divergence between development and production, enabling continuous deployment for maximum agility; And can scale up without significant changes to tooling, architecture, or development practices.</description>
     </item>
     
     <item>
-      <title>Introduce</title>
-      <link>https://code2080.github.io/introduce/</link>
+      <title>About</title>
+      <link>https://code2080.github.io/about/</link>
       <pubDate>Tue, 18 Sep 2018 21:46:35 +0700</pubDate>
       
-      <guid>https://code2080.github.io/introduce/</guid>
-      <description>Hi everyone, I&amp;rsquo;m just a random developer.</description>
+      <guid>https://code2080.github.io/about/</guid>
+      <description>Hi everyone, I&amp;rsquo;m just a random coder.</description>
     </item>
     
   </channel>
