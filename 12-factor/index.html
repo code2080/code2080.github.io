@@ -107,7 +107,7 @@
 <p>Luôn luôn có sự tương quan một-một giữa codebase và app:</p>
 
 <p><em>Mỗi codebase có nhiều deploy:</em>
-<img src="https://12factor.net/images/codebase-deploys.png" alt="alt text" title="One codebase maps to many deploys" /></p>
+<img src="/images/codebase-deploys.png" alt="alt text" title="One codebase maps to many deploys" /></p>
 
 <ul>
 <li><p>Nếu có nhiều codebase, thì nó không phải một app, mà là một hệ thống phân tán. Mỗi thành phần trong một hệ thống phân tán là một app, và mỗi thành phần đó có thể tuân theo một cách cá nhân với twelve-factor.</p></li>
@@ -171,7 +171,7 @@ A backing service is any service the app consumes over the network as part of it
 <p>Each distinct backing service is a resource. For example, a MySQL database is a resource; two MySQL databases (used for sharding at the application layer) qualify as two distinct resources. The twelve-factor app treats these databases as attached resources, which indicates their loose coupling to the deploy they are attached to.</p>
 
 <p><em>A production deploy attached to four backing services:</em>
-<img src="https://12factor.net/images/attached-resources.png" alt="alt text" title="A production deploy attached to four backing services" /></p>
+<img src="/images/attached-resources.png" alt="alt text" title="A production deploy attached to four backing services" /></p>
 
 <p>Resources can be attached to and detached from deploys at will. For example, if the app’s database is misbehaving due to a hardware issue, the app’s administrator might spin up a new database server restored from a recent backup. The current production database could be detached, and the new database attached – all without any code changes.</p>
 
