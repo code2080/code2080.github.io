@@ -96,7 +96,7 @@
 
 <p>Bất kỳ developer nào, mà xây dựng app chạy như là một dịch vụ. Kỹ sư hệ thống, người triển khai và quản lý các app như vậy.</p>
 
-<h1 id="1-codebase">1. Codebase</h1>
+<h1 id="1-codebase-toàn-bộ-mã-nguồn-dự-án">1. Codebase (Toàn bộ mã nguồn dự án)</h1>
 
 <p><strong>Một codebase thì được theo dõi trong kiểm soát sửa đổi, và có nhiều bản triển khai</strong></p>
 
@@ -131,30 +131,49 @@
 
 <p>Một lợi ích của khai báo dependency rõ ràng là nó làm đơn giản việc thiết lập cho những developer mới tham gia vào app. Developer mới có thể check out codebase của app sang máy phát triển của họ, chỉ yêu cầu có trình chạy của ngôn ngữ (language runtime) và trình quản lý dependency được cài đặt như điều kiện trước hết. Họ sẽ có thể thiết lập mọi thứ cần thiết để chạy mã nguồn app với <em>câu lệnh build</em> xác định. Ví dụ, câu lệnh build cho Ruby/Bundler là <code>bundle install</code>, còn cho Clojure/leiningen là <code>lein deps</code>.</p>
 
-<p>Twelve-factor app cũng không dựa vào tồn tại ngầm của bất kỳ công cụ hệ thống nào. Ví dụ bao gồm shelling out đến ImageMagick hoặc <code>curl</code>. Trong khi những công cụ này có thể tổn tại trên nhiều hoặc thậm chí hầu hết hệ thông, tuy nhiên không có gì đảm bảo rằng chúng sẽ tồn tại trên tất cả hệ thống nơi mà app của bạn có thể chạy trong tương lai, hoặc liệu phiên bản được tìm thấy trên một hệ thống trong tương lai sẽ tương thích với app. Nếu app cần shell out đến một công cụ hệ thống, thì công cụ này nên được cung cấp trong app.</p>
+<p>Twelve-factor app cũng không dựa vào tồn tại ngầm của bất kỳ công cụ hệ thống nào. Ví dụ bao gồm shelling out đến ImageMagick hoặc <code>curl</code>. Trong khi những công cụ này có thể tổn tại trên nhiều hoặc thậm chí hầu hết hệ thống, tuy nhiên không có gì đảm bảo rằng chúng sẽ tồn tại trên tất cả hệ thống nơi mà app của bạn có thể chạy trong tương lai, hoặc liệu phiên bản được tìm thấy trên một hệ thống trong tương lai sẽ tương thích với app. Nếu app cần shell out đến một công cụ hệ thống, thì công cụ này nên được cung cấp trong app.</p>
 
 <h1 id="3-config-cấu-hình">3. Config (Cấu hình)</h1>
 
 <p><em>Lưu trữ cấu hình trong môi trường</em></p>
 
-<p>An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc). This includes:</p>
+<p>Một cấu hình app là mọi thứ có khả năng thay đổi giữa các bản deploy (staging, production, developer environments, &hellip;). Bao gồm:</p>
 
-<p>Resource handles to the database, Memcached, and other backing services
-Credentials to external services such as Amazon S3 or Twitter
-Per-deploy values such as the canonical hostname for the deploy
-Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which requires strict separation of config from code. Config varies substantially across deploys, code does not.</p>
+<ul>
+<li>Tài nguyên xử lý database, Memcached, và các dịch vụ đằng sau khác (backing services)</li>
+<li>Uỷ nhiệm đến dịch vụ bên ngoài (external services) như Amazon S3 hay Twitter</li>
+<li>Các giá trị trên mỗi deploy như hostname kiểu mẫu cho deploy</li>
+</ul>
 
-<p>A litmus test for whether an app has all config correctly factored out of the code is whether the codebase could be made open source at any moment, without compromising any credentials.</p>
+<p>Các app thỉnh thoảng lưu trữ cấu hình như hằng số trong code. Điều này vi phạm twelve-factor, nó yêu cầu sự <strong>phân chia chặt chẽ của cấu hình từ code</strong> (strict separation of config from code). Cấu hình về thực chất sẽ thay đổi qua các deploy, code (mã nguồn) không làm điều này.</p>
 
-<p>Note that this definition of “config” does not include internal application config, such as config/routes.rb in Rails, or how code modules are connected in Spring. This type of config does not vary between deploys, and so is best done in the code.</p>
+<p>Một bài kiểm thử (litmus test) là liệu một app có tất cả cấu hình đúng được đặt ngoài code không chính là liệu codebase có thể trở thành open source (mã nguồn mở) bất cứ lúc nào không, mà cần thoả hiệp bất cứ uỷ nhiệm (credential) nào.</p>
 
-<p>Another approach to config is the use of config files which are not checked into revision control, such as config/database.yml in Rails. This is a huge improvement over using constants which are checked into the code repo, but still has weaknesses: it’s easy to mistakenly check in a config file to the repo; there is a tendency for config files to be scattered about in different places and different formats, making it hard to see and manage all the config in one place. Further, these formats tend to be language- or framework-specific.</p>
+<p>Chú ý rằng định nghĩa này của &ldquo;config&rdquo; không bao gồm cho cấu hình ứng dụng bên trong (internal application config), ví dụ <code>config/routes.rb</code> trong Rails, hay cách mà những mô-đun code được kết nối trong Spring. Kiểu này của config không thay đổi giữa các deploy, vì vậy tốt nhất là để nó ở trong code.</p>
 
-<p>The twelve-factor app stores config in environment variables (often shortened to env vars or env). Env vars are easy to change between deploys without changing any code; unlike config files, there is little chance of them being checked into the code repo accidentally; and unlike custom config files, or other config mechanisms such as Java System Properties, they are a language- and OS-agnostic standard.</p>
+<p>Một cách tiếp cận khác để config là sử dụng các tệp cấu hình (config files) mà không được đánh dấu vào trong trình kiểm soát mã nguồn, ví dụ như <code>config/database.yml</code> trong Rails. Việc này là cải thiện rất lớn thay cho việc sử dụng hằng số mà được đánh dấu trong code repo, nhưng nó vẫn có những điểm yếu; là rất dễ mắc sai lầm đánh dấu một config file trong repo; có một xu hướng cho những file config bị phân tán ở các nơi khác nhau và định dạng khác nhau, làm cho việc xem và quản lý tất cả các config ở một nơi khó khăn. Hơn nữa, những định dạng này hướng theo đặc tả của ngôn ngữ hoặc framework.</p>
 
-<p>Another aspect of config management is grouping. Sometimes apps batch config into named groups (often called “environments”) named after specific deploys, such as the development, test, and production environments in Rails. This method does not scale cleanly: as more deploys of the app are created, new environment names are necessary, such as staging or qa. As the project grows further, developers may add their own special environments like joes-staging, resulting in a combinatorial explosion of config which makes managing deploys of the app very brittle.</p>
+<p><strong>Twelve-factor app lưu config trong biến môi trường</strong> (<em>environment variables</em>, thường viết ngắn gọn là <em>env vars</em> hay <em>env</em>). Env vars dễ dàng thay đổi giữa các deploy mà không phải thay đổi code; không giống như file config, chúng chỉ có nguy cơ nhỏ không may bị đánh dấu trong code repo; và cũng không giống như file config tuỳ chỉnh, hay các cơ chế config khác ví dụ Java System Properties, chúng là theo chuẩn không thể biết của ngôn ngữ lập trình và OS (hệ điều hành) (language- and OS-agnostic standard).</p>
 
-<p>In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars. They are never grouped together as “environments”, but instead are independently managed for each deploy. This is a model that scales up smoothly as the app naturally expands into more deploys over its lifetime.</p>
+<p>Một mặt khác của quản lý config là đặt nhóm. Thỉnh thoảng ứng dụng nhóm config vào những nhóm được đặt tên (thông thường được gọi là “environments”), được đặt sau những deploy xác định, ví dụ như <code>development</code>, <code>test</code>, and <code>production</code> environments trong Rails. Phương pháp này thì không mở rộng được sạch sẽ (cleanly): như khi nhiều hơn deploy của app được tạo, thì phải cần tên môi trường mới, ví dụ <code>staging</code> hay <code>qa</code>. Khi project (dự án) lớn hơn, depveloper có thêm những environment đặc biệt của riêng họ như <code>joes-staging</code>, kết quả là một tổ hợp lớn của config, làm cho việc quản lý các deploy của app rất dễ phá vỡ.</p>
+
+<p>Trong twelve-factor app, env vars là những điều khiển gọn gàng, mỗi env var đều trực giao với env var khác. Chúng không bao giờ được nhóm lại với nhau như “environments”, thay vì đó chúng được quản lý độc lập với mỗi deploy. Đây làm một mô hình mà có thể mở rộng một cách trôi chảy (smoothly), như là việc app mở rộng nhiều deploy qua thời gian theo lẽ tự nhiên.</p>
+
+<h1 id="4-backing-services-dịch-vụ-phía-sau">4. Backing services (Dịch vụ phía sau)</h1>
+
+<p>Treat backing services as attached resources
+A backing service is any service the app consumes over the network as part of its normal operation. Examples include datastores (such as MySQL or CouchDB), messaging/queueing systems (such as RabbitMQ or Beanstalkd), SMTP services for outbound email (such as Postfix), and caching systems (such as Memcached).</p>
+
+<p>Backing services like the database are traditionally managed by the same systems administrators as the app’s runtime deploy. In addition to these locally-managed services, the app may also have services provided and managed by third parties. Examples include SMTP services (such as Postmark), metrics-gathering services (such as New Relic or Loggly), binary asset services (such as Amazon S3), and even API-accessible consumer services (such as Twitter, Google Maps, or Last.fm).</p>
+
+<p>The code for a twelve-factor app makes no distinction between local and third party services. To the app, both are attached resources, accessed via a URL or other locator/credentials stored in the config. A deploy of the twelve-factor app should be able to swap out a local MySQL database with one managed by a third party (such as Amazon RDS) without any changes to the app’s code. Likewise, a local SMTP server could be swapped with a third-party SMTP service (such as Postmark) without code changes. In both cases, only the resource handle in the config needs to change.</p>
+
+<p>Each distinct backing service is a resource. For example, a MySQL database is a resource; two MySQL databases (used for sharding at the application layer) qualify as two distinct resources. The twelve-factor app treats these databases as attached resources, which indicates their loose coupling to the deploy they are attached to.</p>
+
+<p><em>A production deploy attached to four backing services:</em>
+<img src="https://12factor.net/images/attached-resources.png" alt="alt text" title="A production deploy attached to four backing services" /></p>
+
+<p>Resources can be attached to and detached from deploys at will. For example, if the app’s database is misbehaving due to a hardware issue, the app’s administrator might spin up a new database server restored from a recent backup. The current production database could be detached, and the new database attached – all without any code changes.</p>
 
 <p>Dịch bởi: <code>code2080</code></p>
 
@@ -171,9 +190,10 @@ Apps sometimes store config as constants in the code. This is a violation of twe
 <li><a href="#khởi-nguồn">Khởi nguồn</a></li>
 <li><a href="#ai-nên-đọc-tài-liệu-này">Ai nên đọc tài liệu này?</a></li>
 </ul></li>
-<li><a href="#1-codebase">1. Codebase</a></li>
+<li><a href="#1-codebase-toàn-bộ-mã-nguồn-dự-án">1. Codebase (Toàn bộ mã nguồn dự án)</a></li>
 <li><a href="#2-dependencies-các-phụ-thuộc">2. Dependencies (Các phụ thuộc)</a></li>
 <li><a href="#3-config-cấu-hình">3. Config (Cấu hình)</a></li>
+<li><a href="#4-backing-services-dịch-vụ-phía-sau">4. Backing services (Dịch vụ phía sau)</a></li>
 </ul>
 </nav>
         </div>
