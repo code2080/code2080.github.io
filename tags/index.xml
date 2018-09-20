@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Code Twenty Eighty</title>
-    <link>https://code2080.github.io/tags/</link>
+    <link>https://code2080.com/tags/</link>
     <description>Recent content in Tags on Code Twenty Eighty</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 18 Sep 2018 21:46:35 +0700</lastBuildDate>
     
-	<atom:link href="https://code2080.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://code2080.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Life</title>
-      <link>https://code2080.github.io/tags/life/</link>
+      <link>https://code2080.com/tags/life/</link>
       <pubDate>Tue, 18 Sep 2018 21:46:35 +0700</pubDate>
       
-      <guid>https://code2080.github.io/tags/life/</guid>
+      <guid>https://code2080.com/tags/life/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Software Development</title>
-      <link>https://code2080.github.io/tags/software-development/</link>
+      <link>https://code2080.com/tags/software-development/</link>
       <pubDate>Wed, 19 Sep 2018 00:46:35 +0700</pubDate>
       
-      <guid>https://code2080.github.io/tags/software-development/</guid>
+      <guid>https://code2080.com/tags/software-development/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Translation</title>
-      <link>https://code2080.github.io/tags/translation/</link>
+      <link>https://code2080.com/tags/translation/</link>
       <pubDate>Wed, 19 Sep 2018 00:46:35 +0700</pubDate>
       
-      <guid>https://code2080.github.io/tags/translation/</guid>
+      <guid>https://code2080.com/tags/translation/</guid>
       <description></description>
     </item>
     

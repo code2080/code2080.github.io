@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Translation on Code Twenty Eighty</title>
-    <link>https://code2080.github.io/tags/translation/</link>
+    <link>https://code2080.com/tags/translation/</link>
     <description>Recent content in Translation on Code Twenty Eighty</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 19 Sep 2018 00:46:35 +0700</lastBuildDate>
     
-	<atom:link href="https://code2080.github.io/tags/translation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://code2080.com/tags/translation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App)</title>
-      <link>https://code2080.github.io/12-factor/</link>
+      <link>https://code2080.com/12-factor/</link>
       <pubDate>Wed, 19 Sep 2018 00:46:35 +0700</pubDate>
       
-      <guid>https://code2080.github.io/12-factor/</guid>
+      <guid>https://code2080.com/12-factor/</guid>
       <description>Nguồn: https://12factor.net/
 MỞ ĐẦU Giới thiệu Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là web apps (những ứng dụng web), hay là software-as-a-service (phần mềm như một dịch vụ). App (ứng dụng) xây dựng theo twelve-factor là một phương pháp học để xây dựng app như vậy, bao gồm:
  Sử dụng định dạng declarative cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án; Có giao kèo sạch (clean contract) với hệ thống vận hành ở bên dưới, đưa ra tối đa tính khả chuyển (maximum portability) giữa các môi trường thực thi; Tiện dụng cho phát triển trên nền tảng điện toán đám mây hiện đại, loại bỏ sự cấp thiết cho các máy chủ và những người quản trị hệ thống; Giảm thiểu tối đa sự khác nhau giữa development (phát triển) và production (sản phẩm), kích hoạt tính năng phát triển liên tục (CD, continuous deployment) để tối đa tốc độ phát triển app; Và có thể mở rộng mà không cần thay đổi đáng kể nào về công cụ, kiến trúc, hay các phương pháp phát triển (development practices).</description>
