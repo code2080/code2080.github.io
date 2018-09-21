@@ -203,17 +203,33 @@
 
 <p><em>Thực thi app như một hoặc nhiều tiến trình phi trạng thái</em></p>
 
-<p>App được thực thi trong môi trường thực thực thi như một hoặc nhiều process (tiến trình).</p>
+<p>App được thực thi trong môi trường thực thi bởi một hoặc nhiều process (tiến trình).</p>
 
-<p>Trong trường hợp đơn giản, code là một script (đoạn mã) độc lập, môi trường thực thi là một máy tính cá nhân của developer với trình chạy ngôn ngữ đã được cài đặt, và process được khởi chạy thông qua dòng lệnh (ví dụ <code>python my_script.py</code>). Ở trường hợp phức tạp hơn, một production deploy của một app phức tạp có thể sử dụng nhiều kiểu process, được khởi tạo từ 0 đến nhiều process được chạy.</p>
+<p>Trong trường hợp đơn giản, code là một script (đoạn mã) độc lập, môi trường thực thi là một máy tính cá nhân của developer với trình chạy ngôn ngữ đã được cài đặt, và process được khởi chạy thông qua dòng lệnh (ví dụ <code>python my_script.py</code>). Ở trường hợp phức tạp hơn, một production deploy của một app phức tạp có thể sử dụng <a href="#8-concurrency">nhiều kiểu process, được khởi tạo từ 0 đến nhiều process được chạy</a>.</p>
 
 <p><strong>Các process theo twelve-factor thì không có trạng thái và không chia sẻ bất cứ thứ gì.</strong> Bất kỳ dữ liệu cần được lưu vĩnh viễn phải được lưu ở một backing service, thông thường là database.</p>
 
-<p>Không gian nhớ hoặc tệp hệ thống của process có thể được sử dụng như một bộ nhớ đệm ngắn gọn, đơn lẻ. Ví dụ, khi tải về một file lớn, thao trên trên file đấy, và lưu trữ kết quả thao tác vào database. Twelve-factor app không bao giờ giả định rằng bất cứ thứ gì được ghi nhớ đệm (cached) trong bộ nhớ hoặc ổ đĩa sẽ có thể dùng được trong một yêu cầu (request) hoặc một việc (job) sau đó - với nhiều process đang chạy, khả năng cao là một request sẽ được phục vụ bởi một process khác. Thậm trí khi chỉ có một process đang chạy, việc khởi động lại (được thực thi khi triển khai code, thay đổi config, hoặc môi trường thực thi thay đổi vị trí của process đến vị trí vật lý khác) sẽ thường xoá toàn bộ trạng thái local (ví dụ bộ nhớ memory và tệp hệ thống file system).</p>
+<p>Không gian nhớ hoặc tệp hệ thống của process có thể được sử dụng như một bộ nhớ đệm ngắn gọn, đơn lẻ. Ví dụ, khi tải về một file lớn, thao trên trên file đấy, và lưu trữ kết quả thao tác vào database. Twelve-factor app không bao giờ giả định rằng bất cứ thứ gì được ghi nhớ đệm (cached) trong bộ nhớ hoặc ổ đĩa sẽ sẵn sàng được dùng bởi một request (yêu cầu) hoặc một job (việc) trong tương lai - với nhiều process của mỗi loại đang chạy, khả năng cao là một request tương lai sẽ được phục vụ bởi một process khác. Thậm chí khi chỉ có một process đang chạy, việc khởi động lại (được gọi khi triển khai code, thay đổi config, hoặc môi trường thực thi thay đổi vị trí của process đến vị trí vật lý khác) cũng sẽ thường xoá toàn bộ trạng thái local (ví dụ bộ nhớ memory và tệp hệ thống file system).</p>
 
-<p>Trình đóng gói tài sản (Asset packagers) như django-assetpackager sử dụng filesystem như một bộ nhớ đệm cho biên dịch asset. Một twelve-factor app sẽ thường thích làm việc biên dịch trong giai đoạn build. Asset packagers ví dụ Jammit và Rails asset pipeline có thể được cấu hình để đóng gói asset trong giai đoạn build.</p>
+<p>Asset packagers (Trình đóng gói tài sản) như django-assetpackager sử dụng filesystem như một bộ nhớ đệm cho biên dịch asset. Một twelve-factor app sẽ thường thích làm việc biên dịch trong giai đoạn build. Asset packagers ví dụ Jammit và Rails asset pipeline có thể được cấu hình để đóng gói asset trong giai đoạn build.</p>
 
-<p>Một số hệ thống web dựa trên &ldquo;sticky sessions&rdquo; - việc này sẽ lưu dữ liệu phiên làm việc của user vào bộ nhớ đệm của app’s process và hi vọng các request tương lai đến từ những người dùng giống nhau sẽ được dẫn vào cùng process. Sticky sessions đã vi phạm phương pháp twelve-factor và không bao giờ nên sử dụng hay dựa vào. Ứng cử viên tốt về dữ liệu trạng thái session (phiên) cho một datastore (vùng lưu dữ liệu) nên đưa ra giới hạn thời gian (time-expiration), ví dụ Memcached hay Redis.</p>
+<p>Một số hệ thống web dựa trên &ldquo;sticky sessions&rdquo; - mà nó sẽ lưu dữ liệu phiên làm việc của user vào bộ nhớ đệm của app’s process và hi vọng các request tương lai đến từ những người dùng giống nhau sẽ được dẫn vào cùng process. Sticky sessions đã vi phạm phương pháp twelve-factor và không bao giờ nên sử dụng hay dựa vào. Dữ liệu trạng thái session (phiên) là ứng cử viên tốt cho một datastore (vùng lưu dữ liệu), nó đưa ra giới hạn thời gian (time-expiration), ví dụ Memcached hay Redis.</p>
+
+<h1 id="7-port-binding">7. Port binding</h1>
+
+<p><em>Export services via port binding</em></p>
+
+<p>Web apps are sometimes executed inside a webserver container. For example, PHP apps might run as a module inside Apache HTTPD, or Java apps might run inside Tomcat.</p>
+
+<p>The twelve-factor app is completely self-contained and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service. The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.</p>
+
+<p>In a local development environment, the developer visits a service URL like <a href="http://localhost:5000/">http://localhost:5000/</a> to access the service exported by their app. In deployment, a routing layer handles routing requests from a public-facing hostname to the port-bound web processes.</p>
+
+<p>This is typically implemented by using dependency declaration to add a webserver library to the app, such as Tornado for Python, Thin for Ruby, or Jetty for Java and other JVM-based languages. This happens entirely in user space, that is, within the app’s code. The contract with the execution environment is binding to a port to serve requests.</p>
+
+<p>HTTP is not the only service that can be exported by port binding. Nearly any kind of server software can be run via a process binding to a port and awaiting incoming requests. Examples include ejabberd (speaking XMPP), and Redis (speaking the Redis protocol).</p>
+
+<p>Note also that the port-binding approach means that one app can become the backing service for another app, by providing the URL to the backing app as a resource handle in the config for the consuming app.</p>
 
 <p>Dịch bởi: <code>code2080</code></p>
 
@@ -236,6 +252,7 @@
 <li><a href="#4-backing-services-dịch-vụ-phía-sau">4. Backing services (Dịch vụ phía sau)</a></li>
 <li><a href="#5-build-release-phát-hành-run">5. Build, release (phát hành), run</a></li>
 <li><a href="#6-processes-tiến-trình">6. Processes (Tiến trình)</a></li>
+<li><a href="#7-port-binding">7. Port binding</a></li>
 </ul>
 </nav>
         </div>
