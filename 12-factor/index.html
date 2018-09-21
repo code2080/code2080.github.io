@@ -183,9 +183,9 @@
 <p>Một codebase được chuyển đổi vào một deploy (không phải development) thông qua ba giai đoạn:</p>
 
 <ul>
-<li><em>Giai đoạn build</em> là một chuyển đổi mà chuyển từ code repo thành một gói có thể thực thi gọi là một build. Sử dụng một phiên bản của code ở một commit chỉ định bởi tiến trình phát triển, giai đoạn build sẽ lấy các dependency của bên cung cấp và biên dịch thành chuỗi nhị phân (binaries) và assets (tài sản).</li>
-<li><em>Giai đoạn release</em> sẽ lấy bản build được tạo từ giai đoạn build và kết hợp với config hiện tại của deploy. Release nhận được bao gồm cả build và config đã sẵn sàng cho thực thi ngay trong môi trường thực thi.</li>
-<li><em>Giai đoạn run</em> (cũng được biết như là &ldquo;runtime&rdquo;) chạy app trong môi trường thực thi, bằng việc chạy một số tập tiến trình ứng dụng dựa vào release được chọn.</li>
+<li><em>Giai đoạn build</em> là một chuyển đổi mà chuyển từ code repo thành một gói có thể thực thi gọi là một build. Sử dụng một phiên bản của code ở một commit được chỉ định bởi tiến trình phát triển, giai đoạn build sẽ lấy các dependency của bên cung cấp và biên dịch thành chuỗi nhị phân (binaries) và assets (tài sản cố định).</li>
+<li><em>Giai đoạn release</em> sẽ lấy bản build được tạo từ giai đoạn build và kết hợp với config hiện tại của deploy. <em>Release</em> nhận được bao gồm cả build và config thì sẵn sàng cho việc thực thi ngay trong môi trường thực thi.</li>
+<li><em>Giai đoạn run</em> (cũng được biết như là &ldquo;runtime&rdquo;) chạy app trong môi trường thực thi, bằng việc chạy một số tập tiến trình ứng dụng đối với release đã chọn.</li>
 </ul>
 
 <p><em>Code trở thành một build, sau đó sẽ được kết hợp với config để tạo ra một release:</em>
@@ -193,11 +193,27 @@
 
 <p><strong>Twelve-factor app sử dụng phân chia chặt chẽ giữa các giai đoạn build, release và run.</strong> Ví dụ, không thể thay đổi code ở runtime, vì không có cách nào để truyền những thay đổi này trở lại giai đoạn build.</p>
 
-<p>Công cụ phát triển thường đưa ra công cụ quản lý release, đáng kể nhất là khả năng có thể rollback về một release trước đó. Ví dụ công cụ phát triển Capistrano lưu các release ở một thư mục con (subdirectory) đặt tên là <code>releases</code>, nơi mà bản release hiện tại là một symlink với thư mục release. Câu lệnh rollback của nó làm cho việc rollback trở về các bản phát hành trước một cách dễ dàng.</p>
+<p>Công cụ phát triển thường đưa ra công cụ quản lý release, đáng kể nhất là khả năng có thể rollback về một release trước đó. Ví dụ công cụ phát triển Capistrano lưu các release ở một thư mục con (subdirectory) đặt tên là <code>releases</code>, nơi mà bản release hiện tại là một symlink (đường dẫn) đến thư mục release hiện tại. Câu lệnh rollback của nó làm cho việc rollback trở về các bản phát hành trước một cách dễ dàng.</p>
 
-<p>Mọi release nên có một ID duy nhất, ví dụ như sử dụng timestamp (như <code>2011-04-06-20:32:17</code>) hoặc một số tăng dần (ví dụ <code>v100</code>). Các release là một cuốn sổ cái chỉ cho thêm vào và các release không sửa một khi nó đã được tạo. Để thay đổi chỉ có thể thêm một release mới.</p>
+<p>Mọi release luôn luôn nên có một ID duy nhất, ví dụ như sử dụng timestamp (mốc thời gian) phát hành (như <code>2011-04-06-20:32:17</code>) hoặc một số tăng dần (ví dụ <code>v100</code>). Các release là một cuốn sổ cái chỉ cho thêm vào và các release, không thể sửa đổi một khi nó đã được tạo. Chỉ có thể thay đổi bằng cách thêm một release mới.</p>
 
-<p>Các build được khởi tạo bởi developer của app khi code mới được triển khai. Thực thi runtime, qua sự tương phản, có thể xảy ra một cách tự động trong các trường hợp ví dụ như khi khởi động lại máy chủ, hoặc một tiến trình bị crash (sập) được khởi động lại bởi trình quản lý tiến trình. Vì vậy, giai đoạn chạy nên được giữ thành một vài bước có thể, vì những trục trặc để tránh một app đang chạy có thể bị ngắt giữa đêm khi mà không có developer nào đang thức. Giai đoạn build có thể phức tạp hơn, vì những lỗi luôn luôn cận kề với một developer đang tạo deploy.</p>
+<p>Các build được khởi tạo bởi developer của app khi code mới được triển khai. Tương phản trong thực thi runtime, có thể tự động xảy ra một số trường hợp ví dụ như một khởi động lại máy chủ, hoặc một tiến trình bị crash (sập) được khởi động lại bởi trình quản lý tiến trình. Vì vậy, giai đoạn chạy nên được giữ thành một vài bước có thể, vì những trục trặc để tránh một app đang chạy có thể bị ngắt giữa đêm khi mà không có developer nào đang thức. Giai đoạn build có thể phức tạp hơn, vì những lỗi luôn luôn cận kề đối với developer đang tạo deploy.</p>
+
+<h1 id="6-processes-tiến-trình">6. Processes (Tiến trình)</h1>
+
+<p><em>Thực thi app như một hoặc nhiều tiến trình phi trạng thái</em></p>
+
+<p>App được thực thi trong môi trường thực thực thi như một hoặc nhiều process (tiến trình).</p>
+
+<p>Trong trường hợp đơn giản, code là một script (đoạn mã) độc lập, môi trường thực thi là một máy tính cá nhân của developer với trình chạy ngôn ngữ đã được cài đặt, và process được khởi chạy thông qua dòng lệnh (ví dụ <code>python my_script.py</code>). Ở trường hợp phức tạp hơn, một production deploy của một app phức tạp có thể sử dụng nhiều kiểu process, được khởi tạo từ 0 đến nhiều process được chạy.</p>
+
+<p><strong>Các process theo twelve-factor thì không có trạng thái và không chia sẻ bất cứ thứ gì.</strong> Bất kỳ dữ liệu cần được lưu vĩnh viễn phải được lưu ở một backing service, thông thường là database.</p>
+
+<p>Không gian nhớ hoặc tệp hệ thống của process có thể được sử dụng như một bộ nhớ đệm ngắn gọn, đơn lẻ. Ví dụ, khi tải về một file lớn, thao trên trên file đấy, và lưu trữ kết quả thao tác vào database. Twelve-factor app không bao giờ giả định rằng bất cứ thứ gì được ghi nhớ đệm (cached) trong bộ nhớ hoặc ổ đĩa sẽ có thể dùng được trong một yêu cầu (request) hoặc một việc (job) sau đó - với nhiều process đang chạy, khả năng cao là một request sẽ được phục vụ bởi một process khác. Thậm trí khi chỉ có một process đang chạy, việc khởi động lại (được thực thi khi triển khai code, thay đổi config, hoặc môi trường thực thi thay đổi vị trí của process đến vị trí vật lý khác) sẽ thường xoá toàn bộ trạng thái local (ví dụ bộ nhớ memory và tệp hệ thống file system).</p>
+
+<p>Trình đóng gói tài sản (Asset packagers) như django-assetpackager sử dụng filesystem như một bộ nhớ đệm cho biên dịch asset. Một twelve-factor app sẽ thường thích làm việc biên dịch trong giai đoạn build. Asset packagers ví dụ Jammit và Rails asset pipeline có thể được cấu hình để đóng gói asset trong giai đoạn build.</p>
+
+<p>Một số hệ thống web dựa trên &ldquo;sticky sessions&rdquo; - việc này sẽ lưu dữ liệu phiên làm việc của user vào bộ nhớ đệm của app’s process và hi vọng các request tương lai đến từ những người dùng giống nhau sẽ được dẫn vào cùng process. Sticky sessions đã vi phạm phương pháp twelve-factor và không bao giờ nên sử dụng hay dựa vào. Ứng cử viên tốt về dữ liệu trạng thái session (phiên) cho một datastore (vùng lưu dữ liệu) nên đưa ra giới hạn thời gian (time-expiration), ví dụ Memcached hay Redis.</p>
 
 <p>Dịch bởi: <code>code2080</code></p>
 
@@ -219,6 +235,7 @@
 <li><a href="#3-config-cấu-hình">3. Config (Cấu hình)</a></li>
 <li><a href="#4-backing-services-dịch-vụ-phía-sau">4. Backing services (Dịch vụ phía sau)</a></li>
 <li><a href="#5-build-release-phát-hành-run">5. Build, release (phát hành), run</a></li>
+<li><a href="#6-processes-tiến-trình">6. Processes (Tiến trình)</a></li>
 </ul>
 </nav>
         </div>
