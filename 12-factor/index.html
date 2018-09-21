@@ -213,23 +213,40 @@
 
 <p>Asset packagers (Trình đóng gói tài sản) như django-assetpackager sử dụng filesystem như một bộ nhớ đệm cho biên dịch asset. Một twelve-factor app sẽ thường thích làm việc biên dịch trong giai đoạn build. Asset packagers ví dụ Jammit và Rails asset pipeline có thể được cấu hình để đóng gói asset trong giai đoạn build.</p>
 
-<p>Một số hệ thống web dựa trên &ldquo;sticky sessions&rdquo; - mà nó sẽ lưu dữ liệu phiên làm việc của user vào bộ nhớ đệm của app’s process và hi vọng các request tương lai đến từ những người dùng giống nhau sẽ được dẫn vào cùng process. Sticky sessions đã vi phạm phương pháp twelve-factor và không bao giờ nên sử dụng hay dựa vào. Dữ liệu trạng thái session (phiên) là ứng cử viên tốt cho một datastore (vùng lưu dữ liệu), nó đưa ra giới hạn thời gian (time-expiration), ví dụ Memcached hay Redis.</p>
+<p>Một số hệ thống web dựa trên &ldquo;sticky sessions&rdquo; - mà nó sẽ lưu dữ liệu phiên làm việc của user vào bộ nhớ đệm của app’s process và hi vọng các request tương lai đến từ những người dùng giống nhau sẽ được định tuyến vào cùng process. Sticky sessions đã vi phạm phương pháp twelve-factor và không bao giờ nên sử dụng hay dựa vào. Dữ liệu trạng thái session (phiên) là ứng cử viên tốt cho một datastore (vùng lưu dữ liệu), nó đưa ra giới hạn thời gian (time-expiration), ví dụ Memcached hay Redis.</p>
 
 <h1 id="7-port-binding">7. Port binding</h1>
 
-<p><em>Export services via port binding</em></p>
+<p><em>Export (xuất)) services qua port (cổng) binding</em></p>
 
-<p>Web apps are sometimes executed inside a webserver container. For example, PHP apps might run as a module inside Apache HTTPD, or Java apps might run inside Tomcat.</p>
+<p>Các ứng dụng web thỉnh thoảng đc thực thi bên trong một webserver. Ví dụ, app PHP có thể được chạy như một mô-đun bên trong Apache HTTPD, hay ứng dụng Java có thể được chạy bên trong Tomcat.</p>
 
-<p>The twelve-factor app is completely self-contained and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service. The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.</p>
+<p><strong>Twelve-factor app thì hoàn toàn self-contained (tự chứa)</strong> và không dựa vào runtime injection của một server vào môi trường thực thi để tạo một dịch vụ giao tiếp web. Web app <strong>xuất giao thức HTTP như một service bằng bằng cách binding đến một cổng</strong>, và lắng nghe request đến từ cổng đó.</p>
 
-<p>In a local development environment, the developer visits a service URL like <a href="http://localhost:5000/">http://localhost:5000/</a> to access the service exported by their app. In deployment, a routing layer handles routing requests from a public-facing hostname to the port-bound web processes.</p>
+<p>Trong môi trường phát triển local, developer truy cập một địa chỉ URL của service ví dụ <code>http://localhost:5000/</code> để truy cập vào service được export bởi app của chúng. Trong môi trường phát triển, một lớp định tuyến xử lý request định tuyến từ một hostname giao tiếp công khai đến những tiến trình web có cổng (port-bound web services).</p>
 
-<p>This is typically implemented by using dependency declaration to add a webserver library to the app, such as Tornado for Python, Thin for Ruby, or Jetty for Java and other JVM-based languages. This happens entirely in user space, that is, within the app’s code. The contract with the execution environment is binding to a port to serve requests.</p>
+<p>Thông thường ứng dụng được thực thi triển khai (implement) bằng việc sử dụng khai báo dependency để thêm thư viện webserver vào app, ví dụ như Tornado cho Python, Thin cho Ruby, hay Jetty cho Java và các ngôn ngữ trên nền JVM khác. Việc này xảy ra toàn bộ trong <em>không gian người dùng</em>, đó chính là trong mã nguồn của app. Nhiệm vụ của môi trường thực thi đang binding đến một port là phục vụ các request.</p>
 
-<p>HTTP is not the only service that can be exported by port binding. Nearly any kind of server software can be run via a process binding to a port and awaiting incoming requests. Examples include ejabberd (speaking XMPP), and Redis (speaking the Redis protocol).</p>
+<p>HTTP không phải là service duy nhất có thể xuất bởi port binding. Hầu như bất kì kiểu phần mềm server nào đều có thể chạy thông qua tiến trình binding đến một cổng và chờ đợi request đến. Ví dụ bao gồm ejabberd (speaking XMPP), và Redis (speaking the Redis protocol).</p>
 
-<p>Note also that the port-binding approach means that one app can become the backing service for another app, by providing the URL to the backing app as a resource handle in the config for the consuming app.</p>
+<p>Cũng lưu ý rằng cách tiếp cận port-binding nghĩa là một app có thể trở thành backing service cho một app khác, bằng việc cung cấp địa chỉ URL đến backing app như là một resource xử lý trong config cho app cần dùng.</p>
+
+<h1 id="8-concurrency-đồng-thời">8. Concurrency (Đồng thời)</h1>
+
+<p><em>Mở rộng thông qua mô hình process</em></p>
+
+<p>Any computer program, once run, is represented by one or more processes. Web apps have taken a variety of process-execution forms. For example, PHP processes run as child processes of Apache, started on demand as needed by request volume. Java processes take the opposite approach, with the JVM providing one massive uberprocess that reserves a large block of system resources (CPU and memory) on startup, with concurrency managed internally via threads. In both cases, the running process(es) are only minimally visible to the developers of the app.</p>
+
+<p><em>Scale is expressed as running processes, workload diversity is expressed as process types:</em>
+<img src="process-types.png" alt="alt text" title="Scale is expressed as running processes, workload diversity is expressed as process types" /></p>
+
+<p>In the twelve-factor app, processes are a first class citizen. Processes in the twelve-factor app take strong cues from the unix process model for running service daemons. Using this model, the developer can architect their app to handle diverse workloads by assigning each type of work to a process type. For example, HTTP requests may be handled by a web process, and long-running background tasks handled by a worker process.</p>
+
+<p>This does not exclude individual processes from handling their own internal multiplexing, via threads inside the runtime VM, or the async/evented model found in tools such as EventMachine, Twisted, or Node.js. But an individual VM can only grow so large (vertical scale), so the application must also be able to span multiple processes running on multiple physical machines.</p>
+
+<p>The process model truly shines when it comes time to scale out. The share-nothing, horizontally partitionable nature of twelve-factor app processes means that adding more concurrency is a simple and reliable operation. The array of process types and number of processes of each type is known as the process formation.</p>
+
+<p>Twelve-factor app processes should never daemonize or write PID files. Instead, rely on the operating system’s process manager (such as systemd, a distributed process manager on a cloud platform, or a tool like Foreman in development) to manage output streams, respond to crashed processes, and handle user-initiated restarts and shutdowns.</p>
 
 <p>Dịch bởi: <code>code2080</code></p>
 
@@ -253,6 +270,7 @@
 <li><a href="#5-build-release-phát-hành-run">5. Build, release (phát hành), run</a></li>
 <li><a href="#6-processes-tiến-trình">6. Processes (Tiến trình)</a></li>
 <li><a href="#7-port-binding">7. Port binding</a></li>
+<li><a href="#8-concurrency-đồng-thời">8. Concurrency (Đồng thời)</a></li>
 </ul>
 </nav>
         </div>
