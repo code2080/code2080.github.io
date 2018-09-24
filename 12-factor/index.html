@@ -112,7 +112,7 @@
 <ul>
 <li><p>Nếu có nhiều codebase, thì nó không phải một app, mà là một hệ thống phân tán. Mỗi thành phần trong một hệ thống phân tán là một app, và mỗi thành phần đó có thể tuân theo một cách cá nhân với twelve-factor.</p></li>
 
-<li><p>Nhiều app chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (<a href="#2-dependencies-c%C3%A1c-ph%E1%BB%A5-thu%E1%BB%99c">dependency manager</a>).</p></li>
+<li><p>Nhiều app chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (<a href="#2-dependencies-các-phụ-thuộc">dependency manager</a>).</p></li>
 </ul>
 
 <p>Chỉ có duy nhất một codebase với mỗi app, nhưng sẽ có nhiều deploy (triển khai) của một app. Một <em>deploy</em> là một instance (thực thể) của app, điển hình nó có thể là một production site, và là một hoặc nhiều staging sites. Thêm nữa, mọi developer đều có một bản sao chép của app chạy ở môi trường phát triển local của họ, mỗi trong số đó cũng đều được coi là một bản deploy.</p>
@@ -205,7 +205,7 @@
 
 <p>App được thực thi trong môi trường thực thi bởi một hoặc nhiều process (tiến trình).</p>
 
-<p>Trong trường hợp đơn giản, code là một script (đoạn mã) độc lập, môi trường thực thi là một máy tính cá nhân của developer với trình chạy ngôn ngữ đã được cài đặt, và process được khởi chạy thông qua dòng lệnh (ví dụ <code>python my_script.py</code>). Ở trường hợp phức tạp hơn, một production deploy của một app phức tạp có thể sử dụng <a href="#8-concurrency">nhiều kiểu process, được khởi tạo từ 0 đến nhiều process được chạy</a>.</p>
+<p>Trong trường hợp đơn giản, code là một script (đoạn mã) độc lập, môi trường thực thi là một máy tính cá nhân của developer với trình chạy ngôn ngữ đã được cài đặt, và process được khởi chạy thông qua dòng lệnh (ví dụ <code>python my_script.py</code>). Ở trường hợp phức tạp hơn, một production deploy của một app phức tạp có thể sử dụng <a href="#8-concurrency-đồng-thời">nhiều kiểu process, được khởi tạo từ 0 đến nhiều process được chạy</a>.</p>
 
 <p><strong>Các process theo twelve-factor thì không có trạng thái và không chia sẻ bất cứ thứ gì.</strong> Bất kỳ dữ liệu cần được lưu vĩnh viễn phải được lưu ở một backing service, thông thường là database.</p>
 
@@ -235,18 +235,32 @@
 
 <p><em>Mở rộng thông qua mô hình process</em></p>
 
-<p>Any computer program, once run, is represented by one or more processes. Web apps have taken a variety of process-execution forms. For example, PHP processes run as child processes of Apache, started on demand as needed by request volume. Java processes take the opposite approach, with the JVM providing one massive uberprocess that reserves a large block of system resources (CPU and memory) on startup, with concurrency managed internally via threads. In both cases, the running process(es) are only minimally visible to the developers of the app.</p>
+<p>Bất kỳ chương trình máy tính nào, khi chạy, đều được biểu diễn bởi một hoặc nhiều process. Web app thì đã lấy đủ kiểu biểu mẫu thực thi process khác nhau. Ví dụ, Các PHP process chạy như một process con của Apache, được chạy theo yêu cầu cần bởi lượng request. Các Java process thì tiếp cận ngược lại, với JVM cung cấp một uberprocess lớn mà dự trữ một khối lớn của tài nguyên hệ thống khi khởi chạy, với concurrency được quản lý nội bộ qua các luồng. Trong cả hai trường hợp, các process đang chạy chỉ hiển thị tối thiểu với các lập trình viên ứng dụng.</p>
 
-<p><em>Scale is expressed as running processes, workload diversity is expressed as process types:</em>
-<img src="process-types.png" alt="alt text" title="Scale is expressed as running processes, workload diversity is expressed as process types" /></p>
+<p><em>Sự mở rộng được thể hiện như các process đang chạy, sự đa dạng của workload (tải công việc) thì được thể hiện như các kiểu của process:</em>
+<img src="/images/process-types.png" alt="alt text" title="Scale is expressed as running processes, workload diversity is expressed as process types" /></p>
 
-<p>In the twelve-factor app, processes are a first class citizen. Processes in the twelve-factor app take strong cues from the unix process model for running service daemons. Using this model, the developer can architect their app to handle diverse workloads by assigning each type of work to a process type. For example, HTTP requests may be handled by a web process, and long-running background tasks handled by a worker process.</p>
+<p>Trong twelve-factor app, các process được coi là các công dân hạng nhất. Các process trong twelve-factor app lấy các lệnh mạnh mẽ từ mô hình process của unix cho các service daemon (dịch vụ của chương trình chạy nền) đang chạy. Sử dụng mô hình này, lập trình viên có thể kiến trúc app của họ để xử lý các workload đa dạng bằng cách gán mỗi kiểu work (công việc) cho một kiểu process. Ví dụ, các HTTP request (yêu cầu theo giao thức HTTP) có thể được xử lý bởi các web process, và các task (nhiệm vụ) chạy nền lâu (long-running) được xử lý bởi mộ worker process.</p>
 
-<p>This does not exclude individual processes from handling their own internal multiplexing, via threads inside the runtime VM, or the async/evented model found in tools such as EventMachine, Twisted, or Node.js. But an individual VM can only grow so large (vertical scale), so the application must also be able to span multiple processes running on multiple physical machines.</p>
+<p>Điều này không loại trừ việc những process riêng rẽ xử lý công việc nội bộ cồng kềnh của chúng, thông qua các luồng bên trong quá trình chạy của máy ảo (runtime VM), hoặc mô hình async/evented (bất đồng bộ/hướng sự kiện) được tìm thấy trong các công cụ ví dụ như EventMachine, Twisted, hay Node.js. Nhưng một VM (Virtual Machine, máy ảo) riêng rẽ chỉ có thể phát triển quá lớn (theo chiều dọc), vì vậy ứng dụng cũng phải có khả năng mở rộng nhiều process chạy trên nhiều máy tính vật lý.</p>
 
-<p>The process model truly shines when it comes time to scale out. The share-nothing, horizontally partitionable nature of twelve-factor app processes means that adding more concurrency is a simple and reliable operation. The array of process types and number of processes of each type is known as the process formation.</p>
+<p>Mô hình process chỉ thực sự toả sáng khi nói đến thời gian để mở rộng quy mô. Không chia sẻ, tính chất phân chia theo chiều ngang của process của twelve-factor app nghĩa là việc thêm concurrency là một thao tác đơn giản và đáng tin cậy. Một mảng các kiểu process và số lượng process theo từng loại được gọi là sự hình thành process.</p>
 
-<p>Twelve-factor app processes should never daemonize or write PID files. Instead, rely on the operating system’s process manager (such as systemd, a distributed process manager on a cloud platform, or a tool like Foreman in development) to manage output streams, respond to crashed processes, and handle user-initiated restarts and shutdowns.</p>
+<p>Những process của twelve-factor app không nên cho chạy nền của hệ thống (daemonize) hoặc viết vào tệp PID. Thay vì đó, chỉ dựa trên trình quản lý process của hệ điều hành (ví dụ systemd, một trình quản lý process phân tán trên nền tảng cloud, hoặc một công cụ như Foreman trong quá trình phát triển) để quản lý các luồng dữ liệu ra, phản hồi lại các process bị hỏng (crashed), và xử lý các hành động tắt và khởi động lại do người dùng khởi tạo.</p>
+
+<h1 id="9-disposability-khả-năng-sẵn-sàng">9. Disposability (Khả năng sẵn sàng)</h1>
+
+<p><em>Tối đa sự mạnh mẽ với khởi động nhanh và tắt nhã nhặn</em></p>
+
+<p>Process của twelve-factor app thì có khả năng sẵn sàng, nghĩa là chúng có thể bật hoặc tắt khi có thông báo tại một thời điểm nào đấy. Điều này làm dễ dàng cho việc mở rộng co giãn nhanh, triển khai nhanh chóng khi thay đổi code hoặc config, và sự chắc chắn của các deploy của production.</p>
+
+<p>Các process nên cố gắng giảm tối đa thời gian khởi động. Lý tưởng là, một process mất vài giây từ khi chạy câu lệnh khởi động đến khi process chạy và sẵn sàng nhận request và job. Thời gian khởi động ngắn cung cấp sự nhanh nhẹn hơn cho tiến trình phát hành và mở rộng; và nó tăng cường sự mạnh mẽ, bởi vì trình quản lý process có thể dễ dàng hơn trong việc di chuyển các process đến máy tính vật lý mới khi được bảo hành.</p>
+
+<p>Các process tắt nhã nhặn khi chúng nhận một tín hiện SIGTERM (SIGTERM signal) từ trình quản lý process. Với một web process, tắt nhã nhặn đạt được bởi việc ngừng lắng nghe trên các cổng dịch vụ (bằng cách ấy từ chối bất kỳ các request mới nào), cho phép bất kì request hiện tại nào kết thúc, và sau đó thoát. Ngụ ý trong mô hình này là HTTP request thì ngắn (không quá vài giây), hoặc trong trường hợp long-polling, máy khách sẽ cố gắng kết nối lại khi mất kết nối.</p>
+
+<p>Với một worker process, tắt nhã nhặn được được bằng việc trả lại job hiện tại vào hàng đợi (work queue). Ví dụ, trên RabbitMQ worker có thể gửi một NACK; trên Beanstalkd, job được trả lại hàng đợi tự động khi một worker bị mất kết nối. Hệ thống Lock-based ví dụ Delayed Job cần chắc chắn nhả lock của chúng trên bản ghi job. Ngụ ý trong mô hình này là tất cả các job có thể dùng lại được, mà thông thường đạt được được bởi bao kết quả trong một giao dịch (transaction), hoặc làm cho thao tác không thay đổi giá trị.</p>
+
+<p>Các process cũng phải mạnh mẽ để chống lại việc hỏng đột ngột (sudden death), trong trường hợp một hỏng hóc của phần cứng bên dưới. Tuy điều này hiếm khi xảy ra hơn so với việc tắt nhã nhặn với SIGTERM, nhưng nó vẫn có thể xảy ra. Một cách tiếp cận khuyến khích là sử dụng một backend hàng đợi mạnh mẽ, ví dụ Beanstalkd, mà có thể gửi trả job vào hàng đợi khi client mất kết nối hoặc time out. Dù bằng cách nào, một twelve-factor app cũng phải được kiến trúc để xử lý việc ngắt kết nối không mong muốn, không nhã nhặn. Thiết kế crash-only lấy khái niệm này cho kết luận logic của nó.</p>
 
 <p>Dịch bởi: <code>code2080</code></p>
 
@@ -271,6 +285,7 @@
 <li><a href="#6-processes-tiến-trình">6. Processes (Tiến trình)</a></li>
 <li><a href="#7-port-binding">7. Port binding</a></li>
 <li><a href="#8-concurrency-đồng-thời">8. Concurrency (Đồng thời)</a></li>
+<li><a href="#9-disposability-khả-năng-sẵn-sàng">9. Disposability (Khả năng sẵn sàng)</a></li>
 </ul>
 </nav>
         </div>
