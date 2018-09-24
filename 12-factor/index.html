@@ -258,9 +258,140 @@
 
 <p>Các process tắt nhã nhặn khi chúng nhận một tín hiện SIGTERM (SIGTERM signal) từ trình quản lý process. Với một web process, tắt nhã nhặn đạt được bởi việc ngừng lắng nghe trên các cổng dịch vụ (bằng cách ấy từ chối bất kỳ các request mới nào), cho phép bất kì request hiện tại nào kết thúc, và sau đó thoát. Ngụ ý trong mô hình này là HTTP request thì ngắn (không quá vài giây), hoặc trong trường hợp long-polling, máy khách sẽ cố gắng kết nối lại khi mất kết nối.</p>
 
-<p>Với một worker process, tắt nhã nhặn được được bằng việc trả lại job hiện tại vào hàng đợi (work queue). Ví dụ, trên RabbitMQ worker có thể gửi một NACK; trên Beanstalkd, job được trả lại hàng đợi tự động khi một worker bị mất kết nối. Hệ thống Lock-based ví dụ Delayed Job cần chắc chắn nhả lock của chúng trên bản ghi job. Ngụ ý trong mô hình này là tất cả các job có thể dùng lại được, mà thông thường đạt được được bởi bao kết quả trong một giao dịch (transaction), hoặc làm cho thao tác không thay đổi giá trị.</p>
+<p>Với một worker process, tắt nhã nhặn đạt được bằng việc trả lại job hiện tại vào hàng đợi (work queue). Ví dụ, trên RabbitMQ worker có thể gửi một NACK; trên Beanstalkd, job được trả lại hàng đợi tự động khi một worker bị mất kết nối. Hệ thống Lock-based ví dụ Delayed Job cần chắc chắn nhả lock của chúng trên bản ghi job. Ngụ ý trong mô hình này là tất cả các job có thể dùng lại được, mà thông thường đạt được được bởi bao kết quả trong một giao dịch (transaction), hoặc làm cho thao tác không thay đổi giá trị.</p>
 
 <p>Các process cũng phải mạnh mẽ để chống lại việc hỏng đột ngột (sudden death), trong trường hợp một hỏng hóc của phần cứng bên dưới. Tuy điều này hiếm khi xảy ra hơn so với việc tắt nhã nhặn với SIGTERM, nhưng nó vẫn có thể xảy ra. Một cách tiếp cận khuyến khích là sử dụng một backend hàng đợi mạnh mẽ, ví dụ Beanstalkd, mà có thể gửi trả job vào hàng đợi khi client mất kết nối hoặc time out. Dù bằng cách nào, một twelve-factor app cũng phải được kiến trúc để xử lý việc ngắt kết nối không mong muốn, không nhã nhặn. Thiết kế crash-only lấy khái niệm này cho kết luận logic của nó.</p>
+
+<h1 id="10-dev-prod-parity-tương-đồng-giữa-phát-triển-và-sản-phẩm">10. Dev/prod parity (Tương đồng giữa phát triển và sản phẩm)</h1>
+
+<p><em>Giữ môi trường development, staging, and production giống nhau nhất có thể</em></p>
+
+<p>Trong lịch sử, đã có những lỗ hổng thực tế giữa development (một developer thực hiện những chỉnh sửa trực tiếp đến bản deploy local của app) và production (một deploy đang chạy của app được truy cập bởi người dùng cuối). Những lỗ hổng này biểu thị trong ba khu vực:</p>
+
+<ul>
+<li><strong>Lỗ hổng thời gian</strong>: Một developer có thể làm việc trên code mất nhiều ngày, nhiều tuần, thậm trí nhiều tháng trước khi đưa lên production.</li>
+<li><strong>Lỗ hổng con người</strong>: Các developer viết code còn kỹ sư hệ thống triển khai nó.</li>
+<li><strong>Lỗ hổng công cụ</strong>: Các lập trình viên có thể sử dụng một stack (nhóm) như Nginx, SQLite, và OS X, trong khi deploy trên production sử dụng Apache, MySQL, và Linux.</li>
+</ul>
+
+<p><strong>Twelve-factor app được thiết kế cho triển khai liên tục (continuous deployment) bằng việc giữ lỗ hổng giữa development và production nhỏ</strong>. Nhìn vào ba lỗ hổng mô tả ở trên:</p>
+
+<ul>
+<li>Làm cho lỗ hổng thời gian nhỏ: một developer có thể viết code và để nó được triển khai trong vài giờ, thậm chí chỉ vài phút sau đó.</li>
+<li>Làm cho chỗ hổng con người nhỏ: những developer người viết code liên quan chặt chẽ đến việc triển khai code và theo dõi hành vi của nó trong môi trường production.</li>
+<li>Làm cho lỗ hổng các công cụ nhỏ: giữ môi trường development và production giống nhau nhất có thể.</li>
+</ul>
+
+<p>Tóm tắt những thứ trên vào một bảng như sau:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>App truyền thống</th>
+<th>Twelve-factor app</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>Thời gian giữa các deploy</strong></td>
+<td>Weeks</td>
+<td>Hours</td>
+</tr>
+
+<tr>
+<td><strong>Người viết code và người triển khai code</strong></td>
+<td>Người khác nhau</td>
+<td>Cùng người</td>
+</tr>
+
+<tr>
+<td><strong>Môi trường dev với production</strong></td>
+<td>Phân biệt</td>
+<td>Giống nhau nhất có thể</td>
+</tr>
+</tbody>
+</table>
+
+<p>Các backing service, ví dụ cơ sở dữ liệu của app, hệ thống hàng đợi, hoặc cache, là một vùng nơi mà sự tương đồng của dev/prod là quan trọng. Nhiều ngôn ngữ đưa ra các thư viện giúp đơn giản hoá truy cập tới backing service, gồm <em>các bộ chỉnh sửa (adapters)</em> đến các loại khác nhau của service. Một số ví dụ trong bảng sau:</p>
+
+<table>
+<thead>
+<tr>
+<th>Loại</th>
+<th>Ngôn ngữ</th>
+<th>Thư viện</th>
+<th>Adapters</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Database</td>
+<td>Ruby/Rails</td>
+<td>ActiveRecord</td>
+<td>MySQL, PostgreSQL, SQLite</td>
+</tr>
+
+<tr>
+<td>Queue</td>
+<td>Python/Django</td>
+<td>Celery</td>
+<td>RabbitMQ, Beanstalkd, Redis</td>
+</tr>
+
+<tr>
+<td>Cache</td>
+<td>Ruby/Rails</td>
+<td>ActiveSupport::Cache</td>
+<td>Memory, filesystem, Memcached</td>
+</tr>
+</tbody>
+</table>
+
+<p>Lập trình viên thỉnh thoảng kêu gọi sử dụng các backing service nhỏ nhẹ (lightweight) trong môi trường local của họ, trong khi một backing service mạnh mẽ và nghiêm túc hơn sẽ sử dụng trong môi trường production. Ví dụ, sử dụng SQLite ở local và sử dụng PostgreSQL ở production; hoặc sử dụng bộ nhớ process ở local cho lưu đệm (caching) ở môi trường development và Memcached trong production.</p>
+
+<p><strong>Twelve-factor developer thì tránh sử dụng các backing service khác nhau giữa development và production</strong>, thậm chí cả khi apdapters theo lý thuyết sẽ trừu tượng hoá bất kì sự khác nhau nào trong các backing service. Sự khác nhau giữa các backing service nghĩa là một phần nhỏ sự không tương thích sẽ làm việc và pass (vượt qua) các test (kiểm tra) trên development hoặc staging nhưng thất bại trên production. Các kiểu lỗi này tạo ra sự ma sát gây trở ngại trong triển khai liên tục. Giá của sự ma sát và sự cản trở đến sau này của triển khai liên tục là rất cao khi xem xét trong tích luỹ dần dần qua thời gian sống (lifetime) của app.</p>
+
+<p>Những service local nhỏ nhẹ (lightweight) thì kém hấp dẫn so với trước đây. Các backing service hiện đại ví dụ Memcached, PostgreSQL, và RabbitMQ không khó để cài đặt và chạy nhờ các hệ thống đóng gói hiện tại, ví dụ Homebrew hay apt-get. Thêm nữa, các công cụ cung cấp khai báo (declarative) ví dụ Chef and Puppet đã kết hợp với những môi trường ảo nhỏ nhẹ ví dụ như Docker và Vagrant cho phép các developer chạy môi trường local gần đúng với môi trường production. Giá của việc cài đặt và sử dụng những hệ thống này là thấp hơn khi so với lợi ích về sự tương đồng dev/prod và triển khai liên tục.</p>
+
+<p>Adapters cho các backing service khác nhau vẫn hữu ích, bởi vì chúng giúp chuyển sang các backing service mới đỡ khó khăn hơn. Nhưng tất cả các deploy của app (môi trường của developer, staging, production) nên sử dụng các kiểu và phiên bản giống nhau của các backing service.</p>
+
+<h1 id="11-logs">11. Logs</h1>
+
+<p><em>Coi các log như dòng dữ liệu sự kiện</em></p>
+
+<p><em>Các log</em> cung cấp khả năng quan sát đến hành vi của app đang chạy. Trong những môi trường trên nền máy chủ, chúng thông thường ghi và một tệp trên ổ đĩa (một logfile); nhưng đây chỉ là định dạng ra.</p>
+
+<p>Các log là dòng dữ liệu của các sự kiện được gộp lại, theo tứ tự thời gian từ dòng dữ liệu ra của tất cả các process đang chạy và backing service. Các log trong định dạng thô của chúng điển hình là dạng text với mỗi sự kiện trên một dòng (mặc dù các backtrace (lần dấu ngược lại) của ngoại lệ có thể kéo dài ra nhiều dòng). Các log không có điểm đầu hay cuối cố định, nhưng lưu lượng liên tục như app đang vận hành.</p>
+
+<p><strong>Một twelve-factor app không bao giờ quan tâm đến bản thân nó với định tuyến hoặc lưu trữ dòng dữ liệu ra (output stream) của nó.</strong> Nó không phải cố gắng ghi hay quản lý các logfile. Thay vì đó, mỗi process đang chạy ghi dòng dữ liệu sự kiện của nó, không bị cản trở, vào <code>stdout</code>. Trong quá trình phát triển, developer sẽ xem dòng dữ liệu ngay trong terminal (của sổ dòng lệnh) của họ để quan sát hành vì của app.</p>
+
+<p>Trong deploy staging hay production, mỗi dòng dữ liệu của process có thể lấy được bởi môi trường thực thi, được đối chiếu với nhau với tất cả các dòng dữ liệu khác từ app, và được định tuyến tới một hoặc nhiều điểm đến cuối cùng để xem và lưu trữ lâu dài. Những điểm đến lưu trữ này thì không hiển thị hay có thể cấu hình bởi ứng dụng, thay vì đó hoàn toàn được quản lý bởi môi trường thực thi. Các định tuyến log của mã nguồn mở (ví dụ Logplex và Fluentd) thì sẵn sàng cho mục đích này.</p>
+
+<p>Dòng dữ liệu sự kiện cho một app có thể được định tuyến đến một tệp, hoặc được xem qua phần đuôi thời gian thực trong terminal. Đáng kể nhất, dòng dữ liệu có thể được gửi đến log được đánh index và hệ thống phân tích ví dụ như Splunk, hoặc một hệ thống lưu trữ dữ liệu với mục đích chung ví dụ Hadoop/Hive. Những hệ thống này cho phép sức mạnh và sự linh hoạt tuyệt vời để tìm hiểu hành vi của app qua thời gian, bao gồm:</p>
+
+<ul>
+<li>Tìm kiếm chính xác sự kiện nào đó trong quá khứ.</li>
+<li>Đồ thị quy mô lớn của các xu hướng (ví dụ số request trên phút).</li>
+<li>Kích hoạt cảnh báo theo phỏng đoán do người dùng định nghĩa (ví dụ như một cảnh báo khi số lượng lỗi trên phút vượt quá mức cho phép).</li>
+</ul>
+
+<h1 id="12-admin-processes">12. Admin processes</h1>
+
+<p><em>Run admin/management tasks as one-off processes</em></p>
+
+<p>The process formation is the array of processes that are used to do the app’s regular business (such as handling web requests) as it runs. Separately, developers will often wish to do one-off administrative or maintenance tasks for the app, such as:</p>
+
+<p>Running database migrations (e.g. manage.py migrate in Django, rake db:migrate in Rails).
+Running a console (also known as a REPL shell) to run arbitrary code or inspect the app’s models against the live database. Most languages provide a REPL by running the interpreter without any arguments (e.g. python or perl) or in some cases have a separate command (e.g. irb for Ruby, rails console for Rails).
+Running one-time scripts committed into the app’s repo (e.g. php scripts/fix_bad_records.php).
+One-off admin processes should be run in an identical environment as the regular long-running processes of the app. They run against a release, using the same codebase and config as any process run against that release. Admin code must ship with application code to avoid synchronization issues.</p>
+
+<p>The same dependency isolation techniques should be used on all process types. For example, if the Ruby web process uses the command bundle exec thin start, then a database migration should use bundle exec rake db:migrate. Likewise, a Python program using Virtualenv should use the vendored bin/python for running both the Tornado webserver and any manage.py admin processes.</p>
+
+<p>Twelve-factor strongly favors languages which provide a REPL shell out of the box, and which make it easy to run one-off scripts. In a local deploy, developers invoke one-off admin processes by a direct shell command inside the app’s checkout directory. In a production deploy, developers can use ssh or other remote command execution mechanism provided by that deploy’s execution environment to run such a process.</p>
 
 <p>Dịch bởi: <code>code2080</code></p>
 
@@ -286,6 +417,9 @@
 <li><a href="#7-port-binding">7. Port binding</a></li>
 <li><a href="#8-concurrency-đồng-thời">8. Concurrency (Đồng thời)</a></li>
 <li><a href="#9-disposability-khả-năng-sẵn-sàng">9. Disposability (Khả năng sẵn sàng)</a></li>
+<li><a href="#10-dev-prod-parity-tương-đồng-giữa-phát-triển-và-sản-phẩm">10. Dev/prod parity (Tương đồng giữa phát triển và sản phẩm)</a></li>
+<li><a href="#11-logs">11. Logs</a></li>
+<li><a href="#12-admin-processes">12. Admin processes</a></li>
 </ul>
 </nav>
         </div>
