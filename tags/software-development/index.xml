@@ -28,7 +28,7 @@ It may a bit difficult to understand all about twelve-factor app that I&amp;rsqu
       
       <guid>https://code2080.com/12-factor-p2/</guid>
       <description>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1 / 2 Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2 / 2 (Đang xem)  (Tiếp tục)
-6. Processes (Tiến trình) Execute the app as one or more stateless processes Thực thi app như một hoặc nhiều tiến trình phi trạng thái
+6. Processes (Tiến trình) Execute the app as one or more stateless processes Thực thi ứng dụng như một hoặc nhiều tiến trình phi trạng thái
  The app is executed in the execution environment as one or more processes.</description>
     </item>
     
