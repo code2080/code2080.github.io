@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2/2 // Code Twenty Eighty</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2/2" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://code2080.com/12-factor-p2/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="Code Twenty Eighty" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="https://code2080.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://code2080.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://code2080.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.48" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://code2080.com/">Code Twenty Eighty</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2/2</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/12-factor-p2/" class="article-date">
+                <time datetime='2018-09-22T00:46:35.000&#43;07:00' itemprop="datePublished">2018-09-22</time>
+            </a>
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<ul>
+<li><a href="/12-factor-p1">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1 / 2</a><br/></li>
+<li>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2 / 2 (Đang xem)</li>
+</ul>
+
+<p>(Tiếp tục)</p>
+
+<h1 id="6-processes-tiến-trình">6. Processes (Tiến trình)</h1>
+
+<p><strong>Execute the app as one or more stateless processes</strong>
+<strong>Thực thi app như một hoặc nhiều tiến trình phi trạng thái</strong></p>
+
+<dl>
+<small style="color: gray">
+The app is executed in the execution environment as one or more processes.
+</small>
+</dl>
+
+<p>App được thực thi trong môi trường thực thi bởi một hoặc nhiều process (tiến trình).</p>
+
+<dl>
+<small style="color: gray">
+In the simplest case, the code is a stand-alone script, the execution environment is a developer’s local laptop with an installed language runtime, and the process is launched via the command line (for example, python my_script.py). On the other end of the spectrum, a production deploy of a sophisticated app may use many process types, instantiated into zero or more running processes.
+</small>
+</dl>
+
+<p>Trong trường hợp đơn giản, code là một script (đoạn mã) độc lập, môi trường thực thi là một máy tính cá nhân của developer với trình chạy ngôn ngữ đã được cài đặt, và process được khởi chạy thông qua dòng lệnh (ví dụ <code>python my_script.py</code>). Ở trường hợp phức tạp hơn, một production deploy của một app phức tạp có thể sử dụng <a href="#8-concurrency-đồng-thời">nhiều kiểu process, được khởi tạo từ 0 đến nhiều process được chạy</a>.</p>
+
+<dl>
+<small style="color: gray">
+Twelve-factor processes are stateless and share-nothing. Any data that needs to persist must be stored in a stateful backing service, typically a database.
+</small>
+</dl>
+
+<p><strong>Các process theo twelve-factor thì không có trạng thái và không chia sẻ bất cứ thứ gì.</strong> Bất kỳ dữ liệu cần được lưu vĩnh viễn phải được lưu ở một backing service, thông thường là database.</p>
+
+<dl>
+<small style="color: gray">
+The memory space or filesystem of the process can be used as a brief, single-transaction cache. For example, downloading a large file, operating on it, and storing the results of the operation in the database. The twelve-factor app never assumes that anything cached in memory or on disk will be available on a future request or job – with many processes of each type running, chances are high that a future request will be served by a different process. Even when running only one process, a restart (triggered by code deploy, config change, or the execution environment relocating the process to a different physical location) will usually wipe out all local (e.g., memory and filesystem) state.
+</small>
+</dl>
+
+<p>Không gian nhớ hoặc tệp hệ thống của process có thể được sử dụng như một bộ nhớ đệm ngắn gọn, đơn lẻ. Ví dụ, khi tải về một file lớn, thao trên trên file đấy, và lưu trữ kết quả thao tác vào database. Twelve-factor app không bao giờ giả định rằng bất cứ thứ gì được ghi nhớ đệm (cached) trong bộ nhớ hoặc ổ đĩa sẽ sẵn sàng được dùng bởi một request (yêu cầu) hoặc một job (việc) trong tương lai - với nhiều process của mỗi loại đang chạy, khả năng cao là một request tương lai sẽ được phục vụ bởi một process khác. Thậm chí khi chỉ có một process đang chạy, việc khởi động lại (được gọi khi triển khai code, thay đổi config, hoặc môi trường thực thi thay đổi vị trí của process đến vị trí vật lý khác) cũng sẽ thường xoá toàn bộ trạng thái local (ví dụ bộ nhớ memory và tệp hệ thống file system).</p>
+
+<dl>
+<small style="color: gray">
+Asset packagers like django-assetpackager use the filesystem as a cache for compiled assets. A twelve-factor app prefers to do this compiling during the build stage. Asset packagers such as Jammit and the Rails asset pipeline can be configured to package assets during the build stage.
+</small>
+</dl>
+
+<p>Asset packagers (Trình đóng gói tài sản) như django-assetpackager sử dụng filesystem như một bộ nhớ đệm cho biên dịch asset. Một twelve-factor app sẽ thường thích làm việc biên dịch trong giai đoạn build. Asset packagers ví dụ Jammit và Rails asset pipeline có thể được cấu hình để đóng gói asset trong giai đoạn build.</p>
+
+<dl>
+<small style="color: gray">
+Some web systems rely on “sticky sessions” – that is, caching user session data in memory of the app’s process and expecting future requests from the same visitor to be routed to the same process. Sticky sessions are a violation of twelve-factor and should never be used or relied upon. Session state data is a good candidate for a datastore that offers time-expiration, such as Memcached or Redis.
+</small>
+</dl>
+
+<p>Một số hệ thống web dựa trên &ldquo;sticky sessions&rdquo; - mà nó sẽ lưu dữ liệu phiên làm việc của user vào bộ nhớ đệm của app’s process và hi vọng các request tương lai đến từ những người dùng giống nhau sẽ được định tuyến vào cùng process. Sticky sessions đã vi phạm phương pháp twelve-factor và không bao giờ nên sử dụng hay dựa vào. Dữ liệu trạng thái session (phiên) là ứng cử viên tốt cho một datastore (vùng lưu dữ liệu), nó đưa ra giới hạn thời gian (time-expiration), ví dụ Memcached hay Redis.</p>
+
+<h1 id="7-port-binding">7. Port binding</h1>
+
+<p><strong>Export services via port binding</strong>
+<strong>Export (xuất)) services qua port (cổng) binding</strong></p>
+
+<dl>
+<small style="color: gray">
+Web apps are sometimes executed inside a webserver container. For example, PHP apps might run as a module inside Apache HTTPD, or Java apps might run inside Tomcat.
+</small>
+</dl>
+
+<p>Các ứng dụng web thỉnh thoảng đc thực thi bên trong một webserver. Ví dụ, app PHP có thể được chạy như một mô-đun bên trong Apache HTTPD, hay ứng dụng Java có thể được chạy bên trong Tomcat.</p>
+
+<dl>
+<small style="color: gray">
+The twelve-factor app is completely self-contained and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service. The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.
+</small>
+</dl>
+
+<p><strong>Twelve-factor app thì hoàn toàn self-contained (tự chứa)</strong> và không dựa vào runtime injection của một server vào môi trường thực thi để tạo một dịch vụ giao tiếp web. Web app <strong>xuất giao thức HTTP như một service bằng bằng cách binding đến một cổng</strong>, và lắng nghe request đến từ cổng đó.</p>
+
+<dl>
+<small style="color: gray">
+In a local development environment, the developer visits a service URL like http://localhost:5000/ to access the service exported by their app. In deployment, a routing layer handles routing requests from a public-facing hostname to the port-bound web processes.
+</small>
+</dl>
+
+<p>Trong môi trường phát triển local, developer truy cập một địa chỉ URL của service ví dụ <code>http://localhost:5000/</code> để truy cập vào service được export bởi app của chúng. Trong môi trường phát triển, một lớp định tuyến xử lý request định tuyến từ một hostname giao tiếp công khai đến những tiến trình web có cổng (port-bound web services).</p>
+
+<dl>
+<small style="color: gray">
+This is typically implemented by using dependency declaration to add a webserver library to the app, such as Tornado for Python, Thin for Ruby, or Jetty for Java and other JVM-based languages. This happens entirely in user space, that is, within the app’s code. The contract with the execution environment is binding to a port to serve requests.
+</small>
+</dl>
+
+<p>Thông thường ứng dụng được thực thi triển khai (implement) bằng việc sử dụng khai báo dependency để thêm thư viện webserver vào app, ví dụ như Tornado cho Python, Thin cho Ruby, hay Jetty cho Java và các ngôn ngữ trên nền JVM khác. Việc này xảy ra toàn bộ trong <em>không gian người dùng</em>, đó chính là trong mã nguồn của app. Nhiệm vụ của môi trường thực thi đang binding đến một port là phục vụ các request.</p>
+
+<dl>
+<small style="color: gray">
+HTTP is not the only service that can be exported by port binding. Nearly any kind of server software can be run via a process binding to a port and awaiting incoming requests. Examples include ejabberd (speaking XMPP), and Redis (speaking the Redis protocol).
+</small>
+</dl>
+
+<p>HTTP không phải là service duy nhất có thể xuất bởi port binding. Hầu như bất kì kiểu phần mềm server nào đều có thể chạy thông qua tiến trình binding đến một cổng và chờ đợi request đến. Ví dụ bao gồm ejabberd (speaking XMPP), và Redis (speaking the Redis protocol).</p>
+
+<dl>
+<small style="color: gray">
+Note also that the port-binding approach means that one app can become the backing service for another app, by providing the URL to the backing app as a resource handle in the config for the consuming app.
+</small>
+</dl>
+
+<p>Cũng lưu ý rằng cách tiếp cận port-binding nghĩa là một app có thể trở thành backing service cho một app khác, bằng việc cung cấp địa chỉ URL đến backing app như là một resource xử lý trong config cho app cần dùng.</p>
+
+<h1 id="8-concurrency-đồng-thời">8. Concurrency (Đồng thời)</h1>
+
+<p><strong>Scale out via the process model</strong>
+<strong>Mở rộng thông qua mô hình process</strong></p>
+
+<dl>
+<small style="color: gray">
+Any computer program, once run, is represented by one or more processes. Web apps have taken a variety of process-execution forms. For example, PHP processes run as child processes of Apache, started on demand as needed by request volume. Java processes take the opposite approach, with the JVM providing one massive uberprocess that reserves a large block of system resources (CPU and memory) on startup, with concurrency managed internally via threads. In both cases, the running process(es) are only minimally visible to the developers of the app.
+</small>
+</dl>
+
+<p>Bất kỳ chương trình máy tính nào, khi chạy, đều được biểu diễn bởi một hoặc nhiều process. Web app thì đã lấy đủ kiểu biểu mẫu thực thi process khác nhau. Ví dụ, Các PHP process chạy như một process con của Apache, được chạy theo yêu cầu cần bởi lượng request. Các Java process thì tiếp cận ngược lại, với JVM cung cấp một uberprocess lớn mà dự trữ một khối lớn của tài nguyên hệ thống khi khởi chạy, với concurrency được quản lý nội bộ qua các luồng. Trong cả hai trường hợp, các process đang chạy chỉ hiển thị tối thiểu với các lập trình viên ứng dụng.</p>
+
+<p><em>Scale is expressed as running processes, workload diversity is expressed as process types:</em><br/>
+<em>Sự mở rộng được thể hiện như các process đang chạy, sự đa dạng của workload (tải công việc) thì được thể hiện như các kiểu của process:</em>
+<img src="/images/process-types.png" alt="alt text" title="Scale is expressed as running processes, workload diversity is expressed as process types" /></p>
+
+<dl>
+<small style="color: gray">
+In the twelve-factor app, processes are a first class citizen. Processes in the twelve-factor app take strong cues from the unix process model for running service daemons. Using this model, the developer can architect their app to handle diverse workloads by assigning each type of work to a process type. For example, HTTP requests may be handled by a web process, and long-running background tasks handled by a worker process.
+</small>
+</dl>
+
+<p>Trong twelve-factor app, các process được coi là các công dân hạng nhất. Các process trong twelve-factor app lấy các gợi ý mạnh mẽ từ mô hình process của unix cho các service daemon (dịch vụ của chương trình chạy nền) đang chạy. Sử dụng mô hình này, lập trình viên có thể kiến trúc app của họ để xử lý các workload đa dạng bằng cách gán mỗi kiểu work (công việc) cho một kiểu process. Ví dụ, các HTTP request (yêu cầu theo giao thức HTTP) có thể được xử lý bởi các web process, và các task (nhiệm vụ) chạy nền lâu (long-running) được xử lý bởi mộ worker process.</p>
+
+<dl>
+<small style="color: gray">
+This does not exclude individual processes from handling their own internal multiplexing, via threads inside the runtime VM, or the async/evented model found in tools such as EventMachine, Twisted, or Node.js. But an individual VM can only grow so large (vertical scale), so the application must also be able to span multiple processes running on multiple physical machines.
+</small>
+</dl>
+
+<p>Điều này không loại trừ việc những process riêng rẽ xử lý công việc nội bộ cồng kềnh của chúng, thông qua các luồng bên trong quá trình chạy của máy ảo (runtime VM), hoặc mô hình async/evented (bất đồng bộ/hướng sự kiện) được tìm thấy trong các công cụ ví dụ như EventMachine, Twisted, hay Node.js. Nhưng một VM (Virtual Machine, máy ảo) riêng rẽ chỉ có thể phát triển quá lớn (theo chiều dọc), vì vậy ứng dụng cũng phải có khả năng mở rộng nhiều process chạy trên nhiều máy tính vật lý.</p>
+
+<dl>
+<small style="color: gray">
+The process model truly shines when it comes time to scale out. The share-nothing, horizontally partitionable nature of twelve-factor app processes means that adding more concurrency is a simple and reliable operation. The array of process types and number of processes of each type is known as the process formation.
+</small>
+</dl>
+
+<p>Mô hình process chỉ thực sự toả sáng khi nói đến thời gian để mở rộng quy mô. Không chia sẻ, tính chất phân chia theo chiều ngang của process của twelve-factor app nghĩa là việc thêm concurrency là một thao tác đơn giản và đáng tin cậy. Một mảng các kiểu process và số lượng process theo từng kiểu được gọi là <em>process formation</em>.</p>
+
+<dl>
+<small style="color: gray">
+Twelve-factor app processes should never daemonize or write PID files. Instead, rely on the operating system’s process manager (such as systemd, a distributed process manager on a cloud platform, or a tool like Foreman in development) to manage output streams, respond to crashed processes, and handle user-initiated restarts and shutdowns.
+</small>
+</dl>
+
+<p>Những process của twelve-factor app không nên cho chạy nền của hệ thống (daemonize) hoặc viết vào tệp PID. Thay vì đó, chỉ dựa trên trình quản lý process của hệ điều hành (ví dụ systemd, một trình quản lý process phân tán trên nền tảng cloud, hoặc một công cụ như Foreman trong quá trình phát triển) để quản lý <a href="#11-logs-các-ghi-chép">các dòng dữ liệu đầu ra</a>, phản hồi lại các process bị hỏng (crashed), và xử lý các hành động tắt và khởi động lại do người dùng khởi tạo.</p>
+
+<h1 id="9-disposability-khả-năng-sẵn-sàng">9. Disposability (Khả năng sẵn sàng)</h1>
+
+<p><strong>Maximize robustness with fast startup and graceful shutdown</strong>
+<strong>Tối đa sự mạnh mẽ với khởi động nhanh và tắt nhã nhặn</strong></p>
+
+<dl>
+<small style="color: gray">
+The twelve-factor app’s processes are disposable, meaning they can be started or stopped at a moment’s notice. This facilitates fast elastic scaling, rapid deployment of code or config changes, and robustness of production deploys.
+</small>
+</dl>
+
+<p>Process của twelve-factor app thì có khả năng sẵn sàng, nghĩa là chúng có thể bật hoặc tắt khi có thông báo tại một thời điểm nào đấy. Điều này làm dễ dàng cho việc mở rộng co giãn nhanh, triển khai nhanh chóng khi thay đổi code hoặc config, và sự chắc chắn của các deploy của production.</p>
+
+<dl>
+<small style="color: gray">
+Processes should strive to minimize startup time. Ideally, a process takes a few seconds from the time the launch command is executed until the process is up and ready to receive requests or jobs. Short startup time provides more agility for the release process and scaling up; and it aids robustness, because the process manager can more easily move processes to new physical machines when warranted.
+</small>
+</dl>
+
+<p>Các process nên cố gắng giảm tối đa thời gian khởi động. Lý tưởng là, một process mất vài giây từ khi chạy câu lệnh khởi động đến khi process chạy và sẵn sàng nhận request và job. Thời gian khởi động ngắn cung cấp sự nhanh nhẹn hơn cho tiến trình phát hành và mở rộng; và nó tăng cường sự mạnh mẽ, bởi vì trình quản lý process có thể dễ dàng hơn trong việc di chuyển các process đến máy tính vật lý mới khi được bảo hành.</p>
+
+<dl>
+<small style="color: gray">
+Processes shut down gracefully when they receive a SIGTERM signal from the process manager. For a web process, graceful shutdown is achieved by ceasing to listen on the service port (thereby refusing any new requests), allowing any current requests to finish, and then exiting. Implicit in this model is that HTTP requests are short (no more than a few seconds), or in the case of long polling, the client should seamlessly attempt to reconnect when the connection is lost.
+</small>
+</dl>
+
+<p>Các process tắt nhã nhặn khi chúng nhận một tín hiện SIGTERM (SIGTERM signal) từ trình quản lý process. Với một web process, tắt nhã nhặn đạt được bởi việc ngừng lắng nghe trên các cổng dịch vụ (bằng cách ấy từ chối bất kỳ các request mới nào), cho phép bất kì request hiện tại nào kết thúc, và sau đó thoát. Ngụ ý trong mô hình này là HTTP request thì ngắn (không quá vài giây), hoặc trong trường hợp long-polling, máy khách sẽ cố gắng kết nối lại khi mất kết nối.</p>
+
+<dl>
+<small style="color: gray">
+For a worker process, graceful shutdown is achieved by returning the current job to the work queue. For example, on RabbitMQ the worker can send a NACK; on Beanstalkd, the job is returned to the queue automatically whenever a worker disconnects. Lock-based systems such as Delayed Job need to be sure to release their lock on the job record. Implicit in this model is that all jobs are reentrant, which typically is achieved by wrapping the results in a transaction, or making the operation idempotent.
+
+</small>
+</dl>
+
+<p>Với một worker process, tắt nhã nhặn đạt được bằng việc trả lại job hiện tại vào hàng đợi (work queue). Ví dụ, trên RabbitMQ worker có thể gửi một NACK; trên Beanstalkd, job được trả lại hàng đợi tự động khi một worker bị mất kết nối. Hệ thống Lock-based ví dụ Delayed Job cần chắc chắn nhả lock của chúng trên bản ghi job. Ngụ ý trong mô hình này là tất cả các job có thể dùng lại được, mà thông thường đạt được được bởi bao kết quả trong một giao dịch (transaction), hoặc làm cho thao tác không thay đổi giá trị.</p>
+
+<dl>
+<small style="color: gray">
+Processes should also be robust against sudden death, in the case of a failure in the underlying hardware. While this is a much less common occurrence than a graceful shutdown with SIGTERM, it can still happen. A recommended approach is use of a robust queueing backend, such as Beanstalkd, that returns jobs to the queue when clients disconnect or time out. Either way, a twelve-factor app is architected to handle unexpected, non-graceful terminations. Crash-only design takes this concept to its logical conclusion.
+
+</small>
+</dl>
+
+<p>Các process cũng phải mạnh mẽ để chống lại việc hỏng đột ngột (sudden death), trong trường hợp một hỏng hóc của phần cứng bên dưới. Tuy điều này hiếm khi xảy ra hơn so với việc tắt nhã nhặn với SIGTERM, nhưng nó vẫn có thể xảy ra. Một cách tiếp cận khuyến khích là sử dụng một backend hàng đợi mạnh mẽ, ví dụ Beanstalkd, mà có thể gửi trả job vào hàng đợi khi client mất kết nối hoặc time out. Dù bằng cách nào, một twelve-factor app cũng phải được kiến trúc để xử lý việc ngắt kết nối không mong muốn, không nhã nhặn. Thiết kế crash-only lấy khái niệm này cho kết luận logic của nó.</p>
+
+<h1 id="10-dev-prod-parity-tương-đồng-giữa-phát-triển-và-sản-phẩm">10. Dev/prod parity (Tương đồng giữa phát triển và sản phẩm)</h1>
+
+<p><strong>Keep development, staging, and production as similar as possible</strong>
+<strong>Giữ môi trường development, staging, and production giống nhau nhất có thể</strong></p>
+
+<dl>
+<small style="color: gray">
+Historically, there have been substantial gaps between development (a developer making live edits to a local deploy of the app) and production (a running deploy of the app accessed by end users). These gaps manifest in three areas:
+</small>
+</dl>
+
+<p>Trong lịch sử, đã có những lỗ hổng thực tế giữa development (một developer thực hiện những chỉnh sửa trực tiếp lên bản deploy local của app) và production (một deploy đang chạy của app được truy cập bởi người dùng cuối). Những lỗ hổng này biểu thị trong ba vùng:</p>
+
+<dl>
+<small style="color: gray">
+- The time gap: A developer may work on code that takes days, weeks, or even months to go into production.<br/>
+- The personnel gap: Developers write code, ops engineers deploy it.<br/>
+- The tools gap: Developers may be using a stack like Nginx, SQLite, and OS X, while the production deploy uses Apache, MySQL, and Linux.
+</small>
+</dl>
+
+<ul>
+<li><strong>Lỗ hổng thời gian</strong>: Một developer có thể làm việc trên code mất nhiều ngày, nhiều tuần, thậm chí nhiều tháng trước khi đưa lên production.</li>
+<li><strong>Lỗ hổng con người</strong>: Các developer viết code còn kỹ sư hệ thống triển khai nó.</li>
+<li><strong>Lỗ hổng công cụ</strong>: Các developer có thể sử dụng một stack (nhóm) như Nginx, SQLite, và OS X, trong khi deploy trên production sử dụng Apache, MySQL, và Linux.</li>
+</ul>
+
+<dl>
+<small style="color: gray">
+The twelve-factor app is designed for continuous deployment by keeping the gap between development and production small. Looking at the three gaps described above:
+</small>
+</dl>
+
+<p><strong>Twelve-factor app được thiết kế cho triển khai liên tục (continuous deployment) bằng việc giữ lỗ hổng giữa development và production nhỏ</strong>. Nhìn vào ba lỗ hổng mô tả ở trên:</p>
+
+<dl>
+<small style="color: gray">
+- Make the time gap small: a developer may write code and have it deployed hours or even just minutes later.<br/>
+- Make the personnel gap small: developers who wrote code are closely involved in deploying it and watching its behavior in production.<br/>
+- Make the tools gap small: keep development and production as similar as possible.
+</small>
+</dl>
+
+<ul>
+<li>Làm cho lỗ hổng thời gian nhỏ: một developer có thể viết code và để nó được triển khai trong vài giờ, thậm chí chỉ vài phút sau đó.</li>
+<li>Làm cho chỗ hổng con người nhỏ: những developer người viết code liên quan chặt chẽ đến việc triển khai code và theo dõi hành vi của nó trong môi trường production.</li>
+<li>Làm cho lỗ hổng các công cụ nhỏ: giữ môi trường development và production giống nhau nhất có thể.</li>
+</ul>
+
+<p>Tóm tắt những thứ trên vào một bảng như sau:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>App truyền thống</th>
+<th>Twelve-factor app</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>Thời gian giữa các deploy</strong></td>
+<td>Vài tuần</td>
+<td>Vài giờ</td>
+</tr>
+
+<tr>
+<td><strong>Người viết code và người triển khai code</strong></td>
+<td>Người khác nhau</td>
+<td>Cùng người</td>
+</tr>
+
+<tr>
+<td><strong>Môi trường dev với production</strong></td>
+<td>Khác nhau</td>
+<td>Giống nhau nhất có thể</td>
+</tr>
+</tbody>
+</table>
+
+<dl>
+<small style="color: gray">
+Backing services, such as the app’s database, queueing system, or cache, is one area where dev/prod parity is important. Many languages offer libraries which simplify access to the backing service, including adapters to different types of services. Some examples are in the table below.
+</small>
+</dl>
+
+<p>Các backing service, ví dụ cơ sở dữ liệu của app, hệ thống hàng đợi, hoặc cache, là một nơi mà sự tương đồng của dev/prod là quan trọng. Nhiều ngôn ngữ đưa ra các thư viện giúp đơn giản hoá truy cập tới backing service, gồm <em>các bộ chuyển đổi (adapters)</em> đến các loại service khác nhau. Một số ví dụ trong bảng sau:</p>
+
+<table>
+<thead>
+<tr>
+<th>Loại</th>
+<th>Ngôn ngữ</th>
+<th>Thư viện</th>
+<th>Adapters</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Database</td>
+<td>Ruby/Rails</td>
+<td>ActiveRecord</td>
+<td>MySQL, PostgreSQL, SQLite</td>
+</tr>
+
+<tr>
+<td>Queue</td>
+<td>Python/Django</td>
+<td>Celery</td>
+<td>RabbitMQ, Beanstalkd, Redis</td>
+</tr>
+
+<tr>
+<td>Cache</td>
+<td>Ruby/Rails</td>
+<td>ActiveSupport::Cache</td>
+<td>Memory, filesystem, Memcached</td>
+</tr>
+</tbody>
+</table>
+
+<dl>
+<small style="color: gray">
+Developers sometimes find great appeal in using a lightweight backing service in their local environments, while a more serious and robust backing service will be used in production. For example, using SQLite locally and PostgreSQL in production; or local process memory for caching in development and Memcached in production.
+</small>
+</dl>
+
+<p>Lập trình viên thỉnh thoảng tìm kiếm kêu gọi tuyệt vời sử dụng một backing service nhỏ nhẹ (lightweight) trong môi trường local của họ, trong khi một backing service mạnh mẽ và nghiêm túc hơn sẽ sử dụng trong môi trường production. Ví dụ, sử dụng SQLite ở local và sử dụng PostgreSQL ở production; hoặc sử dụng bộ nhớ tiến trình ở local cho lưu đệm (caching) ở môi trường development và Memcached trong production.</p>
+
+<dl>
+<small style="color: gray">
+The twelve-factor developer resists the urge to use different backing services between development and production, even when adapters theoretically abstract away any differences in backing services. Differences between backing services mean that tiny incompatibilities crop up, causing code that worked and passed tests in development or staging to fail in production. These types of errors create friction that disincentivizes continuous deployment. The cost of this friction and the subsequent dampening of continuous deployment is extremely high when considered in aggregate over the lifetime of an application.
+</small>
+</dl>
+
+<p><strong>Twelve-factor developer thì tránh sử dụng các backing service khác nhau giữa development và production</strong>, thậm chí cả khi apdapters theo lý thuyết sẽ trừu tượng hoá bất kì sự khác nhau nào trong các backing service. Sự khác nhau giữa các backing service nghĩa là một phần nhỏ sự không tương thích sẽ làm việc và pass (vượt qua) các test (kiểm tra) trên development hoặc staging nhưng thất bại trên production. Các kiểu lỗi này tạo ra sự ma sát gây trở ngại trong triển khai liên tục. Giá của sự ma sát và sự cản trở đến sau này của triển khai liên tục là rất cao khi xem xét trong tích luỹ dần dần qua thời gian sống (lifetime) của app.</p>
+
+<dl>
+<small style="color: gray">
+Lightweight local services are less compelling than they once were. Modern backing services such as Memcached, PostgreSQL, and RabbitMQ are not difficult to install and run thanks to modern packaging systems, such as Homebrew and apt-get. Alternatively, declarative provisioning tools such as Chef and Puppet combined with light-weight virtual environments such as Docker and Vagrant allow developers to run local environments which closely approximate production environments. The cost of installing and using these systems is low compared to the benefit of dev/prod parity and continuous deployment.
+</small>
+</dl>
+
+<p>Những service local nhỏ nhẹ (lightweight) thì kém hấp dẫn so với trước đây. Các backing service hiện đại ví dụ Memcached, PostgreSQL, và RabbitMQ không khó để cài đặt và chạy nhờ các hệ thống đóng gói hiện tại, ví dụ Homebrew hay apt-get. Thêm nữa, các công cụ cung cấp khai báo (declarative) ví dụ Chef and Puppet đã kết hợp với những môi trường ảo nhỏ nhẹ ví dụ như Docker và Vagrant cho phép các developer chạy môi trường local gần đúng với môi trường production. Giá của việc cài đặt và sử dụng những hệ thống này là thấp hơn khi so với lợi ích về sự tương đồng dev/prod và triển khai liên tục.</p>
+
+<dl>
+<small style="color: gray">
+Adapters to different backing services are still useful, because they make porting to new backing services relatively painless. But all deploys of the app (developer environments, staging, production) should be using the same type and version of each of the backing services.
+</small>
+</dl>
+
+<p>Adapters cho các backing service khác nhau vẫn hữu ích, bởi vì chúng giúp chuyển sang các backing service mới tương đối không vất vả. Nhưng tất cả các deploy của app (môi trường của developer, staging, production) nên sử dụng các kiểu và phiên bản giống nhau của các backing service.</p>
+
+<h1 id="11-logs-các-ghi-chép">11. Logs (Các ghi chép)</h1>
+
+<p><strong>Treat logs as event streams</strong>
+<strong>Coi các log như dòng dữ liệu sự kiện</strong></p>
+
+<dl>
+<small style="color: gray">
+Logs provide visibility into the behavior of a running app. In server-based environments they are commonly written to a file on disk (a “logfile”); but this is only an output format.
+</small>
+</dl>
+
+<p><em>Các log</em> cung cấp khả năng quan sát đến hành vi của app đang chạy. Trong những môi trường trên nền máy chủ, chúng thông thường ghi và một tệp trên ổ đĩa (một logfile); nhưng đây chỉ là một định dạng đầu ra.</p>
+
+<dl>
+<small style="color: gray">
+Logs are the stream of aggregated, time-ordered events collected from the output streams of all running processes and backing services. Logs in their raw form are typically a text format with one event per line (though backtraces from exceptions may span multiple lines). Logs have no fixed beginning or end, but flow continuously as long as the app is operating.
+</small>
+</dl>
+
+<p>Các log là dòng dữ liệu của các sự kiện được tích tụ lại, theo tứ tự thời gian từ các dòng dữ liệu đầu ra của tất cả các process đang chạy và backing service. Các log trong định dạng thô của chúng điển hình là dạng text với mỗi sự kiện trên một dòng (mặc dù các backtrace (lần dấu ngược lại) của ngoại lệ có thể kéo dài ra nhiều dòng). Các log không có điểm đầu hay cuối cố định, nhưng lưu lượng liên tục giống như app đang vận hành.</p>
+
+<dl>
+<small style="color: gray">
+A twelve-factor app never concerns itself with routing or storage of its output stream. It should not attempt to write to or manage logfiles. Instead, each running process writes its event stream, unbuffered, to stdout. During local development, the developer will view this stream in the foreground of their terminal to observe the app’s behavior.
+</small>
+</dl>
+
+<p><strong>Một twelve-factor app không bao giờ bận tâm đến bản thân nó với sự định tuyến hoặc lưu trữ của dòng dữ liệu đầu ra (output stream) của nó.</strong> Nó không phải cố gắng ghi hay quản lý các logfile. Thay vì đó, mỗi process đang chạy ghi dòng dữ liệu sự kiện của nó, không bị cản trở, vào <code>stdout</code>. Trong quá trình phát triển, developer sẽ xem dòng dữ liệu ngay trên terminal (của sổ dòng lệnh) của họ để quan sát hành vì của app.</p>
+
+<dl>
+<small style="color: gray">
+In staging or production deploys, each process’ stream will be captured by the execution environment, collated together with all other streams from the app, and routed to one or more final destinations for viewing and long-term archival. These archival destinations are not visible to or configurable by the app, and instead are completely managed by the execution environment. Open-source log routers (such as Logplex and Fluentd) are available for this purpose.
+</small>
+</dl>
+
+<p>Trong các bản deploy staging hay production, mỗi dòng dữ liệu của process sẽ được bắt bởi môi trường thực thi, được đối chiếu với tất cả các dòng dữ liệu khác từ app, và được định tuyến tới một hoặc nhiều điểm đến cuối cùng để xem và lưu trữ lâu dài. Những điểm đến lưu trữ này thì không hiển thị hay có thể cấu hình bởi ứng dụng, thay vì đó hoàn toàn được quản lý bởi môi trường thực thi. Các định tuyến log mã nguồn mở (ví dụ Logplex và Fluentd) thì khả dụng cho mục đích này.</p>
+
+<dl>
+<small style="color: gray">
+The event stream for an app can be routed to a file, or watched via realtime tail in a terminal. Most significantly, the stream can be sent to a log indexing and analysis system such as Splunk, or a general-purpose data warehousing system such as Hadoop/Hive. These systems allow for great power and flexibility for introspecting an app’s behavior over time, including:
+</small>
+</dl>
+
+<p>Dòng dữ liệu sự kiện cho một app có thể được định tuyến đến một tệp, hoặc được xem qua phần đuôi thời gian thực trong một terminal. Đáng kể nhất, dòng dữ liệu có thể được gửi đến một hệ thống lập chỉ mục sao chép (log indexing) và phân tích ví dụ như Splunk, hoặc một hệ thống lưu trữ dữ liệu với mục đích chung ví dụ Hadoop/Hive. Những hệ thống này cho phép sức mạnh và sự linh hoạt tuyệt vời để tìm hiểu hành vi của app qua thời gian, bao gồm:</p>
+
+<dl>
+<small style="color: gray">
+- Finding specific events in the past.<br/>
+- Large-scale graphing of trends (such as requests per minute).<br/>
+- Active alerting according to user-defined heuristics (such as an alert when the quantity of errors per minute exceeds a certain threshold).
+</small>
+</dl>
+
+<ul>
+<li>Tìm kiếm các sự kiện cụ thể trong quá khứ.</li>
+<li>Đồ thị quy mô lớn của các xu hướng (ví dụ số request trên phút).</li>
+<li>Kích hoạt cảnh báo theo phỏng đoán do người dùng định nghĩa (ví dụ như một cảnh báo khi số lượng lỗi trên phút vượt quá mức cho phép).</li>
+</ul>
+
+<h1 id="12-admin-processes">12. Admin processes</h1>
+
+<p><strong>Run admin/management tasks as one-off processes</strong>
+<strong>Chạy các task admin/management (người quản trị/quản lý) như các process one-off (một lần)</strong></p>
+
+<dl>
+<small style="color: gray">
+The process formation is the array of processes that are used to do the app’s regular business (such as handling web requests) as it runs. Separately, developers will often wish to do one-off administrative or maintenance tasks for the app, such as:
+</small>
+</dl>
+
+<p><a href="#8-concurrency-đồng-thời">Processes formation</a> là một loạt các process mà được sử dụng để thực hiện công việc thường lệ của app (ví dụ xử lý các yêu cầu web) khi nó chạy. Một cách riêng biệt, các developer sẽ thường thực hiện các task mang tính quản trị hoặc bảo trì cho ứng dụng, ví dụ:</p>
+
+<dl>
+<small style="color: gray">
+- Running database migrations (e.g. manage.py migrate in Django, rake db:migrate in Rails).<br/>
+- Running a console (also known as a REPL shell) to run arbitrary code or inspect the app’s models against the live database. Most languages provide a REPL by running the interpreter without any arguments (e.g. python or perl) or in some cases have a separate command (e.g. irb for Ruby, rails console for Rails).<br/>
+- Running one-time scripts committed into the app’s repo (e.g. php scripts/fix_bad_records.php).
+</small>
+</dl>
+
+<ul>
+<li>Chạy các di chuyển cơ sở dữ liệu (database migration) (ví dụ <code>manage.py migrate</code> trong Django, <code>rake db:migrate</code> trong Rails). Chạy một câu</li>
+<li>Chạy một điều khiển (console) (hay cũng được biết như là một REPL shell) để chạy code tuỳ ý hoặc kiểm tra các mô hình ứng dụng dựa trên cơ sở dữ liệu trực tiếp. Hầu hết các ngôn ngữ cung cấp một REPL bằng việc chạy trình thông dịch mà không cần bất kỳ tham số nào (ví dụ <code>python</code> hay <code>perl</code>) hoặc trong một số trường hợp có một câu lệnh riêng biệt (ví dụ <code>irb</code> cho Ruby, <code>rails console</code> cho Rails).</li>
+<li>Chạy những kịch bản (script) một lần (ví dụ <code>php scripts/fix_bad_records.php</code>).</li>
+</ul>
+
+<dl>
+<small style="color: gray">
+One-off admin processes should be run in an identical environment as the regular long-running processes of the app. They run against a release, using the same codebase and config as any process run against that release. Admin code must ship with application code to avoid synchronization issues.
+</small>
+</dl>
+
+<p>Các one-off admin process nên được chạy trong một môi trường giống nhau như là <a href="#6-processes-tiến-trình">các process chạy dài thường lệ</a> của app. Chúng chạy dựa trên một release, sử dụng chung codebase và config như bất kì process nào chạy dựa trên release đó. Admin code phải được chuyển kèm với code của ứng dụng để tránh các vấn đề về đồng bộ.</p>
+
+<dl>
+<small style="color: gray">
+The same dependency isolation techniques should be used on all process types. For example, if the Ruby web process uses the command bundle exec thin start, then a database migration should use bundle exec rake db:migrate. Likewise, a Python program using Virtualenv should use the vendored bin/python for running both the Tornado webserver and any manage.py admin processes.
+</small>
+</dl>
+
+<p>Các công nghệ dependency cô lập giống nhau nên được sử dụng trên tất cả các kiểu process. Ví dụ, nếu web viết bằng Ruby sử dụng câu lệnh <code>bundle exec</code> để khởi động, sau đó một database migration nên sử dụng <code>bundle exec rake db:migrate</code>. Tương tự như vậy, một chương trình Python sử dụng Virtualenv nên sử dụng phần cung cấp <code>bin/python</code> để chạy cả máy chủ web Tornado và bất kỳ các admin proccess <code>manage.py</code> nào.</p>
+
+<dl>
+<small style="color: gray">
+Twelve-factor strongly favors languages which provide a REPL shell out of the box, and which make it easy to run one-off scripts. In a local deploy, developers invoke one-off admin processes by a direct shell command inside the app’s checkout directory. In a production deploy, developers can use ssh or other remote command execution mechanism provided by that deploy’s execution environment to run such a process.
+</small>
+</dl>
+
+<p>Twelve-factor ủng hộ mạnh mẽ các ngôn ngữ mà cung cấp một REPL shell bên ngoài, và nó làm cho app dễ dàng chạy những script một lần. Trong một deply local, các developer gọi các admin process một lần bằng một câu lệnh shell trực tiếp bên trong thư mục làm việc của app. Trong một deploy production, các developer có thể sử dụng <code>ssh</code> hoặc cơ chế thực thi câu lệnh từ xa khác được cung cấp bởi môi trường thực thi của deploy để chạy ví dụ một process.</p>
+
+<ul>
+<li><a href="/12-factor-p1">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1 / 2</a><br/></li>
+<li>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2 / 2 (Đang xem)</li>
+</ul>
+
+<p>Nguồn: <a href="https://12factor.net/">https://12factor.net/</a></p>
+
+<p>Dịch bởi: <code>code2080</code></p>
+
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#6-processes-tiến-trình">6. Processes (Tiến trình)</a></li>
+<li><a href="#7-port-binding">7. Port binding</a></li>
+<li><a href="#8-concurrency-đồng-thời">8. Concurrency (Đồng thời)</a></li>
+<li><a href="#9-disposability-khả-năng-sẵn-sàng">9. Disposability (Khả năng sẵn sàng)</a></li>
+<li><a href="#10-dev-prod-parity-tương-đồng-giữa-phát-triển-và-sản-phẩm">10. Dev/prod parity (Tương đồng giữa phát triển và sản phẩm)</a></li>
+<li><a href="#11-logs-các-ghi-chép">11. Logs (Các ghi chép)</a></li>
+<li><a href="#12-admin-processes">12. Admin processes</a></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://code2080.com/tags/software-development">software development
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://code2080.com/tags/translation">translation
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/visualize-12-factor/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Visualize twelve-factor app
+        </div>
+    </a>
+    
+    
+    <a href="/12-factor-p1/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1/2&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Code Twenty Eighty.
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos">Minos</a>.
+        </div>
+    </div>
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+</div>
+</body>
+</html>

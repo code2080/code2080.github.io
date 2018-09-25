@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1/2 // Code Twenty Eighty</title>
+
+        <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+        <meta property="og:title" content="Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1/2" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://code2080.com/12-factor-p1/" />
+    
+
+    <link href="" rel="alternate" type="application/rss+xml" title="Code Twenty Eighty" />
+    <link rel="shortcut icon" href="/favicon.png">
+
+    <link href="https://code2080.com/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+    <link href="https://code2080.com/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="https://code2080.com/css/style.css">
+
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+    
+    <meta name="generator" content="Hugo 0.48" />
+</head>
+
+
+<body>
+<div id="container">
+    <header id="header">
+    <div id="header-outer" class="outer">
+        <div id="header-inner" class="inner">
+            <a id="main-nav-toggle" class="nav-icon" href="javascript:;"></a>
+            <a id="logo" class="logo-text" href="https://code2080.com/">Code Twenty Eighty</a>
+            <nav id="main-nav">
+                
+            </nav>
+            <nav id="sub-nav">
+                <div id="search-form-wrap">
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+    <section id="main" class="outer">
+        <article class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        <header class="article-header">
+            <h1 class="article-title" itemprop="name">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1/2</h1>
+        </header>
+        
+        <div class="article-meta">
+            <a href="/12-factor-p1/" class="article-date">
+                <time datetime='2018-09-20T00:46:35.000&#43;07:00' itemprop="datePublished">2018-09-20</time>
+            </a>
+            
+            
+            
+        </div>
+        <div class="article-entry" itemprop="articleBody">
+            
+
+<ul>
+<li>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1 / 2 (Đang xem)<br/></li>
+<li><a href="/12-factor-p2">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2 / 2</a></li>
+</ul>
+
+<h1 id="mở-đầu">MỞ ĐẦU</h1>
+
+<h2 id="giới-thiệu">Giới thiệu</h2>
+
+<dl>
+<small style="color: gray">
+In the modern era, software is commonly delivered as a service: called web apps, or software-as-a-service. The twelve-factor app is a methodology for building software-as-a-service apps that:
+</small>
+</dl>
+
+<p>Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là <em>web apps</em> (những ứng dụng web), hay là <em>software-as-a-service</em> (phần mềm như một dịch vụ). App (ứng dụng) xây dựng theo twelve-factor là một phương pháp học để xây dựng app như vậy, bao gồm:</p>
+
+<dl>
+<small style="color: gray">
+- Use declarative formats for setup automation, to minimize time and cost for new developers joining the project;<br/>
+- Have a clean contract with the underlying operating system, offering maximum portability between execution environments;<br/>
+- Are suitable for deployment on modern cloud platforms, obviating the need for servers and systems administration;<br/>
+- Minimize divergence between development and production, enabling continuous deployment for maximum agility;<br/>
+- And can scale up without significant changes to tooling, architecture, or development practices.
+</small>
+</dl>
+
+<ul>
+<li>Sử dụng định dạng <strong>declarative</strong> cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án;</li>
+<li>Có <strong>giao kèo sạch</strong> (clean contract) với hệ thống vận hành ở bên dưới, đưa ra <strong>tối đa tính khả chuyển</strong> (maximum portability) giữa các môi trường thực thi;</li>
+<li>Tiện dụng cho <strong>phát triển</strong> trên <strong>nền tảng điện toán đám mây</strong> hiện đại, loại bỏ sự cấp thiết cho các máy chủ và những người quản trị hệ thống;</li>
+<li><strong>Giảm thiểu tối đa sự khác nhau</strong> giữa development (phát triển) và production (sản phẩm), kích hoạt tính năng <strong>phát triển liên tục</strong> (CD, continuous deployment) để tối đa tốc độ phát triển app;</li>
+<li>Và có thể <strong>mở rộng</strong> mà không cần thay đổi đáng kể nào về công cụ, kiến trúc, hay các phương pháp phát triển (development practices).</li>
+</ul>
+
+<dl>
+<small style="color: gray">
+The twelve-factor methodology can be applied to apps written in any programming language, and which use any combination of backing services (database, queue, memory cache, etc).
+</small>
+</dl>
+
+<p>Phương pháp twelve-factor có thể áp dụng cho app viết bằng bất cứ ngôn ngữ nào, và sử dụng bất kì sự kết hợp nào của các dịch vụ ở backend (như cơ sở dữ liệu, queue, memory cache,&hellip;).</p>
+
+<h2 id="khởi-nguồn">Khởi nguồn</h2>
+
+<dl>
+<small style="color: gray">
+The contributors to this document have been directly involved in the development and deployment of hundreds of apps, and indirectly witnessed the development, operation, and scaling of hundreds of thousands of apps via our work on the Heroku platform.
+</small>
+</dl>
+
+<p>Những người đóng góp cho tài liệu này đều đã trực tiếp gặp phải những rắc rối trong sự phát triển một cũng như hàng trăm app, và gián tiếp chứng kiến sự phát triển, vận hành, và mở rộng của hàng trăm triệu app thông qua công việc của chúng tôi ở nền tảng Heroku.</p>
+
+<dl>
+<small style="color: gray">
+This document synthesizes all of our experience and observations on a wide variety of software-as-a-service apps in the wild. It is a triangulation on ideal practices for app development, paying particular attention to the dynamics of the organic growth of an app over time, the dynamics of collaboration between developers working on the app’s codebase, and avoiding the cost of software erosion.
+</small>
+</dl>
+
+<p>Tài liệu này tổng hợp tất cả kinh nghiệm và sự quan sát của chúng tôi trong thế giới rộng lớn của software-as-a-service app. Nó là một tam phân của những thực hành ý tưởng trong phát triển app, đặc biệt chú ý đến sự dynamic (năng động) của việc phát triển cơ bản của một app qua thời gian, sự dynamic của cộng tác giữa các developer (nhà phát triển) làm việc trên cùng mã nguồn app, và <a href="http://blog.heroku.com/archives/2011/6/28/the_new_heroku_4_erosion_resistance_explicit_contracts/">tránh chi phí của việc sói mòn phần mềm</a>.</p>
+
+<dl>
+<small style="color: gray">
+Our motivation is to raise awareness of some systemic problems we’ve seen in modern application development, to provide a shared vocabulary for discussing those problems, and to offer a set of broad conceptual solutions to those problems with accompanying terminology. The format is inspired by Martin Fowler’s books Patterns of Enterprise Application Architecture and Refactoring.
+</small>
+</dl>
+
+<p>Động lực của chúng tôi là để nâng cao nhận thức về một số lỗi truyền thống mà chúng ta thấy trong phát triển app hiện đại, để cung cấp những ngôn từ chung để thảo luận về những vấn đề đó, và để đưa ra một tập rộng các giải pháp mang tính khái niệm cho những vấn đề đó với những thuật ngữ kèm theo. Định dạng này được lấy cảm hứng bởi cuốn sách <a href="https://books.google.com/books/about/Patterns_of_enterprise_application_archi.html?id=FyWZt5DdvFkC">Patterns of Enterprise Application Architecture and Refactoring</a> của Martin Fowler.</p>
+
+<h2 id="ai-nên-đọc-tài-liệu-này">Ai nên đọc tài liệu này?</h2>
+
+<dl>
+<small style="color: gray">
+Any developer building applications which run as a service. Ops engineers who deploy or manage such applications.
+</small>
+</dl>
+
+<p>Bất kỳ developer nào, mà xây dựng app chạy như là một dịch vụ. Kỹ sư hệ thống, người triển khai và quản lý các app như vậy.</p>
+
+<h1 id="1-codebase-toàn-bộ-mã-nguồn-dự-án">1. Codebase (Toàn bộ mã nguồn dự án)</h1>
+
+<p><strong>One codebase tracked in revision control, many deploys</strong>
+<strong>Một codebase thì được theo dõi trong kiểm soát sửa đổi, và có nhiều bản triển khai</strong></p>
+
+<dl>
+<small style="color: gray">
+A twelve-factor app is always tracked in a version control system, such as Git, Mercurial, or Subversion. A copy of the revision tracking database is known as a code repository, often shortened to code repo or just repo.
+</small>
+</dl>
+
+<p>Một twelve-factor app thì luôn luôn được theo dõi trong một hệ thống quản lý phiên bản, ví dụ như Git, Mercurial, hoặc Subversion. Một bản sao chép của cơ sở dữ liệu theo dõi sửa đổi (revision tracking database) thì được biết như là một <em>code repository</em>, hay thường gọi tắt là <em>code repo</em> hoặc chỉ là <em>repo</em>.</p>
+
+<dl>
+<small style="color: gray">
+A codebase is any single repo (in a centralized revision control system like Subversion), or any set of repos who share a root commit (in a decentralized revision control system like Git).
+</small>
+</dl>
+
+<p>Một <em>codebase</em> có thể là bất kì một repo đơn nào (trong một hệ thống kiểm soát sửa đổi tập trung như Subversion), hoặc bất kì một tập repo nào được chia sẻ root commit (trong một hệ thống kiểm soát sửa đổi phi tập trung như Git).</p>
+
+<dl>
+<small style="color: gray">
+There is always a one-to-one correlation between the codebase and the app:<br/>
+- If there are multiple codebases, it’s not an app – it’s a distributed system. Each component in a distributed system is an app, and each can individually comply with twelve-factor.<br/>
+- Multiple apps sharing the same code is a violation of twelve-factor. The solution here is to factor shared code into libraries which can be included through the dependency manager.
+</small>
+</dl>
+
+<p>Luôn luôn có sự tương quan một-một giữa codebase và app:</p>
+
+<p><em>One codebase maps to many deploys:</em><br/>
+<em>Mỗi codebase có nhiều deploy:</em>
+<img src="/images/codebase-deploys.png" alt="alt text" title="One codebase maps to many deploys" /></p>
+
+<ul>
+<li><p>Nếu có nhiều codebase, thì nó không phải một app, mà là một hệ thống phân tán. Mỗi thành phần trong một hệ thống phân tán là một app, và mỗi thành phần đó có thể tuân theo một cách cá nhân với twelve-factor.</p></li>
+
+<li><p>Nhiều app chia sẻ mã giống nhau là một sự vi pham trong twelve-factor. Giải pháp ở đây là để những phần chia sẻ code chung vào thành những thư viện, mà có thể được bao hàm thông qua trình quản lý phụ thuộc (<a href="#2-dependencies-các-phụ-thuộc">dependency manager</a>).</p></li>
+</ul>
+
+<dl>
+<small style="color: gray">
+There is only one codebase per app, but there will be many deploys of the app. A deploy is a running instance of the app. This is typically a production site, and one or more staging sites. Additionally, every developer has a copy of the app running in their local development environment, each of which also qualifies as a deploy.
+</small>
+</dl>
+
+<p>Chỉ có duy nhất một codebase với mỗi app, nhưng sẽ có nhiều deploy (triển khai) của một app. Một <em>deploy</em> là một instance (thực thể) của app, điển hình nó có thể là một production site, và là một hoặc nhiều staging sites. Thêm nữa, mọi developer đều có một bản sao chép của app chạy ở môi trường phát triển local của họ, mỗi trong số đó cũng đều được coi là một bản deploy.</p>
+
+<dl>
+<small style="color: gray">
+The codebase is the same across all deploys, although different versions may be active in each deploy. For example, a developer has some commits not yet deployed to staging; staging has some commits not yet deployed to production. But they all share the same codebase, thus making them identifiable as different deploys of the same app.
+</small>
+</dl>
+
+<p>Codebase thì giống nhau ở tất cả các deploy, mặc dù các phiên bản khác nhau có thể được active ở mỗi deploy. Ví dụ, một developer có một số commit chưa được deploy đến staging; staging thì cũng có một số commit chưa được deploy đến production. Nhưng chúng đều chia sẻ codebase giống nhau, ví vậy để chúng có thể nhận biết được như là các deploy khác nhau của cùng một app.</p>
+
+<h1 id="2-dependencies-các-phụ-thuộc">2. Dependencies (Các phụ thuộc)</h1>
+
+<p><strong>Explicitly declare and isolate dependencies</strong>
+<strong>Khai báo rõ ràng và cô lập các dependency (phụ thuộc)</strong></p>
+
+<dl>
+<small style="color: gray">
+Most programming languages offer a packaging system for distributing support libraries, such as CPAN for Perl or Rubygems for Ruby. Libraries installed through a packaging system can be installed system-wide (known as “site packages”) or scoped into the directory containing the app (known as “vendoring” or “bundling”).
+</small>
+</dl>
+
+<p>Hầu hết các ngôn ngữ lập trình đều đưa ra hệ thống quản lý gói (packaging system) cho việc phân phối các thư viện hỗ trợ, ví dụ như CPAN cho Perl, Rubygems for Ruby, NPM cho NodeJS, Pip cho Python. Thư viện được cài đặt thông qua một hệ thống quản lý gói có thể được cài đặt trong phạm vi toàn hệ thống (system-wide) (được biết như là &ldquo;site packages&rdquo;) hoặc giới hạn phạm vi trong thư mục chứa app (được biết như là &ldquo;vendoring&rdquo; hay &ldquo;bundling&rdquo;).</p>
+
+<dl>
+<small style="color: gray">
+A twelve-factor app never relies on implicit existence of system-wide packages. It declares all dependencies, completely and exactly, via a dependency declaration manifest. Furthermore, it uses a dependency isolation tool during execution to ensure that no implicit dependencies “leak in” from the surrounding system. The full and explicit dependency specification is applied uniformly to both production and development.
+</small>
+</dl>
+
+<p><strong>Một twelve-factor app không bao giờ tin vào sự tồn tại ngầm của các gói trên toàn hệ thống (system-wide packages)</strong>. Nó khai báo tất cả các dependency, trọn vẹn và chính xác, thông qua một bản kê <em>khai báo dependency (dependency declaration)</em>. Hơn nữa nó sử dụng một công cụ <em>cô lập dependency (dependency isolation)</em> trong quá trình thực thi, để chắc rằng không có dependency ngầm nào &ldquo;bị rò rỉ vào trong&rdquo; (&ldquo;leak in&rdquo;) từ hệ thống xung quanh. Bản đặc tả dependency đầy đủ và rõ ràng được áp dụng đồng nhất với cả production và development.</p>
+
+<dl>
+<small style="color: gray">
+For example, Bundler for Ruby offers the Gemfile manifest format for dependency declaration and bundle exec for dependency isolation. In Python there are two separate tools for these steps – Pip is used for declaration and Virtualenv for isolation. Even C has Autoconf for dependency declaration, and static linking can provide dependency isolation. No matter what the toolchain, dependency declaration and isolation must always be used together – only one or the other is not sufficient to satisfy twelve-factor.
+</small>
+</dl>
+
+<p>Ví dụ, Bundler (Trình đóng gói) cho Ruby đưa ra định dạng bản kê <code>Gemfile</code> cho khai báo dependency và <code>bundle exec</code> cho các cô lập dependency. Trong Python, có 2 công cụ riêng biệt cho các bước này - Pip sử dụng cho khai báo, Virtualenv cho cô lập. Thậm chí C có Autoconf cho khai báo dependency, và liên kết tĩnh (static linking) có thể cung cấp cô lập denpendency. Bất kể toolchain nào (tập công cụ lập trình), khai báo và cô lập dependency phải luôn luôn được sử dụng cùng nhau - chỉ cái này hoặc cái kia là không đủ thoả mãn twelve-factor.</p>
+
+<dl>
+<small style="color: gray">
+One benefit of explicit dependency declaration is that it simplifies setup for developers new to the app. The new developer can check out the app’s codebase onto their development machine, requiring only the language runtime and dependency manager installed as prerequisites. They will be able to set up everything needed to run the app’s code with a deterministic build command. For example, the build command for Ruby/Bundler is bundle install, while for Clojure/Leiningen it is lein deps.
+</small>
+</dl>
+
+<p>Một lợi ích của khai báo dependency rõ ràng là nó làm đơn giản việc thiết lập cho những developer mới tham gia vào app. Developer mới có thể check out codebase của app sang máy phát triển của họ, chỉ yêu cầu có trình chạy của ngôn ngữ (language runtime) và trình quản lý dependency được cài đặt như điều kiện trước hết. Họ sẽ có thể thiết lập mọi thứ cần thiết để chạy mã nguồn app với <em>câu lệnh build</em> xác định. Ví dụ, câu lệnh build cho Ruby/Bundler là <code>bundle install</code>, còn cho Clojure/leiningen là <code>lein deps</code>.</p>
+
+<dl>
+<small style="color: gray">
+Twelve-factor apps also do not rely on the implicit existence of any system tools. Examples include shelling out to ImageMagick or curl. While these tools may exist on many or even most systems, there is no guarantee that they will exist on all systems where the app may run in the future, or whether the version found on a future system will be compatible with the app. If the app needs to shell out to a system tool, that tool should be vendored into the app.
+</small>
+</dl>
+
+<p>Twelve-factor app cũng không dựa vào tồn tại ngầm của bất kỳ công cụ hệ thống nào. Ví dụ bao gồm shelling out đến ImageMagick hoặc <code>curl</code>. Trong khi những công cụ này có thể tổn tại trên nhiều hoặc thậm chí hầu hết hệ thống, tuy nhiên không có gì đảm bảo rằng chúng sẽ tồn tại trên tất cả hệ thống nơi mà app của bạn có thể chạy trong tương lai, hoặc liệu phiên bản được tìm thấy trên một hệ thống trong tương lai sẽ tương thích với app. Nếu app cần shell out đến một công cụ hệ thống, thì công cụ này nên được cung cấp trong app.</p>
+
+<h1 id="3-config-cấu-hình">3. Config (Cấu hình)</h1>
+
+<p><strong>Store config in the environment</strong>
+<strong>Lưu trữ cấu hình trong môi trường</strong></p>
+
+<dl>
+<small style="color: gray">
+An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc). This includes:<br/>
+- Resource handles to the database, Memcached, and other backing services<br/>
+- Credentials to external services such as Amazon S3 or Twitter<br/>
+- Per-deploy values such as the canonical hostname for the deploy
+</small>
+</dl>
+
+<p>Một cấu hình app là mọi thứ có khả năng thay đổi giữa các bản deploy (staging, production, developer environments, &hellip;). Bao gồm:</p>
+
+<ul>
+<li>Tài nguyên xử lý database, Memcached, và các dịch vụ đằng sau khác (backing services)</li>
+<li>Uỷ nhiệm đến dịch vụ bên ngoài (external services) như Amazon S3 hay Twitter</li>
+<li>Các giá trị trên mỗi deploy như hostname kiểu mẫu cho deploy</li>
+</ul>
+
+<dl>
+<small style="color: gray">
+Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which requires strict separation of config from code. Config varies substantially across deploys, code does not.
+</small>
+</dl>
+
+<p>Các app thỉnh thoảng lưu trữ cấu hình như hằng số trong code. Điều này vi phạm twelve-factor, nó yêu cầu sự <strong>phân chia chặt chẽ của cấu hình từ code</strong> (strict separation of config from code). Cấu hình về thực chất sẽ thay đổi qua các deploy, code (mã nguồn) không làm điều này.</p>
+
+<dl>
+<small style="color: gray">
+A litmus test for whether an app has all config correctly factored out of the code is whether the codebase could be made open source at any moment, without compromising any credentials.
+</small>
+</dl>
+
+<p>Một bài kiểm thử (litmus test) là liệu một app có tất cả cấu hình đúng được đặt ngoài code không chính là liệu codebase có thể trở thành open source (mã nguồn mở) bất cứ lúc nào không, mà cần thoả hiệp bất cứ uỷ nhiệm (credential) nào.</p>
+
+<dl>
+<small style="color: gray">
+Note that this definition of “config” does not include internal application config, such as config/routes.rb in Rails, or how code modules are connected in Spring. This type of config does not vary between deploys, and so is best done in the code.
+</small>
+</dl>
+
+<p>Chú ý rằng định nghĩa này của &ldquo;config&rdquo; không bao gồm cho cấu hình ứng dụng bên trong (internal application config), ví dụ <code>config/routes.rb</code> trong Rails, hay cách mà những mô-đun code được kết nối trong Spring. Kiểu này của config không thay đổi giữa các deploy, vì vậy tốt nhất là để nó ở trong code.</p>
+
+<dl>
+<small style="color: gray">
+Another approach to config is the use of config files which are not checked into revision control, such as config/database.yml in Rails. This is a huge improvement over using constants which are checked into the code repo, but still has weaknesses: it’s easy to mistakenly check in a config file to the repo; there is a tendency for config files to be scattered about in different places and different formats, making it hard to see and manage all the config in one place. Further, these formats tend to be language- or framework-specific.
+</small>
+</dl>
+
+<p>Một cách tiếp cận khác để config là sử dụng các tệp cấu hình (config files) mà không được đánh dấu vào trong trình kiểm soát mã nguồn, ví dụ như <code>config/database.yml</code> trong Rails. Việc này là cải thiện rất lớn thay cho việc sử dụng hằng số mà được đánh dấu trong code repo, nhưng nó vẫn có những điểm yếu; là rất dễ mắc sai lầm đánh dấu một config file trong repo; có một xu hướng cho những file config bị phân tán ở các nơi khác nhau và định dạng khác nhau, làm cho việc xem và quản lý tất cả các config ở một nơi khó khăn. Hơn nữa, những định dạng này hướng theo đặc tả của ngôn ngữ hoặc framework.</p>
+
+<dl>
+<small style="color: gray">
+The twelve-factor app stores config in environment variables (often shortened to env vars or env). Env vars are easy to change between deploys without changing any code; unlike config files, there is little chance of them being checked into the code repo accidentally; and unlike custom config files, or other config mechanisms such as Java System Properties, they are a language- and OS-agnostic standard.
+</small>
+</dl>
+
+<p><strong>Twelve-factor app lưu config trong biến môi trường</strong> (<em>environment variables</em>, thường viết ngắn gọn là <em>env vars</em> hay <em>env</em>). Env vars dễ dàng thay đổi giữa các deploy mà không phải thay đổi code; không giống như file config, chúng chỉ có nguy cơ nhỏ không may bị đánh dấu trong code repo; và cũng không giống như file config tuỳ chỉnh, hay các cơ chế config khác ví dụ Java System Properties, chúng là theo chuẩn không thể biết của ngôn ngữ lập trình và OS (hệ điều hành) (language- and OS-agnostic standard).</p>
+
+<dl>
+<small style="color: gray">
+Another aspect of config management is grouping. Sometimes apps batch config into named groups (often called “environments”) named after specific deploys, such as the development, test, and production environments in Rails. This method does not scale cleanly: as more deploys of the app are created, new environment names are necessary, such as staging or qa. As the project grows further, developers may add their own special environments like joes-staging, resulting in a combinatorial explosion of config which makes managing deploys of the app very brittle.
+</small>
+</dl>
+
+<p>Một mặt khác của quản lý config là đặt nhóm. Thỉnh thoảng ứng dụng nhóm config vào những nhóm được đặt tên (thông thường được gọi là “environments”), được đặt sau những deploy xác định, ví dụ như <code>development</code>, <code>test</code>, and <code>production</code> environments trong Rails. Phương pháp này thì không mở rộng được sạch sẽ (cleanly): như khi nhiều hơn deploy của app được tạo, thì phải cần tên môi trường mới, ví dụ <code>staging</code> hay <code>qa</code>. Khi project (dự án) lớn hơn, depveloper có thêm những environment đặc biệt của riêng họ như <code>joes-staging</code>, kết quả là một tổ hợp lớn của config, làm cho việc quản lý các deploy của app rất dễ phá vỡ.</p>
+
+<dl>
+<small style="color: gray">
+In a twelve-factor app, env vars are granular controls, each fully orthogonal to other env vars. They are never grouped together as “environments”, but instead are independently managed for each deploy. This is a model that scales up smoothly as the app naturally expands into more deploys over its lifetime.
+</small>
+</dl>
+
+<p>Trong twelve-factor app, env vars là những điều khiển gọn gàng, mỗi env var đều trực giao với env var khác. Chúng không bao giờ được nhóm lại với nhau như “environments”, thay vì đó chúng được quản lý độc lập với mỗi deploy. Đây làm một mô hình mà có thể mở rộng một cách trôi chảy (smoothly), như là việc app mở rộng nhiều deploy qua thời gian theo lẽ tự nhiên.</p>
+
+<h1 id="4-backing-services-dịch-vụ-phía-sau">4. Backing services (Dịch vụ phía sau)</h1>
+
+<p><strong>Treat backing services as attached resources</strong>
+<strong>Coi các backing service (dịch vụ phía sau) như những attached resource (tài nguyên đính kèm)</strong></p>
+
+<dl>
+<small style="color: gray">
+A backing service is any service the app consumes over the network as part of its normal operation. Examples include datastores (such as MySQL or CouchDB), messaging/queueing systems (such as RabbitMQ or Beanstalkd), SMTP services for outbound email (such as Postfix), and caching systems (such as Memcached).
+</small>
+</dl>
+
+<p>Một <em>backing service</em> là bất kì một service (dịch vụ) nào mà app tiêu thụ qua mạng như một phần vận hành bình thường của nó. Ví dụ gồm datastores (như MySQL hay CouchDB), messaging/queuing systems (ví dụ như RabbitMQ hay Beanstalkd), SMTP services để gửi email ra ngoài (Ví dụ Postfix), và hệ thống caching (Ví dụ Memcached).</p>
+
+<dl>
+<small style="color: gray">
+Backing services like the database are traditionally managed by the same systems administrators as the app’s runtime deploy. In addition to these locally-managed services, the app may also have services provided and managed by third parties. Examples include SMTP services (such as Postmark), metrics-gathering services (such as New Relic or Loggly), binary asset services (such as Amazon S3), and even API-accessible consumer services (such as Twitter, Google Maps, or Last.fm).
+</small>
+</dl>
+
+<p>Những backing service như cơ sở dữ liệu thì được quản lý một cách truyền thống bởi cùng các quản trị hệ thống giống như triển khai runtime (trình chạy) của app. Ngoài các service được quản lý local, app cũng có thể có những service cung cấp và quản lý bởi bên thứ ba. Ví dụ bao gồm SMTP services (như Postmark), metrics-gathering services (ví dụ như New Relic hay Loggly), binary asset services (Ví dụ Amazon S3), và thậm chí API-accessible consumer services (như Twitter, Google Maps, hay Last.fm).</p>
+
+<dl>
+<small style="color: gray">
+The code for a twelve-factor app makes no distinction between local and third party services. To the app, both are attached resources, accessed via a URL or other locator/credentials stored in the config. A deploy of the twelve-factor app should be able to swap out a local MySQL database with one managed by a third party (such as Amazon RDS) without any changes to the app’s code. Likewise, a local SMTP server could be swapped with a third-party SMTP service (such as Postmark) without code changes. In both cases, only the resource handle in the config needs to change.
+</small>
+</dl>
+
+<p><strong>Mã nguồn cho một twelve-factor app không tạo phân biệt giữa local và các dịch vụ của bên thứ ba.</strong> Để app, và cả local lẫn third party services đều là attached resource, được truy cập thông qua một URL hoặc locator/credentials stored khác trong config. Một deploy của twelve-factor app sẽ có thể được hoán đổi từ một cơ sở dữ liệu MySQL local với một cơ sở dữ liệu quản lý bởi bên thứ 3 (ví dụ Amazon RDS) mà không cần thay đổi code của app. Tương tự như vậy, một máy chủ SMTP local có thể được hoán đổi với một dịch vụ SMTP của bên thứ ba (ví dụ Postmark) mà không phải thay đổi code. Trong cả hai trường hợp, chỉ tài nguyên xử lý trong config là cần thay đổi.</p>
+
+<dl>
+<small style="color: gray">
+Each distinct backing service is a resource. For example, a MySQL database is a resource; two MySQL databases (used for sharding at the application layer) qualify as two distinct resources. The twelve-factor app treats these databases as attached resources, which indicates their loose coupling to the deploy they are attached to.
+</small>
+</dl>
+
+<p>Mỗi backing service riêng biệt là một <em>tài nguyên (resource)</em>. Ví dụ, một CSDL MySQL là một resource, hai CSDL MySQL (sử dụng sharding (phân mảnh) ở tầng ứng dụng) được xác định là hai resource riêng biệt. Twelve-factor app coi những database (CSDL) này như những attached resource, which indicates their loose coupling to the deploy they are attached to.</p>
+
+<p><em>A production deploy attached to four backing services:</em><br/>
+<em>Một production deploy được gắn vào bốn backing serice:</em>
+<img src="/images/attached-resources.png" alt="alt text" title="A production deploy attached to four backing services" /></p>
+
+<dl>
+<small style="color: gray">
+Resources can be attached to and detached from deploys at will. For example, if the app’s database is misbehaving due to a hardware issue, the app’s administrator might spin up a new database server restored from a recent backup. The current production database could be detached, and the new database attached – all without any code changes.
+</small>
+</dl>
+
+<p>Những tài nguyên có thể được gắn vào hoặc tách ra từ các deploy nếu muốn. Ví dụ, nếu CSDL của app đang bị lỗi do sự cố phần cứng, người quản trị app có thể xoay sang một máy chủ database mới được khôi phục từ bản backup gần nhất. Database của production hiện tại có thể bị tháo ra, và database mới được gắn vào mà không phải thay đổi bất kì dòng code nào.</p>
+
+<h1 id="5-build-release-phát-hành-run">5. Build, release (phát hành), run</h1>
+
+<p><strong>Strictly separate build and run stages</strong>
+<strong>Phân chia rõ ràng giữa giai đoạn (stage) build và run</strong></p>
+
+<dl>
+<small style="color: gray">
+A codebase is transformed into a (non-development) deploy through three stages:<br/>
+- The build stage is a transform which converts a code repo into an executable bundle known as a build. Using a version of the code at a commit specified by the deployment process, the build stage fetches vendors dependencies and compiles binaries and assets.<br/>
+- The release stage takes the build produced by the build stage and combines it with the deploy’s current config. The resulting release contains both the build and the config and is ready for immediate execution in the execution environment.<br/>
+- The run stage (also known as “runtime”) runs the app in the execution environment, by launching some set of the app’s processes against a selected release.<br/>
+</small>
+</dl>
+
+<p>Một codebase được chuyển đổi vào một deploy (không phải development) thông qua ba giai đoạn:</p>
+
+<ul>
+<li><em>Giai đoạn build</em> là một chuyển đổi mà chuyển từ code repo thành một gói có thể thực thi gọi là một build. Sử dụng một phiên bản của code ở một commit được chỉ định bởi tiến trình phát triển, giai đoạn build sẽ lấy các dependency của bên cung cấp và biên dịch thành chuỗi nhị phân (binaries) và assets (tài sản cố định).</li>
+<li><em>Giai đoạn release</em> sẽ lấy bản build được tạo từ giai đoạn build và kết hợp với config hiện tại của deploy. <em>Release</em> nhận được bao gồm cả build và config thì sẵn sàng cho việc thực thi ngay trong môi trường thực thi.</li>
+<li><em>Giai đoạn run</em> (cũng được biết như là &ldquo;runtime&rdquo;) chạy app trong môi trường thực thi, bằng việc chạy một số tập tiến trình ứng dụng đối với release đã chọn.</li>
+</ul>
+
+<p><em>Code becomes a build, which is combined with config to create a release:</em><br/>
+<em>Code trở thành một build, sau đó sẽ được kết hợp với config để tạo ra một release:</em>
+<img src="/images/release.png" alt="alt text" title="Code becomes a build, which is combined with config to create a release" /></p>
+
+<dl>
+<small style="color: gray">
+The twelve-factor app uses strict separation between the build, release, and run stages. For example, it is impossible to make changes to the code at runtime, since there is no way to propagate those changes back to the build stage.
+</small>
+</dl>
+
+<p><strong>Twelve-factor app sử dụng phân chia chặt chẽ giữa các giai đoạn build, release và run.</strong> Ví dụ, không thể thay đổi code ở runtime, vì không có cách nào để truyền những thay đổi này trở lại giai đoạn build.</p>
+
+<dl>
+<small style="color: gray">
+Deployment tools typically offer release management tools, most notably the ability to roll back to a previous release. For example, the Capistrano deployment tool stores releases in a subdirectory named releases, where the current release is a symlink to the current release directory. Its rollback command makes it easy to quickly roll back to a previous release.
+</small>
+</dl>
+
+<p>Công cụ phát triển thường đưa ra công cụ quản lý release, đáng kể nhất là khả năng có thể rollback về một release trước đó. Ví dụ công cụ phát triển Capistrano lưu các release ở một thư mục con (subdirectory) đặt tên là <code>releases</code>, nơi mà bản release hiện tại là một symlink (đường dẫn) đến thư mục release hiện tại. Câu lệnh rollback của nó làm cho việc rollback trở về các bản phát hành trước một cách dễ dàng.</p>
+
+<dl>
+<small style="color: gray">
+Every release should always have a unique release ID, such as a timestamp of the release (such as 2011-04-06-20:32:17) or an incrementing number (such as v100). Releases are an append-only ledger and a release cannot be mutated once it is created. Any change must create a new release.
+</small>
+</dl>
+
+<p>Mọi release luôn luôn nên có một ID duy nhất, ví dụ như sử dụng timestamp (mốc thời gian) phát hành (như <code>2011-04-06-20:32:17</code>) hoặc một số tăng dần (ví dụ <code>v100</code>). Các release là một cuốn sổ cái chỉ cho thêm vào và các release, không thể sửa đổi một khi nó đã được tạo. Chỉ có thể thay đổi bằng cách thêm một release mới.</p>
+
+<dl>
+<small style="color: gray">
+Builds are initiated by the app’s developers whenever new code is deployed. Runtime execution, by contrast, can happen automatically in cases such as a server reboot, or a crashed process being restarted by the process manager. Therefore, the run stage should be kept to as few moving parts as possible, since problems that prevent an app from running can cause it to break in the middle of the night when no developers are on hand. The build stage can be more complex, since errors are always in the foreground for a developer who is driving the deploy.
+</small>
+</dl>
+
+<p>Các build được khởi tạo bởi developer của app khi code mới được triển khai. Tương phản trong thực thi runtime, có thể tự động xảy ra một số trường hợp ví dụ như một khởi động lại máy chủ, hoặc một tiến trình bị crash (sập) được khởi động lại bởi trình quản lý tiến trình. Vì vậy, giai đoạn chạy nên được giữ thành một vài bước có thể, vì những trục trặc để tránh một app đang chạy có thể bị ngắt giữa đêm khi mà không có developer nào đang thức. Giai đoạn build có thể phức tạp hơn, vì những lỗi luôn luôn cận kề đối với developer đang tạo deploy.</p>
+
+<ul>
+<li>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1 / 2 (Đang xem)<br/></li>
+<li><a href="/12-factor-p2">Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2 / 2</a></li>
+</ul>
+
+<p>Nguồn: <a href="https://12factor.net/">https://12factor.net/</a></p>
+
+<p>Dịch bởi: <code>code2080</code></p>
+
+        </div>
+
+        
+        
+        <div class="article-toc" >
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#mở-đầu">MỞ ĐẦU</a>
+<ul>
+<li><a href="#giới-thiệu">Giới thiệu</a></li>
+<li><a href="#khởi-nguồn">Khởi nguồn</a></li>
+<li><a href="#ai-nên-đọc-tài-liệu-này">Ai nên đọc tài liệu này?</a></li>
+</ul></li>
+<li><a href="#1-codebase-toàn-bộ-mã-nguồn-dự-án">1. Codebase (Toàn bộ mã nguồn dự án)</a></li>
+<li><a href="#2-dependencies-các-phụ-thuộc">2. Dependencies (Các phụ thuộc)</a></li>
+<li><a href="#3-config-cấu-hình">3. Config (Cấu hình)</a></li>
+<li><a href="#4-backing-services-dịch-vụ-phía-sau">4. Backing services (Dịch vụ phía sau)</a></li>
+<li><a href="#5-build-release-phát-hành-run">5. Build, release (phát hành), run</a></li>
+</ul>
+</nav>
+        </div>
+        
+        
+
+        
+
+
+        
+        <footer class="article-footer">
+            <ul class="article-tag-list">
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://code2080.com/tags/software-development">software development
+                    </a>
+                </li>
+                
+                <li class="article-tag-list-item">
+                    <a class="article-tag-list-link" href="https://code2080.com/tags/translation">translation
+                    </a>
+                </li>
+                
+            </ul>
+        </footer>
+        
+    </div>
+    <nav id="article-nav">
+    
+    <a href="/12-factor-p2/" id="article-nav-newer" class="article-nav-link-wrap">
+        <div class="article-nav-title"><span>&lt;</span>&nbsp;
+            Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2/2
+        </div>
+    </a>
+    
+    
+    <a href="/about/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">About me&nbsp;<span>&gt;</span></div>
+    </a>
+    
+</nav>
+</article>
+
+        
+    </section>
+    <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Code Twenty Eighty.
+            Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/carsonip/hugo-theme-minos">Minos</a>.
+        </div>
+    </div>
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/tomorrow-night.min.css" integrity="sha256-2wL88NKUqvJi/ExflDzkzUumjUM73mcK2gBvBBeLvTk=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    <script>
+        document.getElementById('main-nav-toggle').addEventListener('click', function () {
+            var header = document.getElementById('header');
+            if (header.classList.contains('mobile-on')) {
+                header.classList.remove('mobile-on');
+            } else {
+                header.classList.add('mobile-on');
+            }
+        });
+    </script>
+</footer>
+</div>
+</body>
+</html>

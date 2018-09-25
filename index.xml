@@ -6,26 +6,45 @@
     <description>Recent content on Code Twenty Eighty</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Sep 2018 00:46:35 +0700</lastBuildDate>
+    <lastBuildDate>Tue, 25 Sep 2018 00:46:35 +0700</lastBuildDate>
     
 	<atom:link href="https://code2080.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App)</title>
-      <link>https://code2080.com/12-factor/</link>
-      <pubDate>Wed, 19 Sep 2018 00:46:35 +0700</pubDate>
+      <title>Visualize twelve-factor app</title>
+      <link>https://code2080.com/visualize-12-factor/</link>
+      <pubDate>Tue, 25 Sep 2018 00:46:35 +0700</pubDate>
       
-      <guid>https://code2080.com/12-factor/</guid>
-      <description>Nguồn: https://12factor.net/
-MỞ ĐẦU Giới thiệu Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là web apps (những ứng dụng web), hay là software-as-a-service (phần mềm như một dịch vụ). App (ứng dụng) xây dựng theo twelve-factor là một phương pháp học để xây dựng app như vậy, bao gồm:
- Sử dụng định dạng declarative cho thiết lập tự động, để giảm thiểu tối đa thời gian và công sức cho những lập trình viên mới tham gia vào dự án; Có giao kèo sạch (clean contract) với hệ thống vận hành ở bên dưới, đưa ra tối đa tính khả chuyển (maximum portability) giữa các môi trường thực thi; Tiện dụng cho phát triển trên nền tảng điện toán đám mây hiện đại, loại bỏ sự cấp thiết cho các máy chủ và những người quản trị hệ thống; Giảm thiểu tối đa sự khác nhau giữa development (phát triển) và production (sản phẩm), kích hoạt tính năng phát triển liên tục (CD, continuous deployment) để tối đa tốc độ phát triển app; Và có thể mở rộng mà không cần thay đổi đáng kể nào về công cụ, kiến trúc, hay các phương pháp phát triển (development practices).</description>
+      <guid>https://code2080.com/visualize-12-factor/</guid>
+      <description>This is my visualization about twelve-factor app.
+It may a bit difficult to understand all about twelve-factor app that I&amp;rsquo;ve translated. So I try to visualize it with some images, may it help you to understand more.</description>
+    </item>
+    
+    <item>
+      <title>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2/2</title>
+      <link>https://code2080.com/12-factor-p2/</link>
+      <pubDate>Sat, 22 Sep 2018 00:46:35 +0700</pubDate>
+      
+      <guid>https://code2080.com/12-factor-p2/</guid>
+      <description>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1 / 2 Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2 / 2 (Đang xem)  (Tiếp tục)
+6. Processes (Tiến trình) Execute the app as one or more stateless processes Thực thi app như một hoặc nhiều tiến trình phi trạng thái
+ The app is executed in the execution environment as one or more processes.</description>
+    </item>
+    
+    <item>
+      <title>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1/2</title>
+      <link>https://code2080.com/12-factor-p1/</link>
+      <pubDate>Thu, 20 Sep 2018 00:46:35 +0700</pubDate>
+      
+      <guid>https://code2080.com/12-factor-p1/</guid>
+      <description>Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 1 / 2 (Đang xem) Xây dựng ứng dụng theo 12 yếu tố (Twelve-Factor App) - Phần 2 / 2  MỞ ĐẦU Giới thiệu  In the modern era, software is commonly delivered as a service: called web apps, or software-as-a-service. The twelve-factor app is a methodology for building software-as-a-service apps that:   Trong kỷ nguyên hiện đại, phần mềm thông thường được cung cấp như một dịch vụ: được gọi là web apps (những ứng dụng web), hay là software-as-a-service (phần mềm như một dịch vụ).</description>
     </item>
     
     <item>
       <title>About me</title>
       <link>https://code2080.com/about/</link>
-      <pubDate>Tue, 18 Sep 2018 21:46:35 +0700</pubDate>
+      <pubDate>Wed, 19 Sep 2018 21:46:35 +0700</pubDate>
       
       <guid>https://code2080.com/about/</guid>
       <description>Hi everyone, I&amp;rsquo;m just a random person who want to code everyday of his life.</description>
