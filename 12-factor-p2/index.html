@@ -239,7 +239,7 @@ The twelve-factor app’s processes are disposable, meaning they can be started 
 </small>
 </dl>
 
-<p>Tiến trình của ứng dụng twelve-factor thì có tính sẵn sàng, nghĩa là chúng có thể bật hoặc tắt khi có thông báo tại một thời điểm nào đấy. Điều này làm dễ dàng cho việc mở rộng co giãn nhanh, triển khai nhanh chóng khi thay đổi code hoặc cấu hình, và sự chắc chắn của các bản triển khai của production.</p>
+<p><a href="#6-processes-tiến-trình">Tiến trình</a> của ứng dụng twelve-factor thì có tính sẵn sàng, nghĩa là chúng có thể bật hoặc tắt khi có thông báo tại một thời điểm nào đấy. Điều này làm dễ dàng cho việc mở rộng co giãn nhanh, triển khai nhanh chóng khi thay đổi code hoặc cấu hình, và sự chắc chắn của các bản triển khai của production.</p>
 
 <dl>
 <small style="color: gray">
@@ -255,7 +255,7 @@ Processes shut down gracefully when they receive a SIGTERM signal from the proce
 </small>
 </dl>
 
-<p>Các tiến trình tắt nhã nhặn khi chúng nhận một tín hiện SIGTERM từ trình quản lý tiến trình. Với một tiến trình web, tắt nhã nhặn đạt được bởi việc ngừng lắng nghe trên các cổng dịch vụ (bằng cách ấy từ chối bất kỳ các request mới nào), cho phép bất kì request hiện tại nào kết thúc, và sau đó thoát. Ngụ ý trong mô hình này là HTTP request thì ngắn (không quá vài giây), hoặc trong trường hợp long-polling, máy khách sẽ cố gắng kết nối lại khi mất kết nối.</p>
+<p>Các tiến trình tắt nhã nhặn khi chúng nhận một tín hiện <a href="http://en.wikipedia.org/wiki/SIGTERM">SIGTERM</a> từ trình quản lý tiến trình. Với một tiến trình web, tắt nhã nhặn đạt được bởi việc ngừng lắng nghe trên các cổng dịch vụ (bằng cách ấy từ chối bất kỳ các request mới nào), cho phép bất kì request hiện tại nào kết thúc, và sau đó thoát. Ngụ ý trong mô hình này là HTTP request thì ngắn (không quá vài giây), hoặc trong trường hợp long-polling, máy khách sẽ cố gắng kết nối lại khi mất kết nối.</p>
 
 <dl>
 <small style="color: gray">
@@ -263,7 +263,7 @@ For a worker process, graceful shutdown is achieved by returning the current job
 </small>
 </dl>
 
-<p>Với một tiến trình worker, tắt nhã nhặn đạt được bằng việc trả lại job hiện tại vào hàng đợi. Ví dụ, trên RabbitMQ worker có thể gửi một NACK; trên Beanstalkd, job được trả lại hàng đợi tự động khi một worker bị mất kết nối. Hệ thống Lock-based ví dụ Delayed Job cần chắc chắn nhả lock của chúng trên bản ghi job. Ngụ ý trong mô hình này là tất cả các job có thể dùng lại được, mà thông thường đạt được được bởi bao kết quả trong một transaction (giao dịch), hoặc làm cho thao tác không thay đổi giá trị.</p>
+<p>Với một tiến trình worker, tắt nhã nhặn đạt được bằng việc trả lại job hiện tại vào hàng đợi. Ví dụ, trên RabbitMQ worker có thể gửi một NACK; trên Beanstalkd, job được trả lại hàng đợi tự động khi một worker bị mất kết nối. Hệ thống Lock-based ví dụ Delayed Job cần chắc chắn nhả lock của chúng trên bản ghi job. Ngụ ý trong mô hình này là tất cả các job có thể <a href="http://en.wikipedia.org/wiki/Reentrant_%28subroutine%29">dùng lại được</a>, mà thông thường đạt được được bởi bao kết quả trong một transaction (giao dịch), hoặc làm cho thao tác <a href="http://en.wikipedia.org/wiki/Idempotence">không thay đổi giá trị</a>.</p>
 
 <dl>
 <small style="color: gray">
@@ -271,7 +271,7 @@ Processes should also be robust against sudden death, in the case of a failure i
 </small>
 </dl>
 
-<p>Các tiến trình cũng phải mạnh mẽ để chống lại việc chết đột ngột, trong trường hợp một hỏng hóc của phần cứng bên dưới. Tuy điều này hiếm khi xảy ra hơn so với việc tắt nhã nhặn với SIGTERM, nhưng nó vẫn có thể xảy ra. Một cách tiếp cận khuyến khích là sử dụng một backend hàng đợi mạnh mẽ, ví dụ Beanstalkd, mà có thể gửi trả job vào hàng đợi khi máy khách mất kết nối hoặc quá thời gian. Dù bằng cách nào, một ứng dụng twelve-factor cũng phải được kiến trúc để xử lý việc ngắt kết nối không mong muốn, không nhã nhặn. Thiết kế crash-only lấy khái niệm này cho kết luận logic của nó.</p>
+<p>Các tiến trình cũng phải mạnh mẽ để chống lại việc chết đột ngột, trong trường hợp một hỏng hóc của phần cứng bên dưới. Tuy điều này hiếm khi xảy ra hơn so với việc tắt nhã nhặn với SIGTERM, nhưng nó vẫn có thể xảy ra. Một cách tiếp cận khuyến khích là sử dụng một backend hàng đợi mạnh mẽ, ví dụ Beanstalkd, mà có thể gửi trả job vào hàng đợi khi máy khách mất kết nối hoặc quá thời gian. Dù bằng cách nào, một ứng dụng twelve-factor cũng phải được kiến trúc để xử lý việc ngắt kết nối không mong muốn, không nhã nhặn. <a href="http://lwn.net/Articles/191059/">Thiết kế crash-only</a> lấy khái niệm này cho <a href="http://docs.couchdb.org/en/latest/intro/overview.html">kết luận logic</a> của nó.</p>
 
 <h1 id="10-dev-prod-parity-tương-đồng-giữa-phát-triển-và-sản-phẩm">10. Dev/prod parity (Tương đồng giữa phát triển và sản phẩm)</h1>
 
@@ -306,7 +306,7 @@ The twelve-factor app is designed for continuous deployment by keeping the gap b
 </small>
 </dl>
 
-<p><strong>Ứng dụng twelve-factor được thiết kế cho triển khai liên tục bằng việc giữ lỗ hổng giữa development và production nhỏ</strong>. Nhìn vào ba lỗ hổng mô tả ở trên:</p>
+<p><strong>Ứng dụng twelve-factor được thiết kế cho <a href="http://avc.com/2011/02/continuous-deployment/">triển khai liên tục</a> bằng việc giữ lỗ hổng giữa development và production nhỏ</strong>. Nhìn vào ba lỗ hổng mô tả ở trên:</p>
 
 <dl>
 <small style="color: gray">
@@ -447,7 +447,7 @@ Logs are the stream of aggregated, time-ordered events collected from the output
 </small>
 </dl>
 
-<p>Các log là dòng dữ liệu của các sự kiện được tích tụ lại, theo tứ tự thời gian từ các dòng dữ liệu đầu ra của tất cả các tiến trình đang chạy và backing service. Các log trong định dạng thô của chúng điển hình là dạng text với mỗi sự kiện trên một dòng (mặc dù các backtrace (lần dấu ngược lại) của ngoại lệ có thể kéo dài ra nhiều dòng). Các log không có điểm đầu hay cuối cố định, nhưng lưu lượng liên tục giống như ứng dụng đang vận hành.</p>
+<p>Các log là <a href="https://adam.herokuapp.com/past/2011/4/1/logs_are_streams_not_files/">dòng dữ liệu</a> của các sự kiện được tích tụ lại, theo tứ tự thời gian từ các dòng dữ liệu đầu ra của tất cả các tiến trình đang chạy và backing service. Các log trong định dạng thô của chúng điển hình là dạng text với mỗi sự kiện trên một dòng (mặc dù các backtrace (lần dấu ngược lại) của ngoại lệ có thể kéo dài ra nhiều dòng). Các log không có điểm đầu hay cuối cố định, nhưng lưu lượng liên tục giống như ứng dụng đang vận hành.</p>
 
 <dl>
 <small style="color: gray">
@@ -487,10 +487,10 @@ The event stream for an app can be routed to a file, or watched via realtime tai
 <li>Kích hoạt cảnh báo theo phỏng đoán do người dùng định nghĩa (ví dụ như một cảnh báo khi số lượng lỗi trên phút vượt quá mức cho phép).</li>
 </ul>
 
-<h1 id="12-admin-processes">12. Admin processes</h1>
+<h1 id="12-admin-processes-các-tiến-trình-người-quản-trị">12. Admin processes (Các tiến trình người quản trị)</h1>
 
-<p><strong>Run admin/management tasks as one-off processes</strong>
-<strong>Chạy các task admin/management (người quản trị/quản lý) như các process one-off (một lần)</strong></p>
+<p><strong>Run admin/management tasks as one-off processes</strong><br/>
+<strong>Chạy các task admin/management (người quản trị/quản lý) như các tiến trình one-off (một lần)</strong></p>
 
 <dl>
 <small style="color: gray">
@@ -560,7 +560,7 @@ Twelve-factor strongly favors languages which provide a REPL shell out of the bo
 <li><a href="#9-disposability-tính-sẵn-sàng">9. Disposability (Tính sẵn sàng)</a></li>
 <li><a href="#10-dev-prod-parity-tương-đồng-giữa-phát-triển-và-sản-phẩm">10. Dev/prod parity (Tương đồng giữa phát triển và sản phẩm)</a></li>
 <li><a href="#11-logs-các-ghi-chép">11. Logs (Các ghi chép)</a></li>
-<li><a href="#12-admin-processes">12. Admin processes</a></li>
+<li><a href="#12-admin-processes-các-tiến-trình-người-quản-trị">12. Admin processes (Các tiến trình người quản trị)</a></li>
 </ul>
 </nav>
         </div>
