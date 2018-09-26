@@ -409,17 +409,23 @@ For example, some apps have two types of workers, one for urgent jobs and anothe
 </small>
 </dl>
 
+<p>Ví dụ, một số ứng dụng có hai kiểu của các worker, một cho những job khẩn cấp và cái còn lại cho job chạy thời gian dài. Bằng việc chia nhỏ hơn ra nhiều worker chuyên biệt, bạn có thể nhận được phản hồi tốt hơn trên những job khẩn cấp và nhiều khả năng kiểm soát chi tiết hơn về cách chi tiết tài nguyên tính toán.</p>
+
 <dl>
 <small style="color: gray">
 Scheduling work at a certain time of day (e.g., the equivalent of cron) can be achieved with a specialized process type: a library like resque-scheduler or Clockwork can be run as a singleton process for a very flexible cron replacement. Consuming the Twitter streaming API is another type of specialized work best served by a singleton process.
 </small>
 </dl>
 
+<p>Lập lịch công việc vào một thời điểm nhất định trong ngày (ví dụ, tương đương với cron) có thể đạt được với một kiểu process chuyên biệt: một thư viện như resque-scheduler hay Clockwork có thể được chạy như một process đơn lẻ thay thế cho một cron linh hoạt. Tiêu thụ Twitter streaming (phát trực tuyến) API là một kiểu khác của công việc chuyên biệt được phục vụ tốt nhất bởi một process đơn lẻ.</p>
+
 <dl>
 <small style="color: gray">
 Pulling all of these potential use cases together, here’s an example of a Procfile for an app with five process types: a Sinatra web app, two types of Resque workers, a singleton clock with Clockwork, and a singleton ruby script consuming the Twitter streaming API:
 </small>
 </dl>
+
+<p>Lấy tất cả các trường hợp có khả năng sử dụng đến lại, đây là ví dụ của một Profile cho một ứng dụng với năm kiểu process: một ứng dụng web Sinatra, hai kiểu là Resque worker, một clock đơn lẻ với Clockwork, và một kịch bản ruby đơn lẻ tiêu thụ Twitter streaming API:</p>
 
 <pre><code>web:          bundle exec ruby web.rb -p $PORT
 fastworker:   QUEUE=urgent bundle exec rake resque:work
@@ -434,6 +440,8 @@ When we run this Procfile with Foreman, we’ll give five processes - one for ea
 </small>
 </dl>
 
+<p>Khi chúng ta chạy Procfile này với Foreman, chúng ta sẽ đưa năm process - một cho mỗi kiểu. Trong production, chúng ta có thể sử dụng tham số đồng thời của Foreman phân ra hàng tá hoặc thậm chí hàng trăm process đang chạy, có khả năng trải rộng trên nhiều máy tính.</p>
+
 <h1 id="conclusion-kết-luận">Conclusion (Kết luận)</h1>
 
 <dl>
@@ -441,6 +449,8 @@ When we run this Procfile with Foreman, we’ll give five processes - one for ea
 The unix process model is a powerful way to approach running your web app. Procfile gives us a way to declare process types, and Foreman gives us an easy way to run the app’s processes in both development and deployment environments.
 </small>
 </dl>
+
+<p>Mô hình unix process là một phương pháp mạnh mẽ để tiếp cận chạy ứng dụng web của bạn. Procfile mang lại cho chúng ta một các khai báo kiểu process, và Foreman mang lại cho chúng là một cách dễ dàng để chạy các process của ứng dụng trong cả môi trường phát triển và triển khai.</p>
 
 <p>Nguồn: <a href="https://adam.herokuapp.com/past/2011/5/9/applying_the_unix_process_model_to_web_apps/">https://adam.herokuapp.com/past/2011/5/9/applying_the_unix_process_model_to_web_apps/</a></p>
 
