@@ -75,7 +75,7 @@
 
 <h1 id="6-processes-tiến-trình">6. Processes (Tiến trình)</h1>
 
-<p><strong>Execute the app as one or more stateless processes</strong>
+<p><strong>Execute the app as one or more stateless processes</strong><br/>
 <strong>Thực thi ứng dụng như một hoặc nhiều tiến trình phi trạng thái</strong></p>
 
 <dl>
@@ -210,7 +210,7 @@ This does not exclude individual processes from handling their own internal mult
 </small>
 </dl>
 
-<p>Điều này không loại trừ trường hợp những tiến trình riêng rẽ xử lý công việc nội bộ cồng kềnh của chúng, thông qua các luồng bên trong runtime của máy ảo, hoặc mô hình bất đồng bộ/hướng sự kiện được tìm thấy trong các công cụ ví dụ như EventMachine, Twisted, hay Node.js. Nhưng một máy ảo riêng rẽ chỉ có thể phát triển lớn lên (theo chiều dọc), nền ứng dụng cũng phải có khả năng mở rộng nhiều tiến trình chạy trên nhiều máy tính vật lý.</p>
+<p>Điều này không loại trừ những tiến trình riêng rẽ xử lý công việc nội bộ cồng kềnh của chúng, thông qua các luồng bên trong runtime của máy ảo, hoặc mô hình bất đồng bộ/hướng sự kiện được tìm thấy trong các công cụ ví dụ như EventMachine, Twisted, hay Node.js. Nhưng một máy ảo riêng rẽ chỉ có thể phát triển lớn lên (theo chiều dọc), nên ứng dụng cũng phải có khả năng mở rộng nhiều tiến trình chạy trên nhiều máy tính vật lý.</p>
 
 <dl>
 <small style="color: gray">
@@ -227,6 +227,18 @@ Twelve-factor app processes should never daemonize or write PID files. Instead, 
 </dl>
 
 <p>Những tiến trình của ứng dụng twelve-factor <a href="http://dustin.github.com/2010/02/28/running-processes.html">không bao giờ nên daemonize</a> hoặc viết vào tệp PID. Thay vì đó, chỉ dựa trên trình quản lý tiến trình của hệ điều hành (ví dụ systemd, một trình quản lý tiến trình phân tán trên nền tảng cloud, hoặc một công cụ như Foreman trong quá trình phát triển) để quản lý <a href="#11-logs-các-ghi-chép">các dòng dữ liệu đầu ra</a>, phản hồi lại các tiến trình bị hỏng, và xử lý các hành động tắt và khởi động lại do người dùng khởi tạo.</p>
+
+<p><strong>Bổ sung</strong> thêm từ: <a href="https://www.oreilly.com/ideas/concurrency-in-modern-apps">https://www.oreilly.com/ideas/concurrency-in-modern-apps</a></p>
+
+<p>There was a time when, if an application reached the limit of its capacity, the solution was to increase its size. If an application could only handle some number of requests per minute, then the preferred solution was to simply make the application bigger.</p>
+
+<p>Adding CPUs, RAM, and other resources (virtual or physical) to a single monolithic application is called vertical scaling, and this type of behavior is typically frowned upon in civilized society these days.</p>
+
+<p>A much more modern approach, one ideal for the kind of elastic scalability that the cloud supports, is to scale out, or horizontally. Rather than making a single big process even larger, you create multiple processes, and then distribute the load of your application among those processes.</p>
+
+<p>Most cloud providers have perfected this capability to the point where you can even configure rules that will dynamically scale the number of instances of your application based on load or other run‐time telemetry available in a system.</p>
+
+<p>If you are building disposable, stateless, share-nothing processes then you will be well positioned to take full advantage of horizontal scaling and running multiple, concurrent instances of your application so that it can truly thrive in the cloud.</p>
 
 <h1 id="9-disposability-tính-sẵn-sàng">9. Disposability (Tính sẵn sàng)</h1>
 
@@ -275,7 +287,7 @@ Processes should also be robust against sudden death, in the case of a failure i
 
 <h1 id="10-dev-prod-parity-tương-đồng-giữa-phát-triển-và-sản-phẩm">10. Dev/prod parity (Tương đồng giữa phát triển và sản phẩm)</h1>
 
-<p><strong>Keep development, staging, and production as similar as possible</strong>
+<p><strong>Keep development, staging, and production as similar as possible</strong><br/>
 <strong>Giữ môi trường development, staging, and production giống nhau nhất có thể</strong></p>
 
 <dl>
@@ -430,7 +442,7 @@ Adapters to different backing services are still useful, because they make porti
 
 <h1 id="11-logs-các-ghi-chép">11. Logs (Các ghi chép)</h1>
 
-<p><strong>Treat logs as event streams</strong>
+<p><strong>Treat logs as event streams</strong><br/>
 <strong>Coi các log như dòng dữ liệu sự kiện</strong></p>
 
 <dl>
