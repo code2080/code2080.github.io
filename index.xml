@@ -17,7 +17,7 @@
       <pubDate>Thu, 27 Sep 2018 00:00:00 +0700</pubDate>
       
       <guid>https://code2080.com/cv/</guid>
-      <description>.article-entry h1 { font-size: 1.5em; margin-top: 50px; margin-bottom: 15px; } h2 { font-weight: normal !important; font-size: 100% !important; } .progress { margin-top: -20px; margin-bottom: -20px; width: 100%; max-width: 350px; height: 10px; border-radius: 2px; background-color: #e2e2e2; } .progress:after { content: &#34;&#34;; display: block; height: 100%; border-top-left-radius: 2px; border-bottom-left-radius: 2px; background-color: #404040; } .reactnative:after { width: 80%; } .reactjs:after { width: 70%; } .django:after { width: 65%; } .go:after { width: 20%; /* animation: go 1.</description>
+      <description>.article-entry h1 { font-size: 1.5em; margin-top: 50px; margin-bottom: 15px; } h2 { font-weight: normal !important; font-size: 100% !important; } .progress { margin-top: -20px; margin-bottom: -20px; width: 100%; max-width: 360px; height: 10px; border-radius: 2px; background-color: #e2e2e2; } .progress:after { content: &#34;&#34;; display: block; height: 100%; border-top-left-radius: 2px; border-bottom-left-radius: 2px; background-color: #404040; } .reactnative:after { width: 80%; } .reactjs:after { width: 70%; } .django:after { width: 65%; } .go:after { width: 20%; /* animation: go 1.</description>
     </item>
     
     <item>
